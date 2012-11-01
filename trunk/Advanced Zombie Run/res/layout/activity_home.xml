@@ -21,4 +21,13 @@
         android:onClick="run"
         android:text="Lance la map" />
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button1"
+        android:layout_centerHorizontal="true"
+        android:onClick="openPreferences"
+        android:text="Lance les options" />
+
 </RelativeLayout>
