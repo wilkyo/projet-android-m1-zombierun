@@ -8,22 +8,27 @@ import android.view.View;
 
 public class HomeActivity extends Activity {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_home);
+	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_home, menu);
-        return true;
-    }
-    
-    public void run(View v)
-    {
-    	Intent i = new Intent();
-    	i.setClass(this, Map.class);
-    	startActivity(i);
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_home, menu);
+		return true;
+	}
+
+	public void openPreferences(View v) {
+		Intent i = new Intent();
+		i.setClass(this, PreferencesActivity.class);
+		startActivity(i);
+	}
+
+	public void run(View v) {
+		Intent i = new Intent();
+		i.setClass(this, Map.class);
+		startActivity(i);
+	}
 }
