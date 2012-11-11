@@ -7,6 +7,8 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Spinner;
 
 public class PreferencesActivity extends Activity {
@@ -26,6 +28,9 @@ public class PreferencesActivity extends Activity {
 				"density", 0));
 		((Spinner) findViewById(R.id.spinner_speed)).setSelection(s.getInt(
 				"speed", 0));
+		((Spinner) findViewById(R.id.spinner_life)).setSelection(s.getInt(
+				"life", 0));
+		((RadioGroup) findViewById(R.id.alertChoices)).check(s.getInt("alert", R.id.alertChoice1));
 	}
 
 	private void setListeners() {
@@ -58,6 +63,33 @@ public class PreferencesActivity extends Activity {
 			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 
+		});
+		((Spinner) findViewById(R.id.spinner_life))
+		.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			public void onItemSelected(AdapterView<?> parent,
+					View view, int pos, long id) {
+				SharedPreferences.Editor editor = getPreferences(
+						MODE_PRIVATE).edit();
+				editor.putInt("life", pos);
+				editor.commit();
+			}
+
+			public void onNothingSelected(AdapterView<?> arg0) {
+			}
+
+		});
+
+		((RadioGroup) findViewById(R.id.alertChoices)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			public void onCheckedChanged(RadioGroup rg, int checkedId) {
+				System.out.println(checkedId);
+				SharedPreferences.Editor editor = getPreferences(
+						MODE_PRIVATE).edit();
+				editor.putInt("alert", checkedId);
+				editor.commit();
+			}
+			
 		});
 }
 

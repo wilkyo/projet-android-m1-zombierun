@@ -7,5 +7,11 @@
     <string name="title_activity_preferences">Préférences</string>
     <string name="density">Densité de la population</string>
     <string name="speed">Vitesse des zombies</string>
+    <string name="timer">Temps imparti</string>
+    <string name="life">Points de Vie</string>
+    <string name="alert">Alerte quand Zombie à proximité</string>
+    <string name="alert1">Vibration</string>
+    <string name="alert2">Son</string>
+    <string name="alert3">Rien</string>
 
 </resources>
