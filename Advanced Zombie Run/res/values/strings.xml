@@ -5,8 +5,14 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_home">Accueil</string>
     <string name="title_activity_preferences">Préférences</string>
-    <string name="density">Densité de la population</string>
-    <string name="speed">Vitesse des zombies</string>
+    <string name="density">Population Density</string>
+    <string name="speed">Zombies\'s Speed</string>
+    <string name="timer">Timer</string>
+    <string name="life">Life Points</string>
+    <string name="alert">Alert when close to a Zombie</string>
+    <string name="alert1">Vibration</string>
+    <string name="alert2">Sound</string>
+    <string name="alert3">Nothing</string>
 
     <string-array name="densities_array">
         <item>Low</item>
@@ -19,6 +25,14 @@
         <item>Medium</item>
         <item>Fast</item>
         <item>Very Fast</item>
+    </string-array>
+    <string-array name="lifes_array">
+        <item>Just One</item>
+        <item>Three Life points</item>
+        <item>Ten life points</item>
+        <item>Forty two</item>
+        <item>One Hundred</item>
+        <item>Over nine thousand</item>
     </string-array>
 
 </resources>
