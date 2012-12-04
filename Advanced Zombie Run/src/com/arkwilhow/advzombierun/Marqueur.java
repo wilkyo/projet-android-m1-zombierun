@@ -19,6 +19,20 @@ public class Marqueur extends ItemizedOverlay {
 		super(boundCenterBottom(arg0));
 		// TODO Auto-generated constructor stub
 	}
+	
+	
+
+	public ArrayList<OverlayItem> getListeMarqueur() {
+		return listeMarqueur;
+	}
+
+
+
+	public void setListeMarqueur(ArrayList<OverlayItem> listeMarqueur) {
+		this.listeMarqueur = listeMarqueur;
+	}
+
+
 
 	public Marqueur(Drawable defaultMarker, Context context) {
 		  super(boundCenterBottom(defaultMarker));
