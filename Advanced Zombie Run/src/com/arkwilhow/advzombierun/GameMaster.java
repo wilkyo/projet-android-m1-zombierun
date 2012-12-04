@@ -1,14 +1,10 @@
 package com.arkwilhow.advzombierun;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import com.google.android.maps.GeoPoint;
-import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.location.Location;
 
 
@@ -44,6 +40,8 @@ public class GameMaster {
 	/**
 	 * Creer un zombie (i.e. un OverlayItem) dans un cercle de prer metres
 	 * autour de la location en parametre 
+	 * Il faura sans doute modifier cette fonction de sorte que les zombis ne puissent pas apparaitre
+	 * trop pres du joueur
 	 * @param location
 	 * @param prer
 	 * @return 
@@ -155,9 +153,20 @@ public class GameMaster {
   */
 	public void verifie_zombis(ArrayList<OverlayItem> zombis){
 		Location l = new Location("");
+		double lat1,long1;
+		int r = 100; //La distance maximale à laquelle un zombie peut se trouver
+		//Pour l'instant codé en "dur" il faudra sans doute la calculer en fonction de la difficulté
 		for(OverlayItem o : zombis){
-			
+			lat1 = o.getPoint().getLatitudeE6()/1E6F;
+			long1 = o.getPoint().getLongitudeE6()/1E6F;
+			l.setLatitude(lat1);
+			l.setLongitude(long1);
+			if(joueur.distanceTo(l) > r){
+				o = creer_zombi(r);
+			}
 		}
 	}
+
+	
 	
 }
