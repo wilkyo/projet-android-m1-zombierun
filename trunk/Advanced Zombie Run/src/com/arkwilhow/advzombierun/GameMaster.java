@@ -14,7 +14,8 @@ public class GameMaster {
 	private int density;
 	private int speed;
 	private int life;
-
+	private int alert;
+	
 	public GameMaster(Location joueur) {
 		super();
 		this.joueur = joueur;
@@ -134,6 +135,11 @@ public class GameMaster {
 			long2 = long1 + Math.atan2(Math.sin(anglerad)*Math.sin(distRatio)*Math.cos(lat1),
 					Math.cos(distRatio)-Math.sin(lat1)*Math.sin(lat2));
 			g = new GeoPoint((int)(lat2*1E6),(int)(long2*1E6));
+			Location l = new Location("");
+			l.setLatitude(o.getPoint().getLatitudeE6()/1E6F);
+			l.setLongitude(o.getPoint().getLongitudeE6()/1E6F);
+			if(joueur.distanceTo(l) <= d)
+				joueur_touche();
 			ov = new OverlayItem(g, "Zombie", "Beuh");
 			new_zombis.add(ov);
 		}
@@ -166,7 +172,21 @@ public class GameMaster {
 			}
 		}
 	}
-
 	
-	
+	/**
+	 * Déclenche les evenements après qu'un zombi ait rattrapé le joueur
+	 */
+	public void joueur_touche(){
+		if(life == 1){
+			//On stoppe le jeu
+		}
+		else {
+			//On diminue la vie du joueur
+			life--;
+			//Puis on envoi un message
+			switch(alert){
+			//Ici on envoi le message selon le choix du joueur
+			}
+		}
+	}
 }
