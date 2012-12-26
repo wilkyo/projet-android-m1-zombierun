@@ -11,30 +11,24 @@ import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
 
-public class Marqueur extends ItemizedOverlay {
+public class MarqueursJoueurs extends ItemizedOverlay {
 
-	private ArrayList<OverlayItem> listeMarqueur = new ArrayList<OverlayItem>();
+	private ArrayList<Joueur> listeMarqueur = new ArrayList<Joueur>();
 	private Context mContext;
-	public Marqueur(Drawable arg0) {
+	public MarqueursJoueurs(Drawable arg0) {
 		super(boundCenterBottom(arg0));
 		// TODO Auto-generated constructor stub
 	}
 	
-	
-
-	public ArrayList<OverlayItem> getListeMarqueur() {
+	public ArrayList<Joueur> getListeMarqueur() {
 		return listeMarqueur;
 	}
 
-
-
-	public void setListeMarqueur(ArrayList<OverlayItem> listeMarqueur) {
+	public void setListeMarqueur(ArrayList<Joueur> listeMarqueur) {
 		this.listeMarqueur = listeMarqueur;
 	}
 
-
-
-	public Marqueur(Drawable defaultMarker, Context context) {
+	public MarqueursJoueurs(Drawable defaultMarker, Context context) {
 		  super(boundCenterBottom(defaultMarker));
 		  mContext = context;
 	}
@@ -48,7 +42,7 @@ public class Marqueur extends ItemizedOverlay {
 		return listeMarqueur.size();
 	}
 	
-	public void addMarqueur(OverlayItem item)
+	public void addMarqueur(Joueur item)
 	{
 		listeMarqueur.add(item);
 		populate();
@@ -63,5 +57,10 @@ public class Marqueur extends ItemizedOverlay {
 		dialog.setMessage(item.getSnippet());
 		dialog.show();
 		return true;
+	}
+	
+	public void clear()
+	{
+		listeMarqueur.clear();
 	}
 }
