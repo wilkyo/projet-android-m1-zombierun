@@ -58,7 +58,7 @@ public class Map extends MapActivity {
 			mc.setCenter(point);
 			if(master != null)
 			{
-				master = new GameMaster(location);
+				//master = new GameMaster(location);
 			}
 			itemizedoverlay.clear();
 			//itemizedoverlay.addMarqueur(overlayitem);

@@ -15,5 +15,11 @@
     <string name="alert1">Vibration</string>
     <string name="alert2">Son</string>
     <string name="alert3">Rien</string>
-
+    <string name="titlepart1">Advanced</string>
+    <string name="titlepart2">Zombie Run</string>
+    <string name="title_accueil">Advanced Zombie Run</string>
+    <string name="solo_game">Un joueur</string>
+    <string name="multi_game">Multijoueur</string>    
+    <string name="run_map">Lancer test map</string>
+	<string name="about">A propos</string>
 </resources>
