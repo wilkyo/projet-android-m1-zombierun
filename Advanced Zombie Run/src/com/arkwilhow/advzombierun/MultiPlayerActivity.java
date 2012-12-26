@@ -13,8 +13,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class MultiPlayerActivity extends Activity {
 
-	private int [] gamesIds;
-	
+	private int[] gamesIds;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,8 +32,11 @@ public class MultiPlayerActivity extends Activity {
 
 	private void refreshListView(ListView listView) {
 		// Bouchon TODO
-		gamesIds = new int[] {85, 123435};
-		String[] hostedGames = new String[] {"wilkyo", "HowiePowie"};
+		gamesIds = new int[] { 85, 123435 };
+		String[] hostedGames = new String[] { "wilkyo", "HowiePowie" };
+		for (int i = 0; i < hostedGames.length; i++) {
+			Log.d("refreshListView", hostedGames[i]);
+		}
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, android.R.id.text1,
 				hostedGames);
@@ -44,7 +47,10 @@ public class MultiPlayerActivity extends Activity {
 
 	protected void loadHostedGame(int id) {
 		Log.d("loadHostedGame", String.valueOf(id));
-		Intent intent = new Intent(this, Map.class); // Pas directement la Map, il faudra peut être une activité d'attente
+		Intent intent = new Intent(this, Map.class); // Pas directement la Map,
+														// il faudra peut être
+														// une activité
+														// d'attente
 		if (intent != null) {
 			// Affectations à faire ici si nécessaire TODO
 			this.startActivity(intent);
@@ -58,6 +64,10 @@ public class MultiPlayerActivity extends Activity {
 			// Définir qu'on est en multi TODO
 			this.startActivity(intent);
 		}
+	}
+
+	public void refresh(View v) {
+		refreshListView((ListView) findViewById(R.id.hostedGamesList));
 	}
 
 	public void onResume() {
