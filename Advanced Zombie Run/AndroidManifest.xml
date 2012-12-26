@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.arkwilhow.advzombierun"
     android:versionCode="1"
@@ -9,8 +10,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -19,7 +20,7 @@
         <uses-library android:name="com.google.android.maps" />
 
         <activity
-            android:name=".HomeActivity"
+            android:name="com.arkwilhow.advzombierun.HomeActivity"
             android:label="@string/title_activity_home" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,11 +28,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="Map" >
+        <activity android:name="com.arkwilhow.advzombierun.Map" >
         </activity>
         <activity
-            android:name=".PreferencesActivity"
+            android:name="com.arkwilhow.advzombierun.PreferencesActivity"
             android:label="@string/title_activity_preferences" >
+        </activity>
+        <activity
+            android:name="com.arkwilhow.advzombierun.MultiPlayerActivity"
+            android:label="@string/title_activity_multi_player" >
         </activity>
     </application>
 

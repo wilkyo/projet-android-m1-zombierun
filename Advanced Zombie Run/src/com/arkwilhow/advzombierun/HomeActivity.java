@@ -20,6 +20,12 @@ public class HomeActivity extends Activity {
 		return true;
 	}
 
+	public void openMulti(View v) {
+		Intent i = new Intent();
+		i.setClass(this, MultiPlayerActivity.class);
+		startActivity(i);
+	}
+	
 	public void openPreferences(View v) {
 		Intent i = new Intent();
 		i.setClass(this, PreferencesActivity.class);
