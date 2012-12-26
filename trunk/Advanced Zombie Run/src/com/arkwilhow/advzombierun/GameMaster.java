@@ -10,7 +10,7 @@ import android.location.Location;
 
 public class GameMaster {
 	private Location joueur;
-	private Marqueur zombies;
+	private MarqueursJoueurs zombies;
 	private int density;
 	private int speed;
 	private int life;
@@ -29,11 +29,11 @@ public class GameMaster {
 		this.joueur = joueur;
 	}
 
-	public Marqueur getZombies() {
+	public MarqueursJoueurs getZombies() {
 		return zombies;
 	}
 
-	public void setZombies(Marqueur zombies) {
+	public void setZombies(MarqueursJoueurs zombies) {
 		this.zombies = zombies;
 	}
 
@@ -97,9 +97,9 @@ public class GameMaster {
 	 * @return la nouvelle liste des marqueurs (i.e. les zombis après déplacement)
 	 */
 	//Gere les déplacements des zombis
-	public ArrayList<OverlayItem> deplacement(Marqueur m){
+	public ArrayList<OverlayItem> deplacement(MarqueursJoueurs m){
 		//On recupere la liste des zombis que contient un marqueur
-		ArrayList<OverlayItem> zombis = m.getListeMarqueur();
+		ArrayList<Joueur> zombis = m.getListeMarqueur();
 		ArrayList<OverlayItem> new_zombis = new ArrayList<OverlayItem>();
 		Location dest = new Location("");
 		int d = speed; 
