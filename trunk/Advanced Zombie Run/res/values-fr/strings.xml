@@ -3,7 +3,7 @@
     <string name="app_name">Advanced Zombie Run</string>
     <string name="hello_world">Salut tout le monde</string>
     <string name="menu_settings">Paramètres</string>
-    <string name="title_activity_home">Accueil</string>
+    <string name="title_activity_home">Advanced Zombie Run</string>
     <string name="title_activity_multi_player">Multi-Joueurs</string>
     <string name="host_game">Héberger la Partie</string>
     <string name="title_activity_preferences">Préférences</string>
