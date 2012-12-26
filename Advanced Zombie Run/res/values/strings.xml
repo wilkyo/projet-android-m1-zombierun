@@ -23,6 +23,7 @@
     <string name="multi_game">Multiplayer</string>    
     <string name="run_map">Launch test map</string>
 	<string name="about">About</string>
+	<string name="exit">Exit</string>
     
 
     <string-array name="densities_array">

@@ -22,4 +22,5 @@
     <string name="multi_game">Multijoueur</string>    
     <string name="run_map">Lancer test map</string>
 	<string name="about">A propos</string>
+	<string name="exit">Quitter</string>
 </resources>

@@ -32,6 +32,11 @@ public class HomeActivity extends Activity {
 		getMenuInflater().inflate(R.menu.activity_home, menu);
 		return true;
 	}
+	
+	public void quitter(View v){
+		super.finish();
+		System.exit(0);
+	}
 
 	public void openMulti(View v) {
 		Intent i = new Intent();
