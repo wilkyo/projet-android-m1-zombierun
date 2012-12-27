@@ -2,19 +2,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/accueil"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/density"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="@string/density"
+        android:textColor="#8A0808"
+        android:textSize="18sp"
         tools:context=".PreferencesActivity" />
 
     <Spinner
         android:id="@+id/spinner_density"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:entries="@array/densities_array"
         android:prompt="@string/density" />
 
@@ -23,12 +28,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/speed"
+        android:textColor="#8A0808"
+        android:textSize="18sp"
         tools:context=".PreferencesActivity" />
 
     <Spinner
         android:id="@+id/spinner_speed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:entries="@array/speeds_array"
         android:prompt="@string/speed" />
 
@@ -37,6 +45,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/timer"
+        android:textColor="#8A0808"
+        android:textSize="18sp"
         tools:context=".PreferencesActivity" />
 
     <TextView
@@ -44,12 +54,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/life"
+        android:textColor="#8A0808"
+        android:textSize="18sp"
         tools:context=".PreferencesActivity" />
 
     <Spinner
         android:id="@+id/spinner_life"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:entries="@array/lifes_array"
         android:prompt="@string/life" />
 
@@ -58,6 +71,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/alert"
+        android:textColor="#8A0808"
+        android:textSize="18sp"
         tools:context=".PreferencesActivity" />
 
     <RadioGroup
@@ -71,19 +86,47 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/alert1" />
+            android:text="@string/alert1"
+            android:textColor="#8A0808" />
 
         <RadioButton
             android:id="@+id/alertChoice2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/alert2" />
+            android:text="@string/alert2"
+            android:textColor="#8A0808" />
 
         <RadioButton
             android:id="@+id/alertChoice3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/alert3" />
+            android:layout_marginBottom="10dp"
+            android:text="@string/alert3"
+            android:textColor="#8A0808" />
+
     </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="144dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.18"
+            android:onClick="previous"
+            android:text="@string/return_menu"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.69"
+            android:text="@string/run_game"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
 </LinearLayout>

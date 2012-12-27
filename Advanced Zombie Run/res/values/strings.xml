@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Advanced Zombie Run</string>
     <string name="hello_world">Hello World !</string>
     <string name="menu_settings">Settings</string>
@@ -20,11 +21,13 @@
     <string name="titlepart2">Zombie Run</string>
     <string name="title_accueil">Advanced Zombie Run</string>
     <string name="solo_game">Singleplayer</string>
-    <string name="multi_game">Multiplayer</string>    
+    <string name="multi_game">Multiplayer</string>
     <string name="run_map">Launch test map</string>
-	<string name="about">About</string>
-	<string name="exit">Exit</string>
-    
+    <string name="about">About</string>
+    <string name="exit">Exit</string>
+    <string name="return_menu">Previous</string>
+    <string name="run_game">Start the game</string>
+    <string name="title_activity_about">About activity</string>
 
     <string-array name="densities_array">
         <item>Low</item>
@@ -46,4 +49,5 @@
         <item>One Hundred</item>
         <item>Over nine thousand</item>
     </string-array>
+
 </resources>

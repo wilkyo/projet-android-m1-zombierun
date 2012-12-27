@@ -18,8 +18,8 @@
             android:layout_marginTop="20dp"
             android:text="@string/title_accueil"
             android:textColor="#8A0808"
-            android:textSize="55sp" />
-        
+            android:textSize="60sp" />
+
         <TextView
             android:id="@+id/titlepart2"
             android:layout_width="wrap_content"
@@ -31,36 +31,48 @@
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:minHeight="52dp"
+            android:minWidth="220dp"
             android:onClick="openPreferences"
-            android:text="@string/solo_game" />
+            android:text="@string/solo_game"
+            android:textSize="19sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/multi_game" 
-            android:onClick="openMulti"/>
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="run"
-            android:text="@string/run_map" />
+            android:layout_marginBottom="15dp"
+            android:minHeight="52dp"
+            android:minWidth="220dp"
+            android:onClick="openMulti"
+            android:text="@string/multi_game"
+            android:textSize="19sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/button4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/about" />
-        
-         <Button
+            android:layout_marginBottom="15dp"
+            android:minHeight="52dp"
+            android:minWidth="220dp"
+            android:text="@string/about"
+            android:textSize="19sp"
+            android:textStyle="bold" 
+            android:onClick="openAbout"/>
+
+        <Button
             android:id="@+id/button5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minHeight="52dp"
+            android:minWidth="220dp"
+            android:onClick="quitter"
             android:text="@string/exit"
-            android:onClick="quitter" />
-         
+            android:textSize="19sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </ScrollView>

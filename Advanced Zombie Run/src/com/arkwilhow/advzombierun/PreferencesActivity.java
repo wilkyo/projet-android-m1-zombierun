@@ -2,6 +2,7 @@ package com.arkwilhow.advzombierun;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.View;
@@ -97,5 +98,11 @@ public class PreferencesActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_preferences, menu);
 		return true;
+	}
+	
+	public void previous(View v) {
+		Intent i = new Intent();
+		i.setClass(this, HomeActivity.class);
+		startActivity(i);
 	}
 }
