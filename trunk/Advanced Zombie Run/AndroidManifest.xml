@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="16" />
+        android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
+        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
@@ -37,6 +38,10 @@
         <activity
             android:name="com.arkwilhow.advzombierun.MultiPlayerActivity"
             android:label="@string/title_activity_multi_player" >
+        </activity>
+        <activity
+            android:name="com.arkwilhow.advzombierun.AboutActivity"
+            android:label="@string/title_activity_about" >
         </activity>
     </application>
 

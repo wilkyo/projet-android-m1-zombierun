@@ -1,0 +1,139 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/accueil"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/density"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/density"
+            android:textColor="#8A0808"
+            android:textSize="18sp"
+            tools:context=".PreferencesActivity" />
+
+        <Spinner
+            android:id="@+id/spinner_density"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:entries="@array/densities_array"
+            android:prompt="@string/density" />
+
+        <TextView
+            android:id="@+id/speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/speed"
+            android:textColor="#8A0808"
+            android:textSize="18sp"
+            tools:context=".PreferencesActivity" />
+
+        <Spinner
+            android:id="@+id/spinner_speed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:entries="@array/speeds_array"
+            android:prompt="@string/speed" />
+
+        <TextView
+            android:id="@+id/timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/timer"
+            android:textColor="#8A0808"
+            android:textSize="18sp"
+            tools:context=".PreferencesActivity" />
+
+        <TextView
+            android:id="@+id/life"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/life"
+            android:textColor="#8A0808"
+            android:textSize="18sp"
+            tools:context=".PreferencesActivity" />
+
+        <Spinner
+            android:id="@+id/spinner_life"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:entries="@array/lifes_array"
+            android:prompt="@string/life" />
+
+        <TextView
+            android:id="@+id/alert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/alert"
+            android:textColor="#8A0808"
+            android:textSize="18sp"
+            tools:context=".PreferencesActivity" />
+
+        <RadioGroup
+            android:id="@+id/alertChoices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/alertChoice1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/alert1"
+                android:textColor="#8A0808" />
+
+            <RadioButton
+                android:id="@+id/alertChoice2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/alert2"
+                android:textColor="#8A0808" />
+
+            <RadioButton
+                android:id="@+id/alertChoice3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:text="@string/alert3"
+                android:textColor="#8A0808" />
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="150dp"
+                android:onClick="previous"
+                android:text="@string/return_menu"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="150dp"
+                android:text="@string/run_game"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

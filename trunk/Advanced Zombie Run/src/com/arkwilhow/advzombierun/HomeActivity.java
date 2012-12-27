@@ -21,9 +21,6 @@ public class HomeActivity extends Activity {
 		TextView textViewTron2 = (TextView) findViewById(R.id.titlepart2);
 		Typeface fontTron2 = Typeface.createFromAsset(getAssets(), "coldnightforalligators.ttf");
 		textViewTron2.setTypeface(fontTron2);
-		/*TextView textViewTron3 = (TextView) findViewById(R.id.titleaccueil);
-		Typeface fontTron3 = Typeface.createFromAsset(getAssets(), "coldnightforalligators.ttf");
-		textViewTron3.setTypeface(fontTron3);*/
 
 	}
 
@@ -47,6 +44,12 @@ public class HomeActivity extends Activity {
 	public void openPreferences(View v) {
 		Intent i = new Intent();
 		i.setClass(this, PreferencesActivity.class);
+		startActivity(i);
+	}
+	
+	public void openAbout(View v) {
+		Intent i = new Intent();
+		i.setClass(this, AboutActivity.class);
 		startActivity(i);
 	}
 

@@ -19,8 +19,13 @@
     <string name="titlepart2">Zombie Run</string>
     <string name="title_accueil">Advanced Zombie Run</string>
     <string name="solo_game">Un joueur</string>
-    <string name="multi_game">Multijoueur</string>    
+    <string name="multi_game">Multijoueur</string>
     <string name="run_map">Lancer test map</string>
-	<string name="about">A propos</string>
-	<string name="exit">Quitter</string>
+    <string name="about">A propos</string>
+    <string name="exit">Quitter</string>
+    <string name="return_menu">Précedent</string>
+    <string name="run_game">Lancer la partie</string>
+    <string name="title_activity_about">A propos</string>
+    <string name="about_message">Projet 2012_2013 Développement d\'applications nomade réalisé par Tom BESSON, Willy FRANCOIS, Jean-Baptiste PERRIN et Joris RUBAGOTTI</string>
+
 </resources>
