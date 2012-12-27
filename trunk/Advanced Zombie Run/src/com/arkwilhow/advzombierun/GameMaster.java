@@ -151,13 +151,12 @@ public class GameMaster {
 	 * @return la nouvelle liste des marqueurs (i.e. les zombis après déplacement)
 	 */
 	//Gere les déplacements des zombis
-	public void deplacement(){
+	public void deplacement(Location joueur){
 		//On recupere la liste des zombis que contient un marqueur
 		ArrayList<Zombie> zombis = zombies.getListeMarqueur();
 		ArrayList<Zombie> new_zombis = new ArrayList<Zombie>();
 		Location dest = new Location("");
 		Location lo = new Location("");
-		Location joueur = new Location("");
 		int d = speed;
 		//Si speed est exprime en m/s et qu'on a un refresh de la carte toutes les secondes
 		//Alors la distane parcourue est égale a speed
@@ -216,6 +215,7 @@ public class GameMaster {
 		double degToRadFactor = Math.PI / 180;
 		return degrees * degToRadFactor;
 	}
+
 
 	/**
 	 * Modifie la liste en parametre en recreant des zombis près du joueur lorsque ceux-ci sont trop loin
