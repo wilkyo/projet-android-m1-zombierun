@@ -10,8 +10,10 @@ import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
@@ -24,7 +26,6 @@ import android.provider.Settings;
  * @author ”Jean-Baptiste Perrin”
  *
  */
-
 public class Map extends MapActivity {
 	private MapView map;
 	private MapController mc;
@@ -32,21 +33,14 @@ public class Map extends MapActivity {
 	private MarqueursJoueurs itemizedoverlay;
 	private List<Overlay> mapOverlays;
 	private GameMaster master = null;
-	private final LocationListener listener = new LocationListener() {
+	private final LocationListener listener = new LocationListener(){
+		
+		public void onStatusChanged(String provider, int status, Bundle extras) {}
 
-		public void onStatusChanged(String provider, int status, Bundle extras) {
-			// TODO Auto-generated method stub
-
-		}
-
-		public void onProviderEnabled(String provider) {
-			// TODO Auto-generated method stub
-
-		}
+		public void onProviderEnabled(String provider) {}
 
 		public void onProviderDisabled(String provider) {
-			// TODO Auto-generated method stub
-
+			checkGPS();
 		}
 
 		/**
@@ -54,17 +48,22 @@ public class Map extends MapActivity {
 		 */
 		public void onLocationChanged(Location location) {
 			GeoPoint point = new GeoPoint((int)(location.getLatitude() * 1e6), (int)(location.getLongitude() * 1e6));
-			OverlayItem overlayitem = new OverlayItem(point, "ma localistion", "Vous êtes la");
 			mc.setCenter(point);
-			if(master != null)
+			if(master == null)
 			{
-				//master = new GameMaster(location);
+				SharedPreferences pref = getPreferences(MODE_PRIVATE);
+				MarqueursJoueurs joue = new MarqueursJoueurs(getResources().getDrawable(R.drawable.androidmarker));
+				joue.addMarqueur(new Joueur(point, "joueur", "Je suis le joueur"));
+				master = new GameMaster(joue, new MarqueursZombies(getResources().getDrawable(R.drawable.androidmarker)), pref.getInt("density",0), pref.getInt("speed",0), pref.getInt("life",0), pref.getInt("alert", R.id.alertChoice1), null);
+				master.liste_zombis();
 			}
-			itemizedoverlay.clear();
-			//itemizedoverlay.addMarqueur(overlayitem);
-			mapOverlays.add(itemizedoverlay);
-			mapOverlays.add(master.getZombies());
+			else
+			{
+				master.deplacement(location);
+			}
 			mapOverlays.clear();
+			mapOverlays.add(master.getJoueurs());
+			mapOverlays.add(master.getZombies());
 		}
 	};
 
@@ -82,17 +81,15 @@ public class Map extends MapActivity {
 		mc.setCenter(point);
 
 		mapOverlays = map.getOverlays();
-		
+
 		Drawable drawable = this.getResources().getDrawable(R.drawable.androidmarker);
 		itemizedoverlay = new MarqueursJoueurs(drawable, this);
-
-		//	    mapOverlays.add(itemizedoverlay);
+		SharedPreferences pref = getPreferences(MODE_PRIVATE);
 
 	}
 
 	@Override
 	protected boolean isRouteDisplayed() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -103,21 +100,24 @@ public class Map extends MapActivity {
 
 	@Override
 	protected void onPause() {
-		// TODO Auto-generated method stub
 		super.onPause();
 		locManager.removeUpdates(listener);
 	}
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 	}
 
 	@Override
 	protected void onStart() {
-		// TODO Auto-generated method stub
 		super.onStart();
+		checkGPS();
+		locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10, listener);
+	}
+
+	public void checkGPS()
+	{
 		final boolean gpsEnabled = locManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 		if(!gpsEnabled)
 		{
@@ -131,8 +131,8 @@ public class Map extends MapActivity {
 				}
 			});
 			dialog.show();
-			locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10, listener);
-
 		}
+		if(master != null)
+			master.setContext(this);
 	}
 }
