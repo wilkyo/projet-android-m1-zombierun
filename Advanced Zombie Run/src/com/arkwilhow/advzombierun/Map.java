@@ -20,6 +20,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 
 /**
  * Activité pour l'affichage de la map
@@ -33,6 +34,7 @@ public class Map extends MapActivity {
 	private MarqueursJoueurs itemizedoverlay;
 	private List<Overlay> mapOverlays;
 	private GameMaster master = null;
+	private final static String TAG = "Map";
 	private final LocationListener listener = new LocationListener(){
 		
 		public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -85,7 +87,7 @@ public class Map extends MapActivity {
 		Drawable drawable = this.getResources().getDrawable(R.drawable.androidmarker);
 		itemizedoverlay = new MarqueursJoueurs(drawable, this);
 		SharedPreferences pref = getPreferences(MODE_PRIVATE);
-
+		locManager = (LocationManager)getSystemService(LOCATION_SERVICE);
 	}
 
 	@Override

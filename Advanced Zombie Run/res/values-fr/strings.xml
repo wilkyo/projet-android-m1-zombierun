@@ -28,4 +28,26 @@
     <string name="title_activity_about">A propos</string>
     <string name="about_message">Projet 2012_2013 Développement d\'applications nomade réalisé par Tom BESSON, Willy FRANCOIS, Jean-Baptiste PERRIN et Joris RUBAGOTTI</string>
 
+	
+	<string-array name="densities_array">
+        <item>Basse</item>
+        <item>Moyenne</item>
+        <item>Haute</item>
+        <item>Extrèmement haute</item>
+    </string-array>
+    <string-array name="speeds_array">
+        <item>Lent</item>
+        <item>Moyen</item>
+        <item>Rapide</item>
+        <item>Très Rapide</item>
+    </string-array>
+    <string-array name="lifes_array">
+        <item>Juste one</item>
+        <item>Trois vies</item>
+        <item>Dix vies</item>
+        <item>42</item>
+        <item>100</item>
+        <item>Over nine thousand</item>
+    </string-array>
+    <string name="refresh">Rafraichir</string>
 </resources>
