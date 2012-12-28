@@ -1,11 +1,16 @@
 <resources>
 
+    <!-- String other -->
     <string name="app_name">Advanced Zombie Run</string>
     <string name="hello_world">Salut tout le monde</string>
     <string name="menu_settings">Paramètres</string>
-    <string name="title_activity_home">Advanced Zombie Run</string>
+
+    <!-- String activity_multi_player -->
     <string name="title_activity_multi_player">Multi-Joueurs</string>
+    <string name="refresh">Rafraichir</string>
     <string name="host_game">Héberger la Partie</string>
+
+    <!-- String activity_preferences -->
     <string name="title_activity_preferences">Préférences</string>
     <string name="density">Densité de la population</string>
     <string name="speed">Vitesse des zombies</string>
@@ -15,6 +20,11 @@
     <string name="alert1">Vibration</string>
     <string name="alert2">Son</string>
     <string name="alert3">Rien</string>
+    <string name="return_menu">Précedent</string>
+    <string name="run_game">Lancer la partie</string>
+
+    <!-- String activity_home -->
+    <string name="title_activity_home">Advanced Zombie Run</string>
     <string name="titlepart1">Advanced</string>
     <string name="titlepart2">Zombie Run</string>
     <string name="title_accueil">Advanced Zombie Run</string>
@@ -23,13 +33,19 @@
     <string name="run_map">Lancer test map</string>
     <string name="about">A propos</string>
     <string name="exit">Quitter</string>
-    <string name="return_menu">Précedent</string>
-    <string name="run_game">Lancer la partie</string>
-    <string name="title_activity_about">A propos</string>
-    <string name="about_message">Projet 2012_2013 Développement d\'applications nomade réalisé par Tom BESSON, Willy FRANCOIS, Jean-Baptiste PERRIN et Joris RUBAGOTTI</string>
 
-	
-	<string-array name="densities_array">
+    <!-- String activity_about -->
+    <string name="title_activity_about">A propos</string>
+    <string name="projet">Projet 2012&#8211;2013</string>
+    <string name="developper">Développement</string>
+    <string name="nomade">d\'application nomade</string>
+    <string name="make">Réalisé par</string>
+    <string name="besson">Tom BESSON</string>
+    <string name="francois">Willy FRANCOIS</string>
+    <string name="perrin">Jean-Baptiste PERRIN</string>
+    <string name="rubagotti">Joris RUBAGOTTI</string>
+
+    <string-array name="densities_array">
         <item>Basse</item>
         <item>Moyenne</item>
         <item>Haute</item>
@@ -49,5 +65,5 @@
         <item>100</item>
         <item>Over nine thousand</item>
     </string-array>
-    <string name="refresh">Rafraichir</string>
+
 </resources>
