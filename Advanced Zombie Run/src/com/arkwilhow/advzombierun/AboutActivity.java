@@ -16,6 +16,7 @@ public class AboutActivity extends Activity {
 		Intent i = new Intent();
 		i.setClass(this, HomeActivity.class);
 		startActivity(i);
+		super.finish();
 	}
 
 	public void run(View v) {

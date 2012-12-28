@@ -104,5 +104,6 @@ public class PreferencesActivity extends Activity {
 		Intent i = new Intent();
 		i.setClass(this, HomeActivity.class);
 		startActivity(i);
+		super.finish();
 	}
 }
