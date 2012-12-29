@@ -2,7 +2,6 @@ package com.arkwilhow.advzombierun;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.View;
@@ -101,9 +100,6 @@ public class PreferencesActivity extends Activity {
 	}
 	
 	public void previous(View v) {
-		Intent i = new Intent();
-		i.setClass(this, HomeActivity.class);
-		startActivity(i);
-		super.finish();
+		finish();
 	}
 }

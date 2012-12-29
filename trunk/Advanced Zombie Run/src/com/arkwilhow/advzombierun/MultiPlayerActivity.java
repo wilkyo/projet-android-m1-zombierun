@@ -3,13 +3,16 @@ package com.arkwilhow.advzombierun;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 
 public class MultiPlayerActivity extends Activity {
 
@@ -39,7 +42,21 @@ public class MultiPlayerActivity extends Activity {
 		}
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, android.R.id.text1,
-				hostedGames);
+				hostedGames) {
+			public View getView(int position, View convertView, ViewGroup parent) {
+				View view = super.getView(position, convertView, parent);
+
+				/* Change le style du textView ayant pour id text1 */
+				TextView textView = (TextView) view
+						.findViewById(android.R.id.text1);
+
+				textView.setTextColor(Color.parseColor("#8A0808"));
+				textView.setBackgroundColor(Color.parseColor("#424242"));
+				textView.setTextSize(20);
+
+				return view;
+			}
+		};
 
 		// Assign adapter to ListView
 		listView.setAdapter(adapter);
@@ -80,6 +97,10 @@ public class MultiPlayerActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_multi_player, menu);
 		return true;
+	}
+
+	public void previous(View v) {
+		finish();
 	}
 
 }

@@ -1,70 +1,70 @@
-      <LinearLayout xmlns:tools="http://schemas.android.com/tools"
-       xmlns:android="http://schemas.android.com/apk/res/android"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:background="@drawable/accueil"
-       android:gravity="center|top"
-       android:orientation="vertical" >
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/accueil"
+    android:gravity="center|top"
+    android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/titlepart1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:text="@string/titlepart1"
-            android:textColor="#8A0808"
-            android:textSize="60sp" />
+    <TextView
+        android:id="@+id/titlepart1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="@string/titlepart1"
+        android:textColor="#8A0808"
+        android:textSize="60sp" />
 
-        <TextView
-            android:id="@+id/titlepart2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="@string/titlepart2"
-            android:textColor="#8A0808"
-            android:textSize="60sp" />
+    <TextView
+        android:id="@+id/titlepart2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="@string/titlepart2"
+        android:textColor="#8A0808"
+        android:textSize="60sp" />
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:minWidth="170dp"
-            android:onClick="openPreferences"
-            android:text="@string/solo_game"
-            android:textSize="19sp"
-            android:textStyle="bold" />
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:minWidth="170dp"
+        android:onClick="openPreferences"
+        android:text="@string/solo_game"
+        android:textSize="19sp"
+        android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:minWidth="170dp"
-            android:onClick="openMulti"
-            android:text="@string/multi_game"
-            android:textSize="19sp"
-            android:textStyle="bold" />
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:minWidth="170dp"
+        android:onClick="openMulti"
+        android:text="@string/multi_game"
+        android:textSize="19sp"
+        android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:minWidth="170dp"
-            android:text="@string/about"
-            android:textSize="19sp"
-            android:textStyle="bold"
-            android:onClick="openAbout" />
-        
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="170dp"
-            android:onClick="quitter"
-            android:text="@string/exit"
-            android:textSize="19sp"
-            android:textStyle="bold" />
-        
-    </LinearLayout>
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:minWidth="170dp"
+        android:onClick="openAbout"
+        android:text="@string/about"
+        android:textSize="19sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="170dp"
+        android:onClick="quitter"
+        android:text="@string/exit"
+        android:textSize="19sp"
+        android:textStyle="bold" />
+
+</LinearLayout>
