@@ -13,10 +13,7 @@ public class AboutActivity extends Activity {
 	}
 
 	public void previous(View v) {
-		Intent i = new Intent();
-		i.setClass(this, HomeActivity.class);
-		startActivity(i);
-		super.finish();
+		finish();
 	}
 
 	public void run(View v) {
