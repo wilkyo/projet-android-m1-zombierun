@@ -149,8 +149,9 @@ public class GameMaster {
 	 *         déplacement)
 	 */
 	// Gere les déplacements des zombis
-	public void deplacement(Location joueur) {
-		updatePositionJoueurs(new Location[] { joueur });
+	public void deplacement(Location[] positions) {
+		updatePositionJoueurs(positions);
+		Location joueur = positions[0]; // Les zombies cherchent le VIP
 
 		// On recupere la liste des zombis que contient un marqueur
 		ArrayList<Zombie> zombis = zombies.getListeMarqueur();
