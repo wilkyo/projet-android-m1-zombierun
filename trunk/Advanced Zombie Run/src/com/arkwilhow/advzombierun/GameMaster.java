@@ -3,10 +3,7 @@ package com.arkwilhow.advzombierun;
 import java.util.ArrayList;
 
 import com.google.android.maps.GeoPoint;
-import com.google.android.maps.OverlayItem;
-
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Vibrator;
 
@@ -98,9 +95,9 @@ public class GameMaster {
 	 * autour de la location en parametre 
 	 * Il faura sans doute modifier cette fonction de sorte que les zombis ne puissent pas apparaitre
 	 * trop pres du joueur
-	 * @param location
-	 * @param prer
-	 * @return 
+	 * @param location la position du joueur
+	 * @param prer la distance
+	 * @return le zombie ainsi crée
 	 */
 	public Zombie creer_zombi(int prer,Joueur joueur){
 		//Un degre = 111 300 metres
@@ -166,7 +163,7 @@ public class GameMaster {
 		double radiusTerreMetres = 6371010;
 		double distRatio = d / radiusTerreMetres;
 		GeoPoint g;
-		OverlayItem ov;
+//		OverlayItem ov;
 		for(Zombie z : zombis){
 			/*
 			 *Deplacement du zombi en direction du joueur en fonction de l'attribut speed
@@ -219,8 +216,6 @@ public class GameMaster {
 
 	/**
 	 * Modifie la liste en parametre en recreant des zombis près du joueur lorsque ceux-ci sont trop loin
-	 * @param zombis
-	 * @return
 	 */
 	public void verifie_zombis(){
 		ArrayList<Zombie> zombis = zombies.getListeMarqueur();
