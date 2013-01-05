@@ -1,4 +1,4 @@
-package com.arkwilhow.advzombierun;
+package com.arkwilhow.metiers;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.OverlayItem;
 

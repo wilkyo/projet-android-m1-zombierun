@@ -2,6 +2,10 @@ package com.arkwilhow.advzombierun;
 
 import java.util.ArrayList;
 
+import com.arkwilhow.metiers.Joueur;
+import com.arkwilhow.metiers.MarqueursJoueurs;
+import com.arkwilhow.metiers.MarqueursZombies;
+import com.arkwilhow.metiers.Zombie;
 import com.google.android.maps.GeoPoint;
 import android.content.Context;
 import android.location.Location;
