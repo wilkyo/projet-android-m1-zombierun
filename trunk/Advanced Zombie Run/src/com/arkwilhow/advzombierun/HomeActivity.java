@@ -14,12 +14,14 @@ public class HomeActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-	
+
 		TextView textViewTron = (TextView) findViewById(R.id.titlepart1);
-		Typeface fontTron = Typeface.createFromAsset(getAssets(), "coldnightforalligators.ttf");
+		Typeface fontTron = Typeface.createFromAsset(getAssets(),
+				"coldnightforalligators.ttf");
 		textViewTron.setTypeface(fontTron);
 		TextView textViewTron2 = (TextView) findViewById(R.id.titlepart2);
-		Typeface fontTron2 = Typeface.createFromAsset(getAssets(), "coldnightforalligators.ttf");
+		Typeface fontTron2 = Typeface.createFromAsset(getAssets(),
+				"coldnightforalligators.ttf");
 		textViewTron2.setTypeface(fontTron2);
 
 	}
@@ -29,33 +31,29 @@ public class HomeActivity extends Activity {
 		getMenuInflater().inflate(R.menu.activity_home, menu);
 		return true;
 	}
-	
-	public void quitter(View v){
+
+	public void quitter(View v) {
 		super.finish();
 		System.exit(0);
 	}
 
 	public void openMulti(View v) {
+		PreferencesActivity.setMulti(true);
 		Intent i = new Intent();
 		i.setClass(this, MultiPlayerActivity.class);
 		startActivity(i);
 	}
-	
+
 	public void openPreferences(View v) {
+		PreferencesActivity.setMulti(false);
 		Intent i = new Intent();
 		i.setClass(this, PreferencesActivity.class);
 		startActivity(i);
 	}
-	
+
 	public void openAbout(View v) {
 		Intent i = new Intent();
 		i.setClass(this, AboutActivity.class);
-		startActivity(i);
-	}
-
-	public void run(View v) {
-		Intent i = new Intent();
-		i.setClass(this, Map.class);
 		startActivity(i);
 	}
 }
