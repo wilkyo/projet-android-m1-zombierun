@@ -9,6 +9,12 @@ import android.graphics.drawable.Drawable;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 
+/**
+ * Classe gérant la liste des zombies
+ * @author ”Jean-Baptiste Perrin”
+ *
+ */
+@SuppressWarnings("rawtypes")
 public class MarqueursZombies extends ItemizedOverlay {
 
 	private ArrayList<Zombie> listeMarqueur = new ArrayList<Zombie>();
