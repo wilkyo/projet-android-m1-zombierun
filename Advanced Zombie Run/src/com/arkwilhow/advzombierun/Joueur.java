@@ -5,22 +5,22 @@ import com.google.android.maps.OverlayItem;
 
 /**
  * Classe représentant la position d'un joueur joueur
- * @author ”Jean-Baptiste Perrin”
- *
+ * 
  */
 public class Joueur extends OverlayItem {
 
 	/**
 	 * Crée un marqueur joueur
-	 * @param arg0 la position du joueur
-	 * @param arg1 le titre
-	 * @param arg2 le texte du marqueur
+	 * 
+	 * @param point
+	 *            la position du joueur
+	 * @param title
+	 *            le titre
+	 * @param snippet
+	 *            le texte du marqueur
 	 */
-	public Joueur(GeoPoint arg0, String arg1, String arg2) {
-		super(arg0, arg1, arg2);
-		// TODO Auto-generated constructor stub
+	public Joueur(GeoPoint point, String title, String snippet) {
+		super(point, title, snippet);
 	}
-	
-	
-	
+
 }
