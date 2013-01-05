@@ -1,5 +1,6 @@
 package com.arkwilhow.advzombierun;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.android.maps.GeoPoint;
@@ -28,10 +29,12 @@ public class Map extends MapActivity {
 	private MapView map;
 	private MapController mc;
 	private LocationManager locManager;
-	@SuppressWarnings("unused")
 	private MarqueursJoueurs itemizedoverlay;
 	private List<Overlay> mapOverlays;
 	private GameMaster master = null;
+
+	private ArrayList<Location> positionsRecuperees;
+
 	// private final static String TAG = "Map";
 	private final LocationListener listener = new LocationListener() {
 
@@ -43,6 +46,14 @@ public class Map extends MapActivity {
 
 		public void onProviderDisabled(String provider) {
 			checkGPS();
+		}
+
+		private Location[] getPositionsJoueurs() {
+			Location[] positions = new Location[itemizedoverlay.size()];
+			for (int i = 0; i < positions.length; i++) {
+				positions[i] = positionsRecuperees.get(i);
+			}
+			return positions;
 		}
 
 		/**
@@ -65,7 +76,8 @@ public class Map extends MapActivity {
 								R.id.alertChoice1), null);
 				master.liste_zombis();
 			} else {
-				master.deplacement(location);
+				positionsRecuperees.set(0, location);
+				master.deplacement(getPositionsJoueurs());
 			}
 			mapOverlays.clear();
 			mapOverlays.add(master.getJoueurs());
@@ -73,7 +85,7 @@ public class Map extends MapActivity {
 		}
 	};
 
-	//cree l'application et paramêtre l'apparences de la map
+	// cree l'application et paramêtre l'apparences de la map
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -93,10 +105,16 @@ public class Map extends MapActivity {
 		Drawable drawable = this.getResources().getDrawable(
 				R.drawable.androidmarker);
 		itemizedoverlay = new MarqueursJoueurs(drawable, this);
+		positionsRecuperees = new ArrayList<Location>();
+		for (int i = 0; i < itemizedoverlay.size(); i++) {
+			positionsRecuperees.add(i, null);
+		}
 		locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.google.android.maps.MapActivity#isRouteDisplayed()
 	 */
 	@Override
@@ -113,7 +131,7 @@ public class Map extends MapActivity {
 		startActivity(settingsIntent);
 	}
 
-	//on se délie du listener
+	// on se délie du listener
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -125,7 +143,7 @@ public class Map extends MapActivity {
 		super.onResume();
 	}
 
-	//appeler au demarrage de l'application
+	// appeler au demarrage de l'application
 	@Override
 	protected void onStart() {
 		super.onStart();
