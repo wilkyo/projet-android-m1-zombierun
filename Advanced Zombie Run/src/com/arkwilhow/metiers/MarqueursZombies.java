@@ -1,4 +1,4 @@
-package com.arkwilhow.advzombierun;
+package com.arkwilhow.metiers;
 
 import java.util.ArrayList;
 
@@ -9,31 +9,30 @@ import android.graphics.drawable.Drawable;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 
-@SuppressWarnings("rawtypes")
 /**
- * Classe gérant la liste des joueurs
+ * Classe gérant la liste des zombies
  * @author ”Jean-Baptiste Perrin”
  *
  */
-public class MarqueursJoueurs extends ItemizedOverlay {
+@SuppressWarnings("rawtypes")
+public class MarqueursZombies extends ItemizedOverlay {
 
-	private ArrayList<Joueur> listeMarqueur = new ArrayList<Joueur>();
+	private ArrayList<Zombie> listeMarqueur = new ArrayList<Zombie>();
 	private Context mContext;
-	
-	public MarqueursJoueurs(Drawable arg0) {
+	public MarqueursZombies(Drawable arg0) {
 		super(boundCenterBottom(arg0));
 		// TODO Auto-generated constructor stub
 	}
 	
-	public ArrayList<Joueur> getListeMarqueur() {
+	public ArrayList<Zombie> getListeMarqueur() {
 		return listeMarqueur;
 	}
 
-	public void setListeMarqueur(ArrayList<Joueur> listeMarqueur) {
+	public void setListeMarqueur(ArrayList<Zombie> listeMarqueur) {
 		this.listeMarqueur = listeMarqueur;
 	}
 
-	public MarqueursJoueurs(Drawable defaultMarker, Context context) {
+	public MarqueursZombies(Drawable defaultMarker, Context context) {
 		  super(boundCenterBottom(defaultMarker));
 		  mContext = context;
 	}
@@ -47,7 +46,7 @@ public class MarqueursJoueurs extends ItemizedOverlay {
 		return listeMarqueur.size();
 	}
 	
-	public void addMarqueur(Joueur item)
+	public void addMarqueur(Zombie item)
 	{
 		listeMarqueur.add(item);
 		populate();
