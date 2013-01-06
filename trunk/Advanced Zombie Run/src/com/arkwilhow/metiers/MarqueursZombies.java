@@ -5,25 +5,30 @@ import java.util.ArrayList;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.view.MotionEvent;
 
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
+import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
 
 /**
  * Classe gérant la liste des zombies
+ * 
  * @author ”Jean-Baptiste Perrin”
- *
+ * 
  */
 @SuppressWarnings("rawtypes")
 public class MarqueursZombies extends ItemizedOverlay {
 
 	private ArrayList<Zombie> listeMarqueur = new ArrayList<Zombie>();
 	private Context mContext;
+
 	public MarqueursZombies(Drawable arg0) {
 		super(boundCenterBottom(arg0));
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public ArrayList<Zombie> getListeMarqueur() {
 		return listeMarqueur;
 	}
@@ -33,9 +38,10 @@ public class MarqueursZombies extends ItemizedOverlay {
 	}
 
 	public MarqueursZombies(Drawable defaultMarker, Context context) {
-		  super(boundCenterBottom(defaultMarker));
-		  mContext = context;
+		super(boundCenterBottom(defaultMarker));
+		mContext = context;
 	}
+
 	@Override
 	protected OverlayItem createItem(int arg0) {
 		return listeMarqueur.get(arg0);
@@ -45,16 +51,26 @@ public class MarqueursZombies extends ItemizedOverlay {
 	public int size() {
 		return listeMarqueur.size();
 	}
-	
-	public void addMarqueur(Zombie item)
-	{
+
+	public void addMarqueur(Zombie item) {
 		listeMarqueur.add(item);
 		populate();
 	}
 
 	@Override
+	public boolean onTouchEvent(MotionEvent arg0, MapView arg1) {
+		//super.onTouchEvent(arg0, arg1);
+		return false;
+	}
+
+	@Override
+	public boolean onTap(GeoPoint arg0, MapView arg1) {
+		//super.onTap(arg0, arg1);
+		return false;
+	}
+	
+	@Override
 	protected boolean onTap(int arg0) {
-		// TODO Auto-generated method stub
 		OverlayItem item = listeMarqueur.get(arg0);
 		AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
 		dialog.setTitle(item.getTitle());
@@ -62,9 +78,8 @@ public class MarqueursZombies extends ItemizedOverlay {
 		dialog.show();
 		return true;
 	}
-	
-	public void clear()
-	{
+
+	public void clear() {
 		listeMarqueur.clear();
 	}
 }
