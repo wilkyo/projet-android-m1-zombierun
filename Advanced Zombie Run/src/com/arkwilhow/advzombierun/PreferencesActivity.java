@@ -106,7 +106,7 @@ public class PreferencesActivity extends Activity {
 	}
 
 	public void run(View v) {
-		if (this.multi) {
+		if (PreferencesActivity.multi) {
 			Toast.makeText(this, "Fonction non encore implémentée", Toast.LENGTH_LONG).show();
 		} else {
 			Intent i = new Intent();

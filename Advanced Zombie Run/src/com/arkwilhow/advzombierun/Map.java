@@ -21,6 +21,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.widget.Toast;
 
 /**
  * Activité pour l'affichage de la map
@@ -66,6 +67,8 @@ public class Map extends MapActivity {
 			GeoPoint point = new GeoPoint((int) (location.getLatitude() * 1e6),
 					(int) (location.getLongitude() * 1e6));
 			mc.setCenter(point);
+			Toast.makeText(Map.this, "onLocationChanged", Toast.LENGTH_LONG)
+					.show();
 			if (master == null) {
 				SharedPreferences pref = getPreferences(MODE_PRIVATE);
 				MarqueursJoueurs joue = new MarqueursJoueurs(getResources()
