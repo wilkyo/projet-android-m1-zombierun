@@ -59,16 +59,16 @@ public class MarqueursZombies extends ItemizedOverlay {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent arg0, MapView arg1) {
-		//super.onTouchEvent(arg0, arg1);
+		// super.onTouchEvent(arg0, arg1);
 		return false;
 	}
 
 	@Override
 	public boolean onTap(GeoPoint arg0, MapView arg1) {
-		//super.onTap(arg0, arg1);
+		// super.onTap(arg0, arg1);
 		return false;
 	}
-	
+
 	@Override
 	protected boolean onTap(int arg0) {
 		OverlayItem item = listeMarqueur.get(arg0);

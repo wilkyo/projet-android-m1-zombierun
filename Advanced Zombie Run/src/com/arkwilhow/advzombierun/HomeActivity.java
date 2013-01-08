@@ -48,6 +48,8 @@ public class HomeActivity extends Activity {
 		PreferencesActivity.setMulti(false);
 		Intent i = new Intent();
 		i.setClass(this, PreferencesActivity.class);
+		i.putExtra("multi", false);
+		i.putExtra("home", true);
 		startActivity(i);
 	}
 

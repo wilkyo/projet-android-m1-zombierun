@@ -10,7 +10,7 @@
     <!-- String activity_multi_player -->
     <string name="title_activity_multi_player">MultiPlayerActivity</string>
     <string name="refresh">Refresh</string>
-    <string name="host_game">Host the Game</string>
+    <string name="host_game">Create a game</string>
 
     <!-- String activity_preferences -->
     <string name="title_activity_preferences">Preferences</string>
@@ -27,6 +27,7 @@
     <string name="alert3">Nothing</string>
     <string name="return_menu">Previous</string>
     <string name="run_game">Start the game</string>
+    <string name="make_game">Create</string>
 
     <!-- String activity_home -->
     <string name="title_activity_home">Advanced Zombie Run</string>

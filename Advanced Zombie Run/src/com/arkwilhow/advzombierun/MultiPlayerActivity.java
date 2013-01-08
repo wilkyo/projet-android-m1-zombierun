@@ -2,9 +2,7 @@ package com.arkwilhow.advzombierun;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.arkwilhow.serveur.Host;
-
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
@@ -36,10 +34,12 @@ public class MultiPlayerActivity extends Activity {
 	WifiReceiver receiverWifi;
 	List<ScanResult> wifiList;
 	String sb;
-	ArrayList<String> hostedGames =  new ArrayList<String>();
+	ArrayList<String> hostedGames = new ArrayList<String>();
 	Host test;
 	ListView listView;
 	int nid = 0;
+	boolean firstpass = false;
+	ArrayAdapter<String> adapter;
 	private static final String PREFIXE_MULTI = "AZR-";
 
 	@Override
@@ -54,18 +54,26 @@ public class MultiPlayerActivity extends Activity {
 		registerReceiver(receiverWifi, new IntentFilter(
 				WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 
-		/*
-		 * listView.setOnItemClickListener(new OnItemClickListener() { public
-		 * void onItemClick(AdapterView<?> parent, View view, int position, long
-		 * id) { ArrayList<WifiConfiguration> AP =
-		 * (ArrayList<WifiConfiguration>) mainWifi .getConfiguredNetworks();
-		 * TextView txt
-		 * =(TextView)parent.getChildAt(position-listView.getFirstVisiblePosition
-		 * ()).findViewById(R.id.hostedGamesList); String SSID =
-		 * txt.getText().toString(); for (int i = 0; i < AP.size(); i++){ if
-		 * (AP.get(i).equals(SSID)){ nid = AP.get(i).networkId; } }
-		 * mainWifi.enableNetwork(nid, true); } });
-		 */
+		listView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				ArrayList<WifiConfiguration> AP = (ArrayList<WifiConfiguration>) mainWifi
+						.getConfiguredNetworks();
+				TextView text = (TextView) view
+						.findViewById(android.R.id.text1);
+				String content = text.getText().toString();
+				for (int i = 0; i < AP.size(); i++) {
+					if (AP.get(i).SSID.equals(content)) {
+						nid = AP.get(i).networkId;
+					}
+				}
+				mainWifi.enableNetwork(nid, true);
+				testclient(view);
+			}
+		});
+
+		mainWifi.startScan();
+
 	}
 
 	private void refreshListView(ListView listView) {
@@ -77,7 +85,7 @@ public class MultiPlayerActivity extends Activity {
 			for (int i = 0; i < hostedGames.size(); i++) {
 				Log.d("refreshListView", hostedGames.get(i));
 			}
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+			adapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_list_item_1, android.R.id.text1,
 					hostedGames) {
 				public View getView(int position, View convertView,
@@ -95,6 +103,7 @@ public class MultiPlayerActivity extends Activity {
 					return view;
 				}
 			};
+			adapter.notifyDataSetChanged();
 			// Assign adapter to ListView
 			listView.setAdapter(adapter);
 		}
@@ -160,6 +169,9 @@ public class MultiPlayerActivity extends Activity {
 
 		public void onReceive(Context c, Intent intent) {
 			wifiList = mainWifi.getScanResults();
+			if (!hostedGames.isEmpty()) {
+				hostedGames.clear();
+			}
 			for (int i = 0; i < wifiList.size(); i++) {
 				sb = wifiList.get(i).SSID.toString();
 				if (sb.substring(0, PREFIXE_MULTI.length()).equals(
@@ -172,15 +184,10 @@ public class MultiPlayerActivity extends Activity {
 
 	/* A conserver pour plus tard */
 	public void testhost(View v) {
-		test = new Host(this);
-		WifiConfiguration conf = new WifiConfiguration();
-		conf.SSID = "AZR-test";
-		conf.preSharedKey = "pojnootankurdenwooc8";
-		conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
-		test.setWifiApEnabled(conf, true);
-		PreferencesActivity.setMulti(true);
 		Intent i = new Intent();
-		i.setClass(this, RoomStayHostActivity.class);
+		i.setClass(this, PreferencesActivity.class);
+		i.putExtra("multi", true);
+		i.putExtra("home", false);
 		startActivity(i);
 	}
 
