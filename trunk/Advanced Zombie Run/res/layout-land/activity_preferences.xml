@@ -17,6 +17,27 @@
             android:orientation="vertical" >
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/pseudo"
+                android:textColor="#8A0808"
+                android:textSize="18sp"
+                tools:context=".PreferencesActivity" />
+
+            <EditText
+                android:id="@+id/pseudonyme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/pseudoHint"
+                android:singleLine="true" >
+
+                <requestFocus />
+            </EditText>
+
+            <TextView
                 android:id="@+id/density"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
