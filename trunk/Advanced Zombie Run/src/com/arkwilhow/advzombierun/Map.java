@@ -83,6 +83,7 @@ public class Map extends MapActivity {
 						pref.getInt("life", 0), pref.getInt("alert",
 								R.id.alertChoice1), mcontext);
 				master.liste_zombis();
+				Log.v("Map.onLocationChanged", "création master passée");
 			} else {
 				positionsRecuperees.set(0, location);
 				master.deplacement(getPositionsJoueurs());
@@ -90,8 +91,9 @@ public class Map extends MapActivity {
 			mapOverlays.clear();
 			Log.v(TAG, "la longueur de la liste de joueur :" + master.getJoueurs().size());
 			mapOverlays.add(master.getJoueurs());
-			Log.v(TAG, "la longueur de la liste de zombie :" + master.getJoueurs().size());
+			Log.v("Map.onLocationChanged", "affichage joueurs passé");
 			mapOverlays.add(master.getZombies());
+			Log.v("Map.onLocationChanged", "affichage zombies passé");
 		}
 	};
 
@@ -106,8 +108,6 @@ public class Map extends MapActivity {
 		mc = map.getController();
 		mc.setZoom(17);
 
-		//GeoPoint point = new GeoPoint((int) (47.843248 * 1e6), (int) (1.934205 * 1e6));
-		//mc.setCenter(point);
 
 		mapOverlays = map.getOverlays();
 
@@ -119,6 +119,7 @@ public class Map extends MapActivity {
 			positionsRecuperees.add(i, null);
 		}
 		locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+		Log.v("Map.onCreate", "onCreate vaincu");
 	}
 
 	/*
