@@ -36,29 +36,36 @@ public class MultiPlayerActivity extends Activity {
 	WifiReceiver receiverWifi;
 	List<ScanResult> wifiList;
 	String sb;
-	ArrayList<String> hostedGames;
+	ArrayList<String> hostedGames =  new ArrayList<String>();
 	Host test;
-	String preSSID;
+	ListView listView;
+	int nid = 0;
+	private static final String PREFIXE_MULTI = "AZR-";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_multi_player);
 
-		ListView listView = (ListView) findViewById(R.id.hostedGamesList);
-
-		listView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				/* loadHostedGame(gamesIds[position]); */
-			}
-		});
+		listView = (ListView) findViewById(R.id.hostedGamesList);
 
 		mainWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		receiverWifi = new WifiReceiver();
 		registerReceiver(receiverWifi, new IntentFilter(
 				WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-		mainWifi.startScan();
+
+		/*
+		 * listView.setOnItemClickListener(new OnItemClickListener() { public
+		 * void onItemClick(AdapterView<?> parent, View view, int position, long
+		 * id) { ArrayList<WifiConfiguration> AP =
+		 * (ArrayList<WifiConfiguration>) mainWifi .getConfiguredNetworks();
+		 * TextView txt
+		 * =(TextView)parent.getChildAt(position-listView.getFirstVisiblePosition
+		 * ()).findViewById(R.id.hostedGamesList); String SSID =
+		 * txt.getText().toString(); for (int i = 0; i < AP.size(); i++){ if
+		 * (AP.get(i).equals(SSID)){ nid = AP.get(i).networkId; } }
+		 * mainWifi.enableNetwork(nid, true); } });
+		 */
 	}
 
 	private void refreshListView(ListView listView) {
@@ -66,29 +73,31 @@ public class MultiPlayerActivity extends Activity {
 		mainWifi.startScan();
 		/* gamesIds = new int[] { 85, 123435 }; */
 		// String[] hostedGames = new String[] { "wilkyo", "HowiePowie" }
-		for (int i = 0; i < hostedGames.size(); i++) {
-			Log.d("refreshListView", hostedGames.get(i));
-		}
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, android.R.id.text1,
-				hostedGames) {
-			public View getView(int position, View convertView, ViewGroup parent) {
-				View view = super.getView(position, convertView, parent);
-
-				/* Change le style du textView ayant pour id text1 */
-				TextView textView = (TextView) view
-						.findViewById(android.R.id.text1);
-
-				textView.setTextColor(Color.parseColor("#8A0808"));
-				textView.setBackgroundColor(Color.parseColor("#424242"));
-				textView.setTextSize(20);
-
-				return view;
+		if (!(hostedGames.isEmpty())) {
+			for (int i = 0; i < hostedGames.size(); i++) {
+				Log.d("refreshListView", hostedGames.get(i));
 			}
-		};
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, android.R.id.text1,
+					hostedGames) {
+				public View getView(int position, View convertView,
+						ViewGroup parent) {
+					View view = super.getView(position, convertView, parent);
 
-		// Assign adapter to ListView
-		listView.setAdapter(adapter);
+					/* Change le style du textView ayant pour id text1 */
+					TextView textView = (TextView) view
+							.findViewById(android.R.id.text1);
+
+					textView.setTextColor(Color.parseColor("#8A0808"));
+					textView.setBackgroundColor(Color.parseColor("#424242"));
+					textView.setTextSize(20);
+
+					return view;
+				}
+			};
+			// Assign adapter to ListView
+			listView.setAdapter(adapter);
+		}
 	}
 
 	/*
@@ -148,13 +157,13 @@ public class MultiPlayerActivity extends Activity {
 	}
 
 	class WifiReceiver extends BroadcastReceiver {
+
 		public void onReceive(Context c, Intent intent) {
 			wifiList = mainWifi.getScanResults();
-			hostedGames = new ArrayList<String>();
 			for (int i = 0; i < wifiList.size(); i++) {
 				sb = wifiList.get(i).SSID.toString();
-				String[] split = sb.split("-");
-				if (split[0] == "ARZ") {
+				if (sb.substring(0, PREFIXE_MULTI.length()).equals(
+						PREFIXE_MULTI)) {
 					hostedGames.add(sb);
 				}
 			}
@@ -165,8 +174,6 @@ public class MultiPlayerActivity extends Activity {
 	public void testhost(View v) {
 		test = new Host(this);
 		WifiConfiguration conf = new WifiConfiguration();
-		WifiConfiguration preconf = test.getWifiApConfiguration();
-		preSSID = preconf.SSID;
 		conf.SSID = "AZR-test";
 		conf.preSharedKey = "pojnootankurdenwooc8";
 		conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
@@ -176,4 +183,11 @@ public class MultiPlayerActivity extends Activity {
 		i.setClass(this, RoomStayHostActivity.class);
 		startActivity(i);
 	}
+
+	public void testclient(View v) {
+		Intent i = new Intent();
+		i.setClass(this, RoomStayHostActivity.class);
+		startActivity(i);
+	}
+
 }

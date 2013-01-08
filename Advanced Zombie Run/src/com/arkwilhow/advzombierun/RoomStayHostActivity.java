@@ -11,13 +11,11 @@ import android.view.View;
 public class RoomStayHostActivity extends Activity {
 
 	Host test;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_roomstayhost);
-		
-		
 
 	}
 
@@ -37,10 +35,19 @@ public class RoomStayHostActivity extends Activity {
 		finish();
 	}
 
-	/*public void openMulti(View v) {
-		PreferencesActivity.setMulti(true);
-		Intent i = new Intent();
-		i.setClass(this, MultiPlayerActivity.class);
-		startActivity(i);
-	}*/
+	public void onDestroy() {
+		test = new Host(this);
+		WifiConfiguration conf = new WifiConfiguration();
+		conf.SSID = "AndroidAP";
+		conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+		test.setWifiApEnabled(conf, true);
+		test.setWifiApEnabled(null, false);
+		super.onDestroy();
+	}
+
+	/*
+	 * public void openMulti(View v) { PreferencesActivity.setMulti(true);
+	 * Intent i = new Intent(); i.setClass(this, MultiPlayerActivity.class);
+	 * startActivity(i); }
+	 */
 }
