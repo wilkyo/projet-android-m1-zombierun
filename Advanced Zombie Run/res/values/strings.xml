@@ -5,6 +5,7 @@
     <string name="app_name">Advanced Zombie Run</string>
     <string name="hello_world">Hello World !</string>
     <string name="menu_settings">Settings</string>
+    <string name="title_activity_roomstayhost">RoomStayActivity</string>
 
     <!-- String activity_multi_player -->
     <string name="title_activity_multi_player">MultiPlayerActivity</string>
@@ -45,6 +46,12 @@
     <string name="perrin">Jean-Baptiste PERRIN</string>
     <string name="rubagotti">Joris RUBAGOTTI</string>
     <string name="run_map">Launch test map</string>
+    
+    <!--  String AlertDialog -->
+    <string name="diagtitle">WIFI is not enable</string>
+    <string name="diagtext">Please launch WIFI to play in multiplayer</string>
+    <string name="diagprevious">Menu</string>
+    <string name="diagok">OK</string>
 
     <string-array name="densities_array">
         <item>Low</item>

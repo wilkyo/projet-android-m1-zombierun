@@ -4,6 +4,7 @@
     <string name="app_name">Advanced Zombie Run</string>
     <string name="hello_world">Salut tout le monde</string>
     <string name="menu_settings">Paramètres</string>
+        <string name="title_activity_roomstayhost">Salle d attente</string>
 
     <!-- String activity_multi_player -->
     <string name="title_activity_multi_player">Multi-Joueurs</string>
@@ -44,6 +45,12 @@
     <string name="francois">Willy FRANCOIS</string>
     <string name="perrin">Jean-Baptiste PERRIN</string>
     <string name="rubagotti">Joris RUBAGOTTI</string>
+    
+    <!--  String AlertDialog -->
+    <string name="diagtitle">WIFI n est pas activé</string>
+    <string name="diagtext">Veuillez activer le WIFI pour jouer en multijoueur</string>
+    <string name="diagprevious">Menu</string>
+    <string name="diagok">OK</string>
 
     <string-array name="densities_array">
         <item>Basse</item>

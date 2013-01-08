@@ -1,22 +1,42 @@
 package com.arkwilhow.advzombierun;
 
+import java.util.List;
+
+import com.arkwilhow.serveur.Host;
+
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 public class MultiPlayerActivity extends Activity {
 
-	private int[] gamesIds;
+	/* private int[] gamesIds; */
+	WifiManager mainWifi;
+	WifiReceiver receiverWifi;
+	List<ScanResult> wifiList;
+	String sb;
+	String[] hostedGames;
+	Host test;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +48,22 @@ public class MultiPlayerActivity extends Activity {
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				loadHostedGame(gamesIds[position]);
+				/* loadHostedGame(gamesIds[position]); */
 			}
 		});
+
+		mainWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		receiverWifi = new WifiReceiver();
+		registerReceiver(receiverWifi, new IntentFilter(
+				WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+		mainWifi.startScan();
 	}
 
 	private void refreshListView(ListView listView) {
 		// Bouchon TODO
-		gamesIds = new int[] { 85, 123435 };
-		String[] hostedGames = new String[] { "wilkyo", "HowiePowie" };
+		mainWifi.startScan();
+		/* gamesIds = new int[] { 85, 123435 }; */
+		// String[] hostedGames = new String[] { "wilkyo", "HowiePowie" };
 		for (int i = 0; i < hostedGames.length; i++) {
 			Log.d("refreshListView", hostedGames[i]);
 		}
@@ -62,34 +89,28 @@ public class MultiPlayerActivity extends Activity {
 		listView.setAdapter(adapter);
 	}
 
-	protected void loadHostedGame(int id) {
-		Log.d("loadHostedGame", String.valueOf(id));
-		Intent intent = new Intent(this, Map.class); // Pas directement la Map,
-														// il faudra peut être
-														// une activité
-														// d'attente
-		if (intent != null) {
-			// Affectations à faire ici si nécessaire TODO
-			this.startActivity(intent);
-		}
-	}
+	/*
+	 * protected void loadHostedGame(int id) { Log.d("loadHostedGame",
+	 * String.valueOf(id)); Intent intent = new Intent(this, Map.class); // Pas
+	 * directement la Map, // il faudra peut être // une activité // d'attente
+	 * if (intent != null) { // Affectations à faire ici si nécessaire TODO
+	 * this.startActivity(intent); } }
+	 */
 
-	public void newHostedGame(View v) {
-		Intent intent = new Intent(this, PreferencesActivity.class);
-		if (intent != null) {
-			// Affectations à faire ici si n�cessaire
-			// Définir qu'on est en multi TODO
-			this.startActivity(intent);
-		}
-	}
+	/*
+	 * public void newHostedGame(View v) { Intent intent = new Intent(this,
+	 * PreferencesActivity.class); if (intent != null) { // Affectations à faire
+	 * ici si necessaire // Définir qu'on est en multi TODO
+	 * this.startActivity(intent); } }
+	 */
 
 	public void refresh(View v) {
-		refreshListView((ListView) findViewById(R.id.hostedGamesList));
-	}
-
-	public void onResume() {
-		refreshListView((ListView) findViewById(R.id.hostedGamesList));
-		super.onResume();
+		if (!(mainWifi.isWifiEnabled())) {
+			Dialog control = onCreateDialog();
+			control.show();
+		} else {
+			refreshListView((ListView) findViewById(R.id.hostedGamesList));
+		}
 	}
 
 	@Override
@@ -100,7 +121,50 @@ public class MultiPlayerActivity extends Activity {
 	}
 
 	public void previous(View v) {
+		unregisterReceiver(receiverWifi);
 		finish();
 	}
 
+	/* Fenetre d'alert si le wifi n'est pas activé */
+	public Dialog onCreateDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.diagtitle);
+		builder.setMessage(R.string.diagtext);
+		builder.setNegativeButton(R.string.diagok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+					}
+				});
+		builder.setPositiveButton(R.string.diagprevious,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						finish();
+					}
+				});
+		return builder.create();
+	}
+
+	class WifiReceiver extends BroadcastReceiver {
+		public void onReceive(Context c, Intent intent) {
+			wifiList = mainWifi.getScanResults();
+			hostedGames = new String[wifiList.size()];
+			for (int i = 0; i < wifiList.size(); i++) {
+				sb = wifiList.get(i).SSID.toString();
+				hostedGames[i] = sb;
+			}
+		}
+	}
+
+	/* A conserver pour plus tard */
+	public void testhost(View v){
+		test = new Host(this);
+		WifiConfiguration conf = new WifiConfiguration();
+		conf.SSID = "AZR-test";
+		test.setWifiApEnabled(null, true);
+		PreferencesActivity.setMulti(true);
+		Intent i = new Intent();
+		i.setClass(this, RoomStayHostActivity.class);
+		startActivity(i);
+	}
 }

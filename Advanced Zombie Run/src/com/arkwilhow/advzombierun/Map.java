@@ -102,9 +102,8 @@ public class Map extends MapActivity {
 		mc = map.getController();
 		mc.setZoom(17);
 
-		GeoPoint point = new GeoPoint((int) (47.843248 * 1e6),
-				(int) (1.934205 * 1e6));
-		mc.setCenter(point);
+		//GeoPoint point = new GeoPoint((int) (47.843248 * 1e6), (int) (1.934205 * 1e6));
+		//mc.setCenter(point);
 
 		mapOverlays = map.getOverlays();
 
