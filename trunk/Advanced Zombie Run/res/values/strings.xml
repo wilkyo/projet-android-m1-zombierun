@@ -14,6 +14,9 @@
 
     <!-- String activity_preferences -->
     <string name="title_activity_preferences">Preferences</string>
+    <string name="pseudo">Player Name</string>
+    <string name="pseudoHint">Name</string>
+    <string name="save">Save</string>
     <string name="density">Population Density</string>
     <string name="speed">Zombies\'s Speed</string>
     <string name="timer">Timer</string>
@@ -46,8 +49,8 @@
     <string name="perrin">Jean-Baptiste PERRIN</string>
     <string name="rubagotti">Joris RUBAGOTTI</string>
     <string name="run_map">Launch test map</string>
-    
-    <!--  String AlertDialog -->
+
+    <!-- String AlertDialog -->
     <string name="diagtitle">WIFI is not enable</string>
     <string name="diagtext">Please launch WIFI to play in multiplayer</string>
     <string name="diagprevious">Menu</string>

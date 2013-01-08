@@ -13,6 +13,9 @@
 
     <!-- String activity_preferences -->
     <string name="title_activity_preferences">Préférences</string>
+    <string name="pseudo">Nom de Joueur</string>
+    <string name="pseudoHint">Pseudo</string>
+    <string name="save">Enregistrer</string>
     <string name="density">Densité de la population</string>
     <string name="speed">Vitesse des zombies</string>
     <string name="timer">Temps imparti</string>

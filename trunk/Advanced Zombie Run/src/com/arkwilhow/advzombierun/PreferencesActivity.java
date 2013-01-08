@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.RadioGroup;
@@ -28,6 +31,8 @@ public class PreferencesActivity extends Activity {
 
 	private void loadPreferences() {
 		SharedPreferences s = getPreferences(MODE_PRIVATE);
+		((EditText) findViewById(R.id.pseudonyme)).setText(s.getString(
+				"pseudo", ""));
 		((Spinner) findViewById(R.id.spinner_density)).setSelection(s.getInt(
 				"density", 0));
 		((Spinner) findViewById(R.id.spinner_speed)).setSelection(s.getInt(
@@ -39,6 +44,21 @@ public class PreferencesActivity extends Activity {
 	}
 
 	private void setListeners() {
+		((EditText) findViewById(R.id.pseudonyme))
+				.setOnKeyListener(new OnKeyListener() {
+					public boolean onKey(View v, int keyCode, KeyEvent event) {
+						if (event.getAction() == KeyEvent.ACTION_UP) {
+							SharedPreferences.Editor editor = getPreferences(
+									MODE_PRIVATE).edit();
+							editor.putString("pseudo",
+									((EditText) findViewById(R.id.pseudonyme))
+											.getText().toString());
+							editor.commit();
+							return true;
+						} else
+							return false;
+					}
+				});
 		((Spinner) findViewById(R.id.spinner_density))
 				.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -105,9 +125,25 @@ public class PreferencesActivity extends Activity {
 		return true;
 	}
 
+	public void savePseudo(View v) {
+		SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+		final String name = ((EditText) findViewById(R.id.pseudonyme))
+				.getText().toString();
+		editor.putString("pseudo",
+				name.equals("") ? getString(R.string.pseudoHint) : name);
+		editor.commit();
+	}
+
 	public void run(View v) {
+		SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+		final String name = ((EditText) findViewById(R.id.pseudonyme))
+				.getText().toString();
+		editor.putString("pseudo",
+				name.equals("") ? getString(R.string.pseudoHint) : name);
+		editor.commit();
 		if (PreferencesActivity.multi) {
-			Toast.makeText(this, "Fonction non encore implémentée", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Fonction non encore implémentée",
+					Toast.LENGTH_LONG).show();
 		} else {
 			Intent i = new Intent();
 			i.setClass(this, Map.class);
@@ -118,7 +154,7 @@ public class PreferencesActivity extends Activity {
 	public void previous(View v) {
 		finish();
 	}
-	
+
 	public static void setMulti(boolean multi) {
 		PreferencesActivity.multi = multi;
 	}
