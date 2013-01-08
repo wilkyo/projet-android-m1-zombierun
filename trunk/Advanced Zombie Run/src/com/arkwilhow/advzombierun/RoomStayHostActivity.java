@@ -1,5 +1,8 @@
 package com.arkwilhow.advzombierun;
 
+import com.arkwilhow.serveur.Host;
+
+import android.net.wifi.WifiConfiguration;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -7,6 +10,8 @@ import android.view.View;
 
 public class RoomStayHostActivity extends Activity {
 
+	Host test;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -22,9 +27,14 @@ public class RoomStayHostActivity extends Activity {
 		return true;
 	}
 
-	public void quitter(View v) {
-		super.finish();
-		System.exit(0);
+	public void previous(View v) {
+		test = new Host(this);
+		WifiConfiguration conf = new WifiConfiguration();
+		conf.SSID = "AndroidAP";
+		conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+		test.setWifiApEnabled(conf, true);
+		test.setWifiApEnabled(null, false);
+		finish();
 	}
 
 	/*public void openMulti(View v) {
