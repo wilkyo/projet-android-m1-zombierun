@@ -14,7 +14,7 @@ import android.os.Vibrator;
 public class GameMaster {
 	private MarqueursJoueurs joueurs;
 	private MarqueursZombies zombies;
-	private final static int [] density_array = new int[] {10,20,30,40};
+	private final static int[] density_array = new int[] { 10, 20, 30, 40 };
 	private int density;
 	private int speed;
 	private int life;
@@ -163,7 +163,8 @@ public class GameMaster {
 		Location dest = new Location("");
 		Location lo = new Location("");
 		int d = speed;
-		// Si speed est exprime en m/s et qu'on a un refresh de la carte toutes les secondes
+		// Si speed est exprime en m/s et qu'on a un refresh de la carte toutes
+		// les secondes
 		// Alors la distane parcourue est égale a speed
 		double angle, anglerad;
 		double lat2, long2;
@@ -173,17 +174,18 @@ public class GameMaster {
 		GeoPoint g;
 		// OverlayItem ov;
 		for (Zombie z : zombis) {
-			if(z.isEn_alerte()){
+			if (z.isEn_alerte()) {
 				/*
 				 * Deplacement du zombi en direction du joueur en fonction de
-				 * l'attribut speed. On suppose que speed est exprimé en m/s.On commence
-				 * par creer un autre objet Location afin d'obtenir l'angle entre
-				 * les deux points.Puis on applique la formule suivante :φ2 = asin(
-				 * sin(φ1)*cos(d/R) + cos(φ1)*sin(d/R)*cos(θ) )λ2 = λ1 + atan2(
+				 * l'attribut speed. On suppose que speed est exprimé en m/s.On
+				 * commence par creer un autre objet Location afin d'obtenir
+				 * l'angle entre les deux points.Puis on applique la formule
+				 * suivante :φ2 = asin( sin(φ1)*cos(d/R) +
+				 * cos(φ1)*sin(d/R)*cos(θ) )λ2 = λ1 + atan2(
 				 * sin(θ)*sin(d/R)*cos(φ1), cos(d/R)−sin(φ1)*sin(φ2) )avec φ la
-				 * latitude, λ la longitude,θ l'angle (en radians, dans le sens des
-				 * aiguilles depuis le nord),d la distance parcourue, R le radius de
-				 * la Terre (d/R la distance angulaire, en radians)
+				 * latitude, λ la longitude,θ l'angle (en radians, dans le sens
+				 * des aiguilles depuis le nord),d la distance parcourue, R le
+				 * radius de la Terre (d/R la distance angulaire, en radians)
 				 */
 				lat1 = z.getPoint().getLatitudeE6() / 1E6F;
 				long1 = z.getPoint().getLongitudeE6() / 1E6F;
@@ -197,18 +199,19 @@ public class GameMaster {
 				joueur.setLatitude(j.getPoint().getLatitudeE6());
 				joueur.setLongitude(j.getPoint().getLongitudeE6());
 
-				angle = joueur.bearingTo(dest);// Obtention de l'angle en degrees
+				angle = joueur.bearingTo(dest);// Obtention de l'angle en
+												// degrees
 				// entre les deux points
 				anglerad = DegreesToRadians(angle);
-				lat2 = Math
-						.asin(Math.sin(lat1) * Math.cos(distRatio) + Math.cos(lat1)
-								* Math.sin(distRatio) * Math.cos(anglerad));
+				lat2 = Math.asin(Math.sin(lat1) * Math.cos(distRatio)
+						+ Math.cos(lat1) * Math.sin(distRatio)
+						* Math.cos(anglerad));
 				long2 = long1
 						+ Math.atan2(
 								Math.sin(anglerad) * Math.sin(distRatio)
-								* Math.cos(lat1),
+										* Math.cos(lat1),
 								Math.cos(distRatio) - Math.sin(lat1)
-								* Math.sin(lat2));
+										* Math.sin(lat2));
 				g = new GeoPoint((int) (lat2 * 1E6), (int) (long2 * 1E6));
 				Location l = new Location("");
 				l.setLatitude(z.getPoint().getLatitudeE6() / 1E6F);
@@ -218,12 +221,11 @@ public class GameMaster {
 				Zombie zo = new Zombie(g, "Zombie", "Beuh");
 				zo.setEn_alerte(z.isEn_alerte());
 				new_zombis.add(zo);
-			}
-			else {
-				for(int i = 0;i<positions.length;i++){
-					lo.setLatitude(z.getPoint().getLatitudeE6()/1E6F);
-					lo.setLongitude(z.getPoint().getLongitudeE6()/1E6F);
-					if(positions[i].distanceTo(lo) < 20)
+			} else {
+				for (int i = 0; i < positions.length; i++) {
+					lo.setLatitude(z.getPoint().getLatitudeE6() / 1E6F);
+					lo.setLongitude(z.getPoint().getLongitudeE6() / 1E6F);
+					if (positions[i].distanceTo(lo) < 20)
 						z.setEn_alerte(true);
 				}
 				new_zombis.add(z);
@@ -259,7 +261,8 @@ public class GameMaster {
 		ArrayList<Zombie> zombis = zombies.getListeMarqueur();
 		Location l = new Location("");
 		double lat1, long1;
-		int r = 100; // La distance maximale à laquelle un zombie peut se trouver
+		int r = 100; // La distance maximale à laquelle un zombie peut se
+						// trouver
 		// Pour l'instant codée en "dur" il faudra sans doute la calculer en
 		// fonction de la difficulté
 		Location joueur = new Location("");

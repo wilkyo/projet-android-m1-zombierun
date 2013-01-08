@@ -107,14 +107,6 @@
             android:orientation="vertical" >
 
             <Button
-                android:id="@+id/button0"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="run"
-                android:text="@string/run_map"
-                android:textStyle="bold" />
-
-            <Button
                 android:id="@+id/button1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

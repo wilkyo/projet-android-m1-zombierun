@@ -1,5 +1,8 @@
 package com.arkwilhow.advzombierun;
 
+import com.arkwilhow.serveur.Host;
+
+import android.net.wifi.WifiConfiguration;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -8,24 +11,33 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class PreferencesActivity extends Activity {
 
 	private static boolean multi;
+	private boolean home;
+	Host test;
 	private static int nbJoueurs = 1;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_preferences);
-
+		Bundle extra = getIntent().getExtras();
+		multi = extra.getBoolean("multi");
+		home = extra.getBoolean("home");
 		loadPreferences();
 		setListeners();
+		
+		if (home){
+			TextView textView = (TextView) findViewById(R.id.create);
+			textView.setText(R.string.run_game);
+		}
 	}
 
 	private void loadPreferences() {
@@ -120,9 +132,21 @@ public class PreferencesActivity extends Activity {
 	}
 
 	public void run(View v) {
+		final String name = ((EditText) findViewById(R.id.pseudonyme))
+				.getText().toString();
 		if (PreferencesActivity.multi) {
-			Toast.makeText(this, "Fonction non encore implémentée",
-					Toast.LENGTH_LONG).show();
+			test = new Host(this);
+			WifiConfiguration conf = new WifiConfiguration();
+			conf.SSID = "AZR-test";
+			conf.preSharedKey = "pojnootankurdenwooc8";
+			conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+			test.setWifiApEnabled(conf, true);
+			Intent i = new Intent();
+			i.setClass(this, RoomStayHostActivity.class);
+			i.putExtra("pseudo", name);
+			startActivity(i);
+			/*Toast.makeText(this, "Fonction non encore implémentée",
+					Toast.LENGTH_LONG).show();*/
 		} else {
 			Intent i = new Intent();
 			i.setClass(this, Map.class);
