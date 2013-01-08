@@ -51,7 +51,7 @@ public class Map extends MapActivity {
 		}
 
 		public void onProviderDisabled(String provider) {
-			checkGPS();	
+			checkGPS();
 		}
 
 		private Location[] getPositionsJoueurs() {
@@ -78,7 +78,7 @@ public class Map extends MapActivity {
 				joue.addMarqueur(new Joueur(point, "joueur",
 						"Je suis le joueur"));
 				master = new GameMaster(joue, new MarqueursZombies(
-						getResources().getDrawable(R.drawable.androidmarker)),
+						getResources().getDrawable(R.drawable.marqueurzombi0)),
 						pref.getInt("density", 0), pref.getInt("speed", 0),
 						pref.getInt("life", 0), pref.getInt("alert",
 								R.id.alertChoice1), mcontext);
@@ -89,15 +89,18 @@ public class Map extends MapActivity {
 				master.deplacement(getPositionsJoueurs());
 			}
 			mapOverlays.clear();
-			Log.v(TAG, "la longueur de la liste de joueur :" + master.getJoueurs().size());
+			Log.v(TAG, "la longueur de la liste de joueur :"
+					+ master.getJoueurs().size());
 			mapOverlays.add(master.getJoueurs());
+			Log.v(TAG, "la longueur de la liste de zombie :"
+					+ master.getZombies().size());
 			Log.v("Map.onLocationChanged", "affichage joueurs passé");
 			mapOverlays.add(master.getZombies());
 			Log.v("Map.onLocationChanged", "affichage zombies passé");
 		}
 	};
 
-	//cree l'application et paramètre l'apparences de la map
+	// cree l'application et paramètre l'apparences de la map
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -108,11 +111,10 @@ public class Map extends MapActivity {
 		mc = map.getController();
 		mc.setZoom(17);
 
-
 		mapOverlays = map.getOverlays();
 
 		Drawable drawable = this.getResources().getDrawable(
-				R.drawable.androidmarker);
+				R.drawable.marqueurjoueur);
 		itemizedoverlay = new MarqueursJoueurs(drawable, this);
 		positionsRecuperees = new ArrayList<Location>();
 		for (int i = 0; i < itemizedoverlay.size(); i++) {
