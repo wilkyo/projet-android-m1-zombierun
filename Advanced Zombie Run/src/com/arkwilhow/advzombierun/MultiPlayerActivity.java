@@ -1,5 +1,6 @@
 package com.arkwilhow.advzombierun;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.arkwilhow.serveur.Host;
@@ -35,8 +36,9 @@ public class MultiPlayerActivity extends Activity {
 	WifiReceiver receiverWifi;
 	List<ScanResult> wifiList;
 	String sb;
-	String[] hostedGames;
+	ArrayList<String> hostedGames;
 	Host test;
+	String preSSID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +65,9 @@ public class MultiPlayerActivity extends Activity {
 		// Bouchon TODO
 		mainWifi.startScan();
 		/* gamesIds = new int[] { 85, 123435 }; */
-		// String[] hostedGames = new String[] { "wilkyo", "HowiePowie" };
-		for (int i = 0; i < hostedGames.length; i++) {
-			Log.d("refreshListView", hostedGames[i]);
+		// String[] hostedGames = new String[] { "wilkyo", "HowiePowie" }
+		for (int i = 0; i < hostedGames.size(); i++) {
+			Log.d("refreshListView", hostedGames.get(i));
 		}
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, android.R.id.text1,
@@ -148,20 +150,27 @@ public class MultiPlayerActivity extends Activity {
 	class WifiReceiver extends BroadcastReceiver {
 		public void onReceive(Context c, Intent intent) {
 			wifiList = mainWifi.getScanResults();
-			hostedGames = new String[wifiList.size()];
+			hostedGames = new ArrayList<String>();
 			for (int i = 0; i < wifiList.size(); i++) {
 				sb = wifiList.get(i).SSID.toString();
-				hostedGames[i] = sb;
+				String[] split = sb.split("-");
+				if (split[0] == "ARZ") {
+					hostedGames.add(sb);
+				}
 			}
 		}
 	}
 
 	/* A conserver pour plus tard */
-	public void testhost(View v){
+	public void testhost(View v) {
 		test = new Host(this);
 		WifiConfiguration conf = new WifiConfiguration();
+		WifiConfiguration preconf = test.getWifiApConfiguration();
+		preSSID = preconf.SSID;
 		conf.SSID = "AZR-test";
-		test.setWifiApEnabled(null, true);
+		conf.preSharedKey = "pojnootankurdenwooc8";
+		conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+		test.setWifiApEnabled(conf, true);
 		PreferencesActivity.setMulti(true);
 		Intent i = new Intent();
 		i.setClass(this, RoomStayHostActivity.class);
