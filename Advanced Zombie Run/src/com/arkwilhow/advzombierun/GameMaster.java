@@ -14,7 +14,7 @@ import android.os.Vibrator;
 public class GameMaster {
 	private MarqueursJoueurs joueurs;
 	private MarqueursZombies zombies;
-	// private final static int [] density_array = new int[] {};
+	private final static int [] density_array = new int[] {10,20,30,40};
 	private int density;
 	private int speed;
 	private int life;
@@ -138,8 +138,8 @@ public class GameMaster {
 
 	// renvoi une liste de OverlayItem, pour marquer les zombis
 	public void liste_zombis() {
-		for (int i = 0; i < density; ++i) {
-			// On supposeindex que les zombies apparaissent dons une zone de
+		for (int i = 0; i < density_array[density]; ++i) {
+			// On suppose que les zombies apparaissent dons une zone de
 			// 100m autour du joueur
 			zombies.addMarqueur(creer_zombi(100, joueurs.getListeMarqueur()
 					.get(0)));
@@ -176,7 +176,7 @@ public class GameMaster {
 			if(z.isEn_alerte()){
 				/*
 				 * Deplacement du zombi en direction du joueur en fonction de
-				 * l'attribut speed. On suppose que speed est exprimé en m/s.On commene
+				 * l'attribut speed. On suppose que speed est exprimé en m/s.On commence
 				 * par creer un autre objet Location afin d'obtenir l'angle entre
 				 * les deux points.Puis on applique la formule suivante :φ2 = asin(
 				 * sin(φ1)*cos(d/R) + cos(φ1)*sin(d/R)*cos(θ) )λ2 = λ1 + atan2(
@@ -259,8 +259,7 @@ public class GameMaster {
 		ArrayList<Zombie> zombis = zombies.getListeMarqueur();
 		Location l = new Location("");
 		double lat1, long1;
-		int r = 100; // La distance maximale à laquelle un zombie peut se
-		// trouver
+		int r = 100; // La distance maximale à laquelle un zombie peut se trouver
 		// Pour l'instant codée en "dur" il faudra sans doute la calculer en
 		// fonction de la difficulté
 		Location joueur = new Location("");
