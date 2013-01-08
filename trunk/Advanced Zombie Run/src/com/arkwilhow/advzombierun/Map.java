@@ -12,6 +12,7 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,6 +22,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -36,10 +38,10 @@ public class Map extends MapActivity {
 	private MarqueursJoueurs itemizedoverlay;
 	private List<Overlay> mapOverlays;
 	private GameMaster master = null;
-
+	private Context mcontext;
 	private ArrayList<Location> positionsRecuperees;
 
-	// private final static String TAG = "Map";
+	private final static String TAG = "Map";
 	private final LocationListener listener = new LocationListener() {
 
 		public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -49,7 +51,7 @@ public class Map extends MapActivity {
 		}
 
 		public void onProviderDisabled(String provider) {
-			checkGPS();
+			checkGPS();	
 		}
 
 		private Location[] getPositionsJoueurs() {
@@ -79,24 +81,26 @@ public class Map extends MapActivity {
 						getResources().getDrawable(R.drawable.androidmarker)),
 						pref.getInt("density", 0), pref.getInt("speed", 0),
 						pref.getInt("life", 0), pref.getInt("alert",
-								R.id.alertChoice1), null);
+								R.id.alertChoice1), mcontext);
 				master.liste_zombis();
 			} else {
 				positionsRecuperees.set(0, location);
 				master.deplacement(getPositionsJoueurs());
 			}
 			mapOverlays.clear();
+			Log.v(TAG, "la longueur de la liste de joueur :" + master.getJoueurs().size());
 			mapOverlays.add(master.getJoueurs());
+			Log.v(TAG, "la longueur de la liste de zombie :" + master.getJoueurs().size());
 			mapOverlays.add(master.getZombies());
 		}
 	};
 
-	// cree l'application et paramêtre l'apparences de la map
+	//cree l'application et paramètre l'apparences de la map
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map_layout);
-
+		mcontext = this;
 		map = (MapView) findViewById(R.id.mapView);
 		map.setBuiltInZoomControls(true);
 		mc = map.getController();
@@ -176,7 +180,5 @@ public class Map extends MapActivity {
 					});
 			dialog.show();
 		}
-		if (master != null)
-			master.setContext(this);
 	}
 }
