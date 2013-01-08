@@ -76,5 +76,8 @@
         <item>One Hundred</item>
         <item>Over nine thousand</item>
     </string-array>
+    <string name="quit">Quit game ?</string>
+    <string name="oui">yes</string>
+    <string name="non">no</string>
 
 </resources>
