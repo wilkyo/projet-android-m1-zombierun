@@ -16,7 +16,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -36,7 +35,7 @@ public class Map extends MapActivity {
 	private MapView map;
 	private MapController mc;
 	private LocationManager locManager;
-	private MarqueursJoueurs itemizedoverlay;
+	// private MarqueursJoueurs itemizedoverlay;
 	private List<Overlay> mapOverlays;
 	private GameMaster master = null;
 	private Context mcontext;
@@ -56,7 +55,8 @@ public class Map extends MapActivity {
 		}
 
 		private Location[] getPositionsJoueurs() {
-			Location[] positions = new Location[itemizedoverlay.size()];
+			Location[] positions = new Location[PreferencesActivity
+					.getNbJoueurs()];
 			for (int i = 0; i < positions.length; i++) {
 				positions[i] = positionsRecuperees.get(i);
 			}
@@ -67,62 +67,86 @@ public class Map extends MapActivity {
 		 * La position a changée
 		 */
 		public void onLocationChanged(Location location) {
-			GeoPoint point = new GeoPoint((int) (location.getLatitude() * 1e6),
-					(int) (location.getLongitude() * 1e6));
-			mc.setCenter(point);
-			Toast.makeText(Map.this, "onLocationChanged", Toast.LENGTH_LONG)
-					.show();
-			if (master == null) {
-				SharedPreferences pref = getPreferences(MODE_PRIVATE);
-				MarqueursJoueurs joue = new MarqueursJoueurs(getResources()
-						.getDrawable(R.drawable.androidmarker));
-				joue.addMarqueur(new Joueur(point, "joueur",
-						"Je suis le joueur"));
-				master = new GameMaster(joue, new MarqueursZombies(
-						getResources().getDrawable(R.drawable.marqueurzombi0)),
-						pref.getInt("density", 0), pref.getInt("speed", 0),
-						pref.getInt("life", 0), pref.getInt("alert",
-								R.id.alertChoice1), mcontext);
-				master.liste_zombis();
-				Log.v("Map.onLocationChanged", "création master passée");
-			} else {
-				positionsRecuperees.set(0, location);
-				master.deplacement(getPositionsJoueurs());
+			try {
+				GeoPoint point = new GeoPoint(
+						(int) (location.getLatitude() * 1e6),
+						(int) (location.getLongitude() * 1e6));
+				mc.setCenter(point);
+
+				if (master == null) {
+					SharedPreferences pref = getPreferences(MODE_PRIVATE);
+					MarqueursJoueurs joue = new MarqueursJoueurs(getResources()
+							.getDrawable(R.drawable.marqueurjoueur));
+					joue.addMarqueur(new Joueur(point, "joueur",
+							"Je suis le joueur"));
+					master = new GameMaster(joue, new MarqueursZombies(
+							getResources().getDrawable(
+									R.drawable.marqueurzombi0)), pref.getInt(
+							"density", 0), pref.getInt("speed", 0),
+							pref.getInt("life", 0), pref.getInt("alert",
+									R.id.alertChoice1), mcontext);
+					master.liste_zombis();
+					Log.v("Map.onLocationChanged", "création master passée");
+				} else {
+					positionsRecuperees.set(0, location);
+					master.deplacement(getPositionsJoueurs());
+				}
+				mapOverlays.clear();
+				Toast.makeText(
+						mcontext,
+						"la longueur de la liste de joueur :"
+								+ master.getJoueurs().size(), Toast.LENGTH_LONG)
+						.show();
+				Log.v(TAG, "la longueur de la liste de joueur :"
+						+ master.getJoueurs().size());
+				mapOverlays.add(master.getJoueurs());
+				Toast.makeText(
+						mcontext,
+						"la longueur de la liste de zombie :"
+								+ master.getZombies().size(), Toast.LENGTH_LONG)
+						.show();
+				Log.v(TAG, "la longueur de la liste de zombie :"
+						+ master.getZombies().size());
+				Log.v("Map.onLocationChanged", "affichage joueurs passé");
+				mapOverlays.add(master.getZombies());
+				Log.v("Map.onLocationChanged", "affichage zombies passé");
+			} catch (Exception e) {
+				Toast.makeText(mcontext, "onLocationChanged: " + e.toString(),
+						Toast.LENGTH_LONG).show();
 			}
-			mapOverlays.clear();
-			Log.v(TAG, "la longueur de la liste de joueur :"
-					+ master.getJoueurs().size());
-			mapOverlays.add(master.getJoueurs());
-			Log.v(TAG, "la longueur de la liste de zombie :"
-					+ master.getZombies().size());
-			Log.v("Map.onLocationChanged", "affichage joueurs passé");
-			mapOverlays.add(master.getZombies());
-			Log.v("Map.onLocationChanged", "affichage zombies passé");
 		}
 	};
 
 	// cree l'application et paramètre l'apparences de la map
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.map_layout);
-		mcontext = this;
-		map = (MapView) findViewById(R.id.mapView);
-		map.setBuiltInZoomControls(true);
-		mc = map.getController();
-		mc.setZoom(17);
+		try {
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.map_layout);
+			mcontext = this;
+			map = (MapView) findViewById(R.id.mapView);
+			map.setBuiltInZoomControls(true);
+			mc = map.getController();
+			mc.setZoom(17);
 
-		mapOverlays = map.getOverlays();
+			mapOverlays = map.getOverlays();
 
-		Drawable drawable = this.getResources().getDrawable(
-				R.drawable.marqueurjoueur);
-		itemizedoverlay = new MarqueursJoueurs(drawable, this);
-		positionsRecuperees = new ArrayList<Location>();
-		for (int i = 0; i < itemizedoverlay.size(); i++) {
-			positionsRecuperees.add(i, null);
+			// Drawable drawable =
+			// this.getResources().getDrawable(R.drawable.marqueurjoueur);
+			// itemizedoverlay = new MarqueursJoueurs(drawable, this);
+			positionsRecuperees = new ArrayList<Location>();
+			for (int i = 0; i < PreferencesActivity.getNbJoueurs(); i++) {
+				positionsRecuperees.add(i, null);
+			}
+			locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+			Log.v("Map.onCreate", "onCreate vaincu");
+		} catch (Exception e) {
+			Toast.makeText(
+					mcontext,
+					"onCreate: " + e.getMessage() + " "
+							+ e.getLocalizedMessage(), Toast.LENGTH_LONG)
+					.show();
 		}
-		locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-		Log.v("Map.onCreate", "onCreate vaincu");
 	}
 
 	/*
@@ -185,32 +209,35 @@ public class Map extends MapActivity {
 			dialog.show();
 		}
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if(keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_HOME)
-		{
-			final KeyEvent e = event;
-			final int k = keyCode;
+		if (keyCode == KeyEvent.KEYCODE_BACK
+				|| keyCode == KeyEvent.KEYCODE_HOME) {
+			//final KeyEvent e = event;
+			//final int k = keyCode;
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setMessage(R.string.quit)
-			.setCancelable(false)
-			.setPositiveButton(R.string.oui, new DialogInterface.OnClickListener() {
-				
-				public void onClick(DialogInterface dialog, int which) {
-					Map.super.onKeyDown(k, e);
-				}
-			})
-			.setNegativeButton(R.string.non, new DialogInterface.OnClickListener() {
-				
-				public void onClick(DialogInterface dialog, int which) {
-				}
-			});
+					.setCancelable(false)
+					.setPositiveButton(R.string.oui,
+							new DialogInterface.OnClickListener() {
+
+								public void onClick(DialogInterface dialog,
+										int which) {
+									finish();
+								}
+							})
+					.setNegativeButton(R.string.non,
+							new DialogInterface.OnClickListener() {
+
+								public void onClick(DialogInterface dialog,
+										int which) {
+								}
+							});
 			AlertDialog dia = builder.create();
 			dia.show();
 			return false;
-		}
-		else
+		} else
 			return super.onKeyDown(keyCode, event);
 	}
 }
