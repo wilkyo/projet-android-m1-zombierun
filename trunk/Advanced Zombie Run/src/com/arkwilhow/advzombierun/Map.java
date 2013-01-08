@@ -23,6 +23,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 /**
@@ -183,5 +184,33 @@ public class Map extends MapActivity {
 					});
 			dialog.show();
 		}
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_HOME)
+		{
+			final KeyEvent e = event;
+			final int k = keyCode;
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.quit)
+			.setCancelable(false)
+			.setPositiveButton(R.string.oui, new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+					Map.super.onKeyDown(k, e);
+				}
+			})
+			.setNegativeButton(R.string.non, new DialogInterface.OnClickListener() {
+				
+				public void onClick(DialogInterface dialog, int which) {
+				}
+			});
+			AlertDialog dia = builder.create();
+			dia.show();
+			return false;
+		}
+		else
+			return super.onKeyDown(keyCode, event);
 	}
 }

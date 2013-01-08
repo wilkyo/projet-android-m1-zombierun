@@ -75,5 +75,8 @@
         <item>100</item>
         <item>Over nine thousand</item>
     </string-array>
+    <string name="quit">Voulez-vous quitter la partie ?</string>
+    <string name="oui">oui</string>
+    <string name="non">non</string>
 
 </resources>
