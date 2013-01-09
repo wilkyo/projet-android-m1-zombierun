@@ -57,17 +57,33 @@ public class MultiPlayerActivity extends Activity {
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				ArrayList<WifiConfiguration> AP = (ArrayList<WifiConfiguration>) mainWifi
-						.getConfiguredNetworks();
 				TextView text = (TextView) view
 						.findViewById(android.R.id.text1);
 				String content = text.getText().toString();
-				for (int i = 0; i < AP.size(); i++) {
-					if (AP.get(i).SSID.equals(content)) {
-						nid = AP.get(i).networkId;
-					}
+
+				WifiConfiguration wfc = new WifiConfiguration();
+				wfc.SSID = "\"".concat(content).concat("\"");
+				wfc.status = WifiConfiguration.Status.DISABLED;
+				wfc.priority = 40;
+				wfc.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
+				wfc.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
+				wfc.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+				wfc.allowedPairwiseCiphers
+						.set(WifiConfiguration.PairwiseCipher.CCMP);
+				wfc.allowedPairwiseCiphers
+						.set(WifiConfiguration.PairwiseCipher.TKIP);
+				wfc.allowedGroupCiphers
+						.set(WifiConfiguration.GroupCipher.WEP40);
+				wfc.allowedGroupCiphers
+						.set(WifiConfiguration.GroupCipher.WEP104);
+				wfc.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+				wfc.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+				wfc.preSharedKey = "\"".concat("pojnootankurdenwooc8").concat(
+						"\"");
+				int networkId = mainWifi.addNetwork(wfc);
+				if (networkId != -1) {
+					mainWifi.enableNetwork(networkId, true);
 				}
-				mainWifi.enableNetwork(nid, true);
 				testclient(view);
 			}
 		});
@@ -194,6 +210,7 @@ public class MultiPlayerActivity extends Activity {
 	public void testclient(View v) {
 		Intent i = new Intent();
 		i.setClass(this, RoomStayHostActivity.class);
+		i.putExtra("pseudo", "test");
 		startActivity(i);
 	}
 
