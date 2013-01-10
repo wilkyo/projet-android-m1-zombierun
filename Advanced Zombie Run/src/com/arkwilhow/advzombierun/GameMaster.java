@@ -96,16 +96,11 @@ public class GameMaster {
 	 * fonction de sorte que les zombis ne puissent pas apparaitre trop pres du
 	 * joueur
 	 * 
-	 * <<<<<<< .mine
-	 * 
-	 * @param location
-	 * @param prer
-	 * @return =======
 	 * @param location
 	 *            la position du joueur
 	 * @param prer
 	 *            la distance
-	 * @return le zombie ainsi crée >>>>>>> .r29
+	 * @return le zombie ainsi crée
 	 */
 	public Zombie creer_zombi(int prer, Joueur joueur) {
 		// Un degre = 111 300 metres
@@ -138,7 +133,7 @@ public class GameMaster {
 	}
 
 	// renvoi une liste de OverlayItem, pour marquer les zombis
-	public void liste_zombis() {
+	public void creerListeZombis() {
 		for (int i = 0; i < density_array[density]; ++i) {
 			// On suppose que les zombies apparaissent dons une zone de
 			// 100m autour du joueur
@@ -155,7 +150,14 @@ public class GameMaster {
 	 */
 	// Gere les déplacements des zombis
 	public void deplacement(Location[] positions) {
-		Toast.makeText(mContext, "destination " + joueurs.getDestination().getLatitudeE6() + ", " + joueurs.getDestination().getLongitudeE6(), Toast.LENGTH_LONG).show();
+		if (joueurs.getDestination() == null)
+			return;
+		else
+			Toast.makeText(
+					mContext,
+					"destination " + joueurs.getDestination().getLatitudeE6()
+							+ ", " + joueurs.getDestination().getLongitudeE6(),
+					Toast.LENGTH_LONG).show();
 		updatePositionJoueurs(positions);
 		Location joueur = positions[0]; // Les zombies cherchent le VIP
 

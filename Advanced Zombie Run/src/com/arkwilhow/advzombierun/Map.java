@@ -2,7 +2,6 @@ package com.arkwilhow.advzombierun;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.arkwilhow.metiers.Joueur;
 import com.arkwilhow.metiers.MarqueursJoueurs;
 import com.arkwilhow.metiers.MarqueursZombies;
@@ -20,10 +19,10 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.widget.Toast;
 
 /**
@@ -41,6 +40,7 @@ public class Map extends MapActivity {
 	private GameMaster master = null;
 	private Context mContext;
 	private ArrayList<Location> positionsRecuperees;
+	private Handler handler = new Handler();
 
 	private final static String TAG = "Map";
 	private final LocationListener listener = new LocationListener() {
@@ -55,62 +55,12 @@ public class Map extends MapActivity {
 			checkGPS();
 		}
 
-		private Location[] getPositionsJoueurs() {
-			Location[] positions = new Location[PreferencesActivity
-					.getNbJoueurs()];
-			for (int i = 0; i < positions.length; i++) {
-				positions[i] = positionsRecuperees.get(i);
-			}
-			return positions;
-		}
-
 		/**
 		 * La position a changée
 		 */
 		public void onLocationChanged(Location location) {
 			try {
-				GeoPoint point = new GeoPoint(
-						(int) (location.getLatitude() * 1e6),
-						(int) (location.getLongitude() * 1e6));
-				mc.setCenter(point);
-
-				if (master == null) {
-					SharedPreferences pref = getPreferences(MODE_PRIVATE);
-					MarqueursJoueurs joue = new MarqueursJoueurs(getResources()
-							.getDrawable(R.drawable.marqueurjoueur), mContext);
-					joue.addMarqueur(new Joueur(point, "joueur",
-							"Je suis le joueur"));
-					master = new GameMaster(joue, new MarqueursZombies(
-							getResources().getDrawable(
-									R.drawable.marqueurzombi0), mContext),
-							pref.getInt("density", 0), pref.getInt("speed", 0),
-							pref.getInt("life", 0), pref.getInt("alert",
-									R.id.alertChoice1), mContext);
-					master.liste_zombis();
-					Log.v("Map.onLocationChanged", "création master passée");
-				} else {
-					positionsRecuperees.set(0, location);
-					master.deplacement(getPositionsJoueurs());
-				}
-				mapOverlays.clear();
-				Toast.makeText(
-						mContext,
-						"la longueur de la liste de joueur :"
-								+ master.getJoueurs().size(), Toast.LENGTH_LONG)
-						.show();
-				Log.v(TAG, "la longueur de la liste de joueur :"
-						+ master.getJoueurs().size());
-				mapOverlays.add(master.getJoueurs());
-				Toast.makeText(
-						mContext,
-						"la longueur de la liste de zombie :"
-								+ master.getZombies().size(), Toast.LENGTH_LONG)
-						.show();
-				Log.v(TAG, "la longueur de la liste de zombie :"
-						+ master.getZombies().size());
-				Log.v("Map.onLocationChanged", "affichage joueurs passé");
-				mapOverlays.add(master.getZombies());
-				Log.v("Map.onLocationChanged", "affichage zombies passé");
+				positionsRecuperees.set(0, location);
 			} catch (Exception e) {
 				Toast.makeText(mContext, "onLocationChanged: " + e.toString(),
 						Toast.LENGTH_LONG).show();
@@ -150,6 +100,27 @@ public class Map extends MapActivity {
 		}
 	}
 
+	// on se délie du listener
+	@Override
+	protected void onPause() {
+		super.onPause();
+		handler.removeCallbacks(timedTask);
+		locManager.removeUpdates(listener);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		handler.post(timedTask);
+	}
+
+	// appeler au demarrage de l'application
+	@Override
+	protected void onStart() {
+		super.onStart();
+		checkGPS();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -167,25 +138,6 @@ public class Map extends MapActivity {
 		Intent settingsIntent = new Intent(
 				Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 		startActivity(settingsIntent);
-	}
-
-	// on se délie du listener
-	@Override
-	protected void onPause() {
-		super.onPause();
-		locManager.removeUpdates(listener);
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	// appeler au demarrage de l'application
-	@Override
-	protected void onStart() {
-		super.onStart();
-		checkGPS();
 	}
 
 	/**
@@ -214,17 +166,9 @@ public class Map extends MapActivity {
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		Log.d("Map", "onTouchEvent");
-		return super.onTouchEvent(event);
-	}
-
-	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK
 				|| keyCode == KeyEvent.KEYCODE_HOME) {
-			// final KeyEvent e = event;
-			// final int k = keyCode;
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(R.string.diag_quit_title)
 					.setMessage(R.string.diag_quit_text)
@@ -250,4 +194,75 @@ public class Map extends MapActivity {
 		} else
 			return super.onKeyDown(keyCode, event);
 	}
+
+	private Location[] getPositionsJoueurs() {
+		Location[] positions = new Location[PreferencesActivity.getNbJoueurs()];
+		for (int i = 0; i < positions.length; i++) {
+			positions[i] = positionsRecuperees.get(i);
+		}
+		return positions;
+	}
+
+	/**
+	 * Routine exécutée tous les x millisecondes. Effectue le déplacement des
+	 * zombis.
+	 */
+	private Runnable timedTask = new Runnable() {
+
+		public void run() {
+			try {
+				Location location = positionsRecuperees.get(0);
+				if (location != null) {
+					if (master == null) {
+						GeoPoint point = new GeoPoint(
+								(int) (location.getLatitude() * 1e6),
+								(int) (location.getLongitude() * 1e6));
+						mc.setCenter(point);
+
+						SharedPreferences pref = getPreferences(MODE_PRIVATE);
+						MarqueursJoueurs joueurs = new MarqueursJoueurs(
+								getResources().getDrawable(
+										R.drawable.marqueurjoueur), mContext);
+						joueurs.addMarqueur(new Joueur(point, "joueur",
+								"Je suis le joueur"));
+						MarqueursZombies zombies = new MarqueursZombies(
+								getResources().getDrawable(
+										R.drawable.marqueurzombi0), mContext);
+
+						master = new GameMaster(joueurs, zombies, pref.getInt(
+								"density", 0), pref.getInt("speed", 0),
+								pref.getInt("life", 0), pref.getInt("alert",
+										R.id.alertChoice1), mContext);
+						master.creerListeZombis();
+
+						Toast.makeText(
+								mContext,
+								"la longueur de la liste de joueur :"
+										+ master.getJoueurs().size(),
+								Toast.LENGTH_LONG).show();
+						Toast.makeText(
+								mContext,
+								"la longueur de la liste de zombie :"
+										+ master.getZombies().size(),
+								Toast.LENGTH_LONG).show();
+						Log.v("Map.onLocationChanged", "création master passée");
+					} else {
+						master.deplacement(getPositionsJoueurs());
+					}
+					mapOverlays.clear();
+					// mapOverlays.add(master.getDestinationLayer());
+					mapOverlays.add(master.getJoueurs());
+					mapOverlays.add(master.getZombies());
+					Log.v(TAG, "la longueur de la liste de joueur :"
+							+ master.getJoueurs().size());
+					Log.v(TAG, "la longueur de la liste de zombie :"
+							+ master.getZombies().size());
+				}
+				handler.postDelayed(timedTask, 500);
+			} catch (Exception e) {
+				Toast.makeText(mContext, "run: " + e.toString(),
+						Toast.LENGTH_LONG).show();
+			}
+		}
+	};
 }
