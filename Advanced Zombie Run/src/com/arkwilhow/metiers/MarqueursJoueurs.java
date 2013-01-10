@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
-
+import com.arkwilhow.advzombierun.R;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapView;
@@ -22,10 +23,15 @@ public class MarqueursJoueurs extends ItemizedOverlay {
 
 	private ArrayList<Joueur> listeMarqueur = new ArrayList<Joueur>();
 	private Context mContext;
+	private GeoPoint destination;
 
-	public MarqueursJoueurs(Drawable arg0) {
-		super(boundCenterBottom(arg0));
-		// TODO Auto-generated constructor stub
+	public MarqueursJoueurs(Drawable defaultMarker) {
+		super(boundCenterBottom(defaultMarker));
+	}
+
+	public MarqueursJoueurs(Drawable defaultMarker, Context context) {
+		super(boundCenterBottom(defaultMarker));
+		mContext = context;
 	}
 
 	public ArrayList<Joueur> getListeMarqueur() {
@@ -34,11 +40,6 @@ public class MarqueursJoueurs extends ItemizedOverlay {
 
 	public void setListeMarqueur(ArrayList<Joueur> listeMarqueur) {
 		this.listeMarqueur = listeMarqueur;
-	}
-
-	public MarqueursJoueurs(Drawable defaultMarker, Context context) {
-		super(boundCenterBottom(defaultMarker));
-		mContext = context;
 	}
 
 	@Override
@@ -57,20 +58,44 @@ public class MarqueursJoueurs extends ItemizedOverlay {
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent arg0, MapView arg1) {
+	public boolean onTouchEvent(MotionEvent event, MapView map) {
 		// super.onTouchEvent(arg0, arg1);
 		return false;
 	}
 
 	@Override
-	public boolean onTap(GeoPoint arg0, MapView arg1) {
-		// super.onTap(arg0, arg1);
+	public boolean onTap(GeoPoint point, MapView map) {
+		if (destination == null) {
+			final GeoPoint tmp = point;
+			AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+			dialog.setTitle(mContext.getText(R.string.diag_destination_title));
+			dialog.setMessage(mContext.getText(R.string.diag_destination_text));
+			dialog.setCancelable(true);
+			dialog.setPositiveButton(R.string.diag_yes,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							destination = tmp;
+						}
+					});
+			dialog.setNegativeButton(R.string.diag_no,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) { // Do
+																					// Nothing
+						}
+					});
+			dialog.show();
+			return true;
+		}
 		return false;
 	}
 
+	public GeoPoint getDestination() {
+		return destination;
+	}
+
 	@Override
-	protected boolean onTap(int arg0) {
-		OverlayItem item = listeMarqueur.get(arg0);
+	protected boolean onTap(int index) {
+		OverlayItem item = listeMarqueur.get(index);
 		AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
 		dialog.setTitle(item.getTitle());
 		dialog.setMessage(item.getSnippet());

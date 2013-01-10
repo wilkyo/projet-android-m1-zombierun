@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.widget.Toast;
 
 /**
@@ -38,7 +39,7 @@ public class Map extends MapActivity {
 	// private MarqueursJoueurs itemizedoverlay;
 	private List<Overlay> mapOverlays;
 	private GameMaster master = null;
-	private Context mcontext;
+	private Context mContext;
 	private ArrayList<Location> positionsRecuperees;
 
 	private final static String TAG = "Map";
@@ -76,15 +77,15 @@ public class Map extends MapActivity {
 				if (master == null) {
 					SharedPreferences pref = getPreferences(MODE_PRIVATE);
 					MarqueursJoueurs joue = new MarqueursJoueurs(getResources()
-							.getDrawable(R.drawable.marqueurjoueur));
+							.getDrawable(R.drawable.marqueurjoueur), mContext);
 					joue.addMarqueur(new Joueur(point, "joueur",
 							"Je suis le joueur"));
 					master = new GameMaster(joue, new MarqueursZombies(
 							getResources().getDrawable(
-									R.drawable.marqueurzombi0)), pref.getInt(
-							"density", 0), pref.getInt("speed", 0),
+									R.drawable.marqueurzombi0), mContext),
+							pref.getInt("density", 0), pref.getInt("speed", 0),
 							pref.getInt("life", 0), pref.getInt("alert",
-									R.id.alertChoice1), mcontext);
+									R.id.alertChoice1), mContext);
 					master.liste_zombis();
 					Log.v("Map.onLocationChanged", "création master passée");
 				} else {
@@ -93,7 +94,7 @@ public class Map extends MapActivity {
 				}
 				mapOverlays.clear();
 				Toast.makeText(
-						mcontext,
+						mContext,
 						"la longueur de la liste de joueur :"
 								+ master.getJoueurs().size(), Toast.LENGTH_LONG)
 						.show();
@@ -101,7 +102,7 @@ public class Map extends MapActivity {
 						+ master.getJoueurs().size());
 				mapOverlays.add(master.getJoueurs());
 				Toast.makeText(
-						mcontext,
+						mContext,
 						"la longueur de la liste de zombie :"
 								+ master.getZombies().size(), Toast.LENGTH_LONG)
 						.show();
@@ -111,7 +112,7 @@ public class Map extends MapActivity {
 				mapOverlays.add(master.getZombies());
 				Log.v("Map.onLocationChanged", "affichage zombies passé");
 			} catch (Exception e) {
-				Toast.makeText(mcontext, "onLocationChanged: " + e.toString(),
+				Toast.makeText(mContext, "onLocationChanged: " + e.toString(),
 						Toast.LENGTH_LONG).show();
 			}
 		}
@@ -123,7 +124,7 @@ public class Map extends MapActivity {
 		try {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.map_layout);
-			mcontext = this;
+			mContext = this;
 			map = (MapView) findViewById(R.id.mapView);
 			map.setBuiltInZoomControls(true);
 			mc = map.getController();
@@ -142,7 +143,7 @@ public class Map extends MapActivity {
 			Log.v("Map.onCreate", "onCreate vaincu");
 		} catch (Exception e) {
 			Toast.makeText(
-					mcontext,
+					mContext,
 					"onCreate: " + e.getMessage() + " "
 							+ e.getLocalizedMessage(), Toast.LENGTH_LONG)
 					.show();
@@ -185,8 +186,6 @@ public class Map extends MapActivity {
 	protected void onStart() {
 		super.onStart();
 		checkGPS();
-		locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000,
-				10, listener);
 	}
 
 	/**
@@ -197,6 +196,7 @@ public class Map extends MapActivity {
 				.isProviderEnabled(LocationManager.GPS_PROVIDER);
 		if (!gpsEnabled) {
 			AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+			dialog.setCancelable(false);
 			dialog.setTitle("GPS non activé");
 			dialog.setMessage("Veuillez activez le GPS");
 			dialog.setPositiveButton("OK",
@@ -207,19 +207,29 @@ public class Map extends MapActivity {
 						}
 					});
 			dialog.show();
+		} else {
+			locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+					500, 2, listener);
 		}
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		Log.d("Map", "onTouchEvent");
+		return super.onTouchEvent(event);
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK
 				|| keyCode == KeyEvent.KEYCODE_HOME) {
-			//final KeyEvent e = event;
-			//final int k = keyCode;
+			// final KeyEvent e = event;
+			// final int k = keyCode;
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage(R.string.quit)
-					.setCancelable(false)
-					.setPositiveButton(R.string.oui,
+			builder.setTitle(R.string.diag_quit_title)
+					.setMessage(R.string.diag_quit_text)
+					.setCancelable(true)
+					.setPositiveButton(R.string.diag_yes,
 							new DialogInterface.OnClickListener() {
 
 								public void onClick(DialogInterface dialog,
@@ -227,7 +237,7 @@ public class Map extends MapActivity {
 									finish();
 								}
 							})
-					.setNegativeButton(R.string.non,
+					.setNegativeButton(R.string.diag_no,
 							new DialogInterface.OnClickListener() {
 
 								public void onClick(DialogInterface dialog,

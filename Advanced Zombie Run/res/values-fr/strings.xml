@@ -4,7 +4,7 @@
     <string name="app_name">Advanced Zombie Run</string>
     <string name="hello_world">Salut tout le monde</string>
     <string name="menu_settings">Paramètres</string>
-        <string name="title_activity_roomstayhost">Salle d attente</string>
+    <string name="title_activity_roomstayhost">Salle d attente</string>
 
     <!-- String activity_multi_player -->
     <string name="title_activity_multi_player">Multi-Joueurs</string>
@@ -49,12 +49,18 @@
     <string name="francois">Willy FRANCOIS</string>
     <string name="perrin">Jean-Baptiste PERRIN</string>
     <string name="rubagotti">Joris RUBAGOTTI</string>
-    
-    <!--  String AlertDialog -->
-    <string name="diagtitle">WIFI n est pas activé</string>
-    <string name="diagtext">Veuillez activer le WIFI pour jouer en multijoueur</string>
-    <string name="diagprevious">Menu</string>
-    <string name="diagok">OK</string>
+
+    <!-- String AlertDialog -->
+    <string name="diag_wifi_title">WIFI n est pas activé</string>
+    <string name="diag_wifi_text">Veuillez activer le WIFI pour jouer en multijoueur</string>
+    <string name="diag_main_previous">Menu</string>
+    <string name="diag_ok">OK</string>
+    <string name="diag_destination_title">Destination choisie</string>
+    <string name="diag_destination_text">Voulez vous choisir cette destination ?</string>
+    <string name="diag_quit_title">Attention</string>
+    <string name="diag_quit_text">Quitter le jeu ?</string>
+    <string name="diag_yes">Oui</string>
+    <string name="diag_no">Non</string>
 
     <string-array name="densities_array">
         <item>Basse</item>
@@ -76,8 +82,5 @@
         <item>100</item>
         <item>Over nine thousand</item>
     </string-array>
-    <string name="quit">Voulez-vous quitter la partie ?</string>
-    <string name="oui">oui</string>
-    <string name="non">non</string>
 
 </resources>

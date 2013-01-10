@@ -10,6 +10,7 @@ import com.google.android.maps.GeoPoint;
 import android.content.Context;
 import android.location.Location;
 import android.os.Vibrator;
+import android.widget.Toast;
 
 public class GameMaster {
 	private MarqueursJoueurs joueurs;
@@ -19,7 +20,7 @@ public class GameMaster {
 	private int speed;
 	private int life;
 	private int alert;
-	private Context context;
+	private Context mContext;
 
 	public GameMaster(MarqueursJoueurs joueurs, MarqueursZombies zombies,
 			int density, int speed, int life, int alert, Context context) {
@@ -30,7 +31,7 @@ public class GameMaster {
 		this.speed = speed;
 		this.life = life;
 		this.alert = alert;
-		this.context = context;
+		this.mContext = context;
 	}
 
 	public MarqueursJoueurs getJoueurs() {
@@ -81,12 +82,12 @@ public class GameMaster {
 		this.alert = alert;
 	}
 
-	public Context getContext() {
-		return context;
+	public Context getMContext() {
+		return mContext;
 	}
 
-	public void setContext(Context context) {
-		this.context = context;
+	public void setMContext(Context context) {
+		this.mContext = context;
 	}
 
 	/**
@@ -154,6 +155,7 @@ public class GameMaster {
 	 */
 	// Gere les déplacements des zombis
 	public void deplacement(Location[] positions) {
+		Toast.makeText(mContext, "destination " + joueurs.getDestination().getLatitudeE6() + ", " + joueurs.getDestination().getLongitudeE6(), Toast.LENGTH_LONG).show();
 		updatePositionJoueurs(positions);
 		Location joueur = positions[0]; // Les zombies cherchent le VIP
 
@@ -300,7 +302,7 @@ public class GameMaster {
 			switch (alert) {
 			// Ici on envoi le message selon le choix du joueur
 			}
-			Vibrator vib = (Vibrator) context
+			Vibrator vib = (Vibrator) mContext
 					.getSystemService(Context.VIBRATOR_SERVICE);
 			vib.vibrate(1000);
 		}
