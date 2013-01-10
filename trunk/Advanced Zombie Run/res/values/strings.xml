@@ -52,10 +52,16 @@
     <string name="run_map">Launch test map</string>
 
     <!-- String AlertDialog -->
-    <string name="diagtitle">WIFI is not enable</string>
-    <string name="diagtext">Please launch WIFI to play in multiplayer</string>
-    <string name="diagprevious">Menu</string>
-    <string name="diagok">OK</string>
+    <string name="diag_wifi_title">WIFI is not enable</string>
+    <string name="diag_wifi_text">Please launch WIFI to play in multiplayer</string>
+    <string name="diag_destination_title">Destination Spotted</string>
+    <string name="diag_destination_text">Do you want to choose this destination ?</string>
+    <string name="diag_main_previous">Menu</string>
+    <string name="diag_ok">OK</string>
+    <string name="diag_quit_title">Warning</string>
+    <string name="diag_quit_text">Quit Game ?</string>
+    <string name="diag_yes">Yes</string>
+    <string name="diag_no">No</string>
 
     <string-array name="densities_array">
         <item>Low</item>
@@ -77,8 +83,5 @@
         <item>One Hundred</item>
         <item>Over nine thousand</item>
     </string-array>
-    <string name="quit">Quit game ?</string>
-    <string name="oui">yes</string>
-    <string name="non">no</string>
 
 </resources>

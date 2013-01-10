@@ -24,9 +24,13 @@ public class MarqueursZombies extends ItemizedOverlay {
 	private ArrayList<Zombie> listeMarqueur = new ArrayList<Zombie>();
 	private Context mContext;
 
-	public MarqueursZombies(Drawable arg0) {
-		super(boundCenterBottom(arg0));
-		// TODO Auto-generated constructor stub
+	public MarqueursZombies(Drawable defaultMarker) {
+		super(boundCenterBottom(defaultMarker));
+	}
+
+	public MarqueursZombies(Drawable defaultMarker, Context context) {
+		super(boundCenterBottom(defaultMarker));
+		mContext = context;
 	}
 
 	public ArrayList<Zombie> getListeMarqueur() {
@@ -35,11 +39,6 @@ public class MarqueursZombies extends ItemizedOverlay {
 
 	public void setListeMarqueur(ArrayList<Zombie> listeMarqueur) {
 		this.listeMarqueur = listeMarqueur;
-	}
-
-	public MarqueursZombies(Drawable defaultMarker, Context context) {
-		super(boundCenterBottom(defaultMarker));
-		mContext = context;
 	}
 
 	@Override

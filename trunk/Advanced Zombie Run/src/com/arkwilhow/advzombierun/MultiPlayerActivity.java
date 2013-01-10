@@ -164,15 +164,15 @@ public class MultiPlayerActivity extends Activity {
 	/* Fenetre d'alert si le wifi n'est pas activé */
 	public Dialog onCreateDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.diagtitle);
-		builder.setMessage(R.string.diagtext);
-		builder.setNegativeButton(R.string.diagok,
+		builder.setTitle(R.string.diag_wifi_title);
+		builder.setMessage(R.string.diag_wifi_text);
+		builder.setNegativeButton(R.string.diag_ok,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
 					}
 				});
-		builder.setPositiveButton(R.string.diagprevious,
+		builder.setPositiveButton(R.string.diag_main_previous,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						finish();
