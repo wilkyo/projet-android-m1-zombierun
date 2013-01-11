@@ -1,8 +1,6 @@
 package com.arkwilhow.metiers;
 
 import android.content.Context;
-import android.widget.Toast;
-
 import com.arkwilhow.advzombierun.R;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.OverlayItem;
@@ -55,8 +53,6 @@ public class Zombie extends OverlayItem {
 		if (enAlerte) {
 			setMarker(mContext.getResources().getDrawable(
 					R.drawable.marqueurzombi1));
-			Toast.makeText(mContext, "Marker: " + this.getMarker(0),
-					Toast.LENGTH_SHORT).show();
 		}
 	}
 

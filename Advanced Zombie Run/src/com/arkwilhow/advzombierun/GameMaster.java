@@ -157,6 +157,9 @@ public class GameMaster {
 
 	// renvoi une liste de OverlayItem, pour marquer les zombis
 	public void creerListeZombis() {
+		Toast.makeText(mContext, "D" + density, Toast.LENGTH_SHORT).show();
+		Toast.makeText(mContext, "S" + speed, Toast.LENGTH_SHORT).show();
+		Toast.makeText(mContext, "L" + life, Toast.LENGTH_SHORT).show();
 		for (int i = 0; i < density_array[density]; ++i) {
 			// On suppose que les zombies apparaissent dons une zone de
 			// 100m autour du joueur
