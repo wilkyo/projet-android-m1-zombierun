@@ -26,7 +26,7 @@ public class GameMaster {
 	private MarqueurDestination mdest;
 
 	public GameMaster(MarqueursJoueurs joueurs, MarqueursZombies zombies,
-			int density, int speed, int life, int alert, Context context) {
+			int density, int speed, int life, int alert, Context context, int refreshTime) {
 		super();
 		this.joueurs = joueurs;
 		this.zombies = zombies;
@@ -244,6 +244,7 @@ public class GameMaster {
 				zo.setEn_alerte(z.isEn_alerte(), mContext);
 				new_zombis.addMarqueur(zo);
 			} else {
+				Toast.makeText(mContext, "Je te vois...", Toast.LENGTH_SHORT).show();
 				for (int i = 0; i < positions.length; i++) {
 					lo.setLatitude(z.getPoint().getLatitudeE6() / 1E6F);
 					lo.setLongitude(z.getPoint().getLongitudeE6() / 1E6F);
