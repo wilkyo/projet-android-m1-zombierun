@@ -225,8 +225,8 @@ public class Map extends MapActivity {
 										R.drawable.marqueurzombi0), mContext);
 
 						master = new GameMaster(joueurs, zombies, pref.getInt(
-								"density", 3), pref.getInt("speed", 3),
-								pref.getInt("life", 3), pref.getInt("alert",
+								"density", 0), pref.getInt("speed", 0),
+								pref.getInt("life", 0), pref.getInt("alert",
 										R.id.alertChoice1), mContext,
 								REFRESH_TIME);
 						master.creerListeZombis();
@@ -236,11 +236,13 @@ public class Map extends MapActivity {
 						master.deplacement(getPositionsJoueurs());
 					}
 					mapOverlays.clear();
-					if (master.getMarqueurDest() != null)
-						mapOverlays.add(master.getMarqueurDest());
-					mapOverlays.add(master.getJoueurs());
-					if (master.zombisVisibles())
-						mapOverlays.add(master.getZombies());
+					if (master.getMarqueurDestination() != null)
+						mapOverlays.add(master.getMarqueurDestination());
+					mapOverlays.add(master.getMarqueursJoueurs());
+					if (master.zombisVisibles()) {
+						mapOverlays.add(master.getMarqueursZombies());
+						mapOverlays.add(master.getMarqueursZombiesAware());
+					}
 
 				}
 			} catch (Exception e) {

@@ -5,6 +5,7 @@ import com.arkwilhow.metiers.Joueur;
 import com.arkwilhow.metiers.MarqueurDestination;
 import com.arkwilhow.metiers.MarqueursJoueurs;
 import com.arkwilhow.metiers.MarqueursZombies;
+import com.arkwilhow.metiers.MarqueursZombiesAware;
 import com.arkwilhow.metiers.Zombie;
 import com.google.android.maps.GeoPoint;
 import android.content.Context;
@@ -13,8 +14,9 @@ import android.os.Vibrator;
 import android.widget.Toast;
 
 public class GameMaster {
-	private MarqueursJoueurs joueurs;
-	private MarqueursZombies zombies;
+	private MarqueursJoueurs marqueursJoueurs;
+	private MarqueursZombies marqueursZombies;
+	private MarqueursZombiesAware marqueursZombiesAware;
 	private final static int[] density_array = new int[] { 10, 20, 30, 40 };
 	private int density;
 	private final static int[] speed_array = new int[] { 1, 2, 3, 4 };
@@ -23,38 +25,47 @@ public class GameMaster {
 	private int life;
 	private int alert;
 	private Context mContext;
-	private MarqueurDestination mdest;
+	private MarqueurDestination marqueurDestination;
 	private int refresh_time;
 
-	public GameMaster(MarqueursJoueurs joueurs, MarqueursZombies zombies,
-			int density, int speed, int life, int alert, Context context,
-			int refreshTime) {
-		this.joueurs = joueurs;
-		this.zombies = zombies;
+	public GameMaster(MarqueursJoueurs marqueursJoueurs,
+			MarqueursZombies marqueursZombies, int density, int speed,
+			int life, int alert, Context context, int refreshTime) {
+		this.marqueursJoueurs = marqueursJoueurs;
+		this.marqueursZombies = marqueursZombies;
 		this.density = density;
 		this.speed = speed;
 		this.life = life;
 		this.alert = alert;
 		this.mContext = context;
-		this.mdest = new MarqueurDestination(mContext.getResources()
-				.getDrawable(R.drawable.marqueur_destination));
+		this.marqueurDestination = new MarqueurDestination(mContext
+				.getResources().getDrawable(R.drawable.marqueur_destination));
+		this.marqueursZombiesAware = new MarqueursZombiesAware(mContext
+				.getResources().getDrawable(R.drawable.marqueurzombi1),
+				mContext);
 		this.refresh_time = refreshTime;
 	}
 
-	public MarqueursJoueurs getJoueurs() {
-		return joueurs;
+	public MarqueursJoueurs getMarqueursJoueurs() {
+		return marqueursJoueurs;
 	}
 
-	public void setJoueurs(MarqueursJoueurs joueurs) {
-		this.joueurs = joueurs;
+	/*
+	 * public void setMarqueursJoueurs(MarqueursJoueurs joueurs) {
+	 * this.marqueursJoueurs = joueurs; }
+	 */
+
+	public MarqueursZombies getMarqueursZombies() {
+		return marqueursZombies;
 	}
 
-	public MarqueursZombies getZombies() {
-		return zombies;
-	}
+	/*
+	 * public void setMarqueursZombies(MarqueursZombies zombies) {
+	 * this.marqueursZombies = zombies; }
+	 */
 
-	public void setZombies(MarqueursZombies zombies) {
-		this.zombies = zombies;
+	public MarqueursZombiesAware getMarqueursZombiesAware() {
+		return marqueursZombiesAware;
 	}
 
 	public int getDensity() {
@@ -99,17 +110,18 @@ public class GameMaster {
 
 	public boolean zombisVisibles() {
 		// Possibilité de rajouter des cas
-		return joueurs.getDestination() != null;
+		return marqueursJoueurs.getDestination() != null;
 	}
 
-	public MarqueurDestination getMarqueurDest() {
-		if (joueurs.getMarkerDestination() == null) {
+	public MarqueurDestination getMarqueurDestination() {
+		if (marqueursJoueurs.getMarkerDestination() == null) {
 			return null;
 		} else {
-			if (mdest.size() == 0) {
-				mdest.addMarqueur(joueurs.getMarkerDestination());
+			if (marqueurDestination.size() == 0) {
+				marqueurDestination.addMarqueur(marqueursJoueurs
+						.getMarkerDestination());
 			}
-			return mdest;
+			return marqueurDestination;
 		}
 	}
 
@@ -157,14 +169,11 @@ public class GameMaster {
 
 	// renvoi une liste de OverlayItem, pour marquer les zombis
 	public void creerListeZombis() {
-		Toast.makeText(mContext, "D" + density, Toast.LENGTH_SHORT).show();
-		Toast.makeText(mContext, "S" + speed, Toast.LENGTH_SHORT).show();
-		Toast.makeText(mContext, "L" + life, Toast.LENGTH_SHORT).show();
 		for (int i = 0; i < density_array[density]; ++i) {
 			// On suppose que les zombies apparaissent dons une zone de
 			// 100m autour du joueur
-			zombies.addMarqueur(creerZombi(100,
-					joueurs.getListeMarqueur().get(0)));
+			marqueursZombies.addMarqueur(creerZombi(100, marqueursJoueurs
+					.getListeMarqueur().get(0)));
 		}
 	}
 
@@ -176,7 +185,7 @@ public class GameMaster {
 	 */
 	// Gere les déplacements des zombis
 	public void deplacement(Location[] positions) {
-		if (joueurs.getDestination() == null)
+		if (marqueursJoueurs.getDestination() == null)
 			return;
 
 		updatePositionJoueurs(positions);
@@ -184,10 +193,11 @@ public class GameMaster {
 		Location joueur = new Location(""); // Les zombies cherchent le VIP
 
 		// On recupere la liste des zombis que contient un marqueur
-		ArrayList<Zombie> zombis = zombies.getListeMarqueur();
-		MarqueursZombies new_zombis = new MarqueursZombies(mContext
-				.getResources().getDrawable(R.drawable.marqueurzombi0),
-				mContext);
+		Zombie[] zombisArray = marqueursZombies.getListeMarqueur().toArray(
+				new Zombie[1]);
+		marqueursZombies.clear();
+		// MarqueursZombies new_zombis = new
+		// MarqueursZombies(mContext.getResources().getDrawable(R.drawable.marqueurzombi0),mContext);
 		Location dest = new Location("");
 		Location lo = new Location("");
 		int d = speed_array[speed] * refresh_time;
@@ -201,7 +211,7 @@ public class GameMaster {
 		double distRatio = d / radiusTerreMetres;
 		GeoPoint g;
 		// OverlayItem ov;
-		for (Zombie z : zombis) {
+		for (Zombie z : zombisArray) {
 			if (z.isEnAlerte()) {
 				/*
 				 * Deplacement du zombi en direction du joueur en fonction de
@@ -248,43 +258,39 @@ public class GameMaster {
 					joueurTouched();
 				Zombie zo = new Zombie(g, "Zombie", "Beuh");
 				zo.setEnAlerte(z.isEnAlerte(), mContext);
-				new_zombis.addMarqueur(zo);
+				marqueursZombies.addMarqueur(zo);
 			} else {
 				lo.setLatitude(z.getPoint().getLatitudeE6() / 1E6F);
 				lo.setLongitude(z.getPoint().getLongitudeE6() / 1E6F);
 				for (int i = 0; i < positions.length; i++) {
-					Toast.makeText(mContext,
-							"Je te cherche " + positions[i].distanceTo(lo),
-							Toast.LENGTH_SHORT).show();
 					if (positions[i].distanceTo(lo) < 100) {
-						Toast.makeText(mContext, "Je te vois...",
-								Toast.LENGTH_SHORT).show();
-						z.setEnAlerte(true, mContext);
+						// z.setEnAlerte(true, mContext);
 					}
 				}
-				new_zombis.addMarqueur(z);
+				marqueursZombies.addMarqueur(z);
 			}
 		}
-		zombies = new_zombis;
+		// zombies = new_zombis;
 	}
 
 	private void updatePositionJoueurs(Location[] positionJoueurs) {
-		Joueur[] players = joueurs.getListeMarqueur().toArray(new Joueur[1]);
+		Joueur[] players = marqueursJoueurs.getListeMarqueur().toArray(
+				new Joueur[1]);
 		// MarqueursJoueurs nouv = new
 		// MarqueursJoueurs(mContext.getResources().getDrawable(R.drawable.marqueurjoueur),
 		// mContext);
-		joueurs.clear();
+		marqueursJoueurs.clear();
 		for (int i = 0; i < players.length; i++) {
 			Joueur j = players[i];
 			GeoPoint nouveauPoint = new GeoPoint(
 					(int) (positionJoueurs[i].getLatitude() * 1e6),
 					(int) (positionJoueurs[i].getLongitude() * 1e6));
-			joueurs.addMarqueur(new Joueur(nouveauPoint, j.getTitle(), j
-					.getSnippet()));
+			marqueursJoueurs.addMarqueur(new Joueur(nouveauPoint, j.getTitle(),
+					j.getSnippet()));
 		}
 		Location l = new Location("");
-		l.setLatitude(getJoueurs().getDestination().getLatitudeE6() / 1E6F);
-		l.setLongitude(getJoueurs().getDestination().getLongitudeE6() / 1E6F);
+		l.setLatitude(getMarqueursJoueurs().getDestination().getLatitudeE6() / 1E6F);
+		l.setLongitude(getMarqueursJoueurs().getDestination().getLongitudeE6() / 1E6F);
 		if (positionJoueurs[0].distanceTo(l) < 5)
 			gagner();
 
@@ -305,7 +311,7 @@ public class GameMaster {
 	 * 
 	 */
 	public void verifieZombis() {
-		ArrayList<Zombie> zombis = zombies.getListeMarqueur();
+		ArrayList<Zombie> zombis = marqueursZombies.getListeMarqueur();
 		Location l = new Location("");
 		double lat1, long1;
 		int r = 100; // La distance maximale à laquelle un zombie peut se
@@ -319,7 +325,7 @@ public class GameMaster {
 			long1 = z.getPoint().getLongitudeE6() / 1E6F;
 			l.setLatitude(lat1);
 			l.setLongitude(long1);
-			for (Joueur j : joueurs.getListeMarqueur()) {
+			for (Joueur j : marqueursJoueurs.getListeMarqueur()) {
 				joueur.setLatitude(j.getPoint().getLatitudeE6());
 				joueur.setLongitude(j.getPoint().getLongitudeE6());
 				if (joueur.distanceTo(l) > r) {
@@ -327,8 +333,8 @@ public class GameMaster {
 				}
 			}
 			if (trop_loin) {
-				zombies.addMarqueur(creerZombi(100, joueurs.getListeMarqueur()
-						.get(0)));
+				marqueursZombies.addMarqueur(creerZombi(100, marqueursJoueurs
+						.getListeMarqueur().get(0)));
 				// Il faut aussi supprimer le zombie
 			}
 		}
@@ -355,14 +361,14 @@ public class GameMaster {
 
 	// Renvoi le joueur le plus proche de la Location en paramètres
 	public Joueur plusProcheJoueur(Location loc) {
-		Joueur j = joueurs.getListeMarqueur().get(0);
+		Joueur j = marqueursJoueurs.getListeMarqueur().get(0);
 		Location l = new Location("");
 		Location lo = new Location("");
 
 		l.setLatitude(j.getPoint().getLatitudeE6());
 		l.setLongitude(j.getPoint().getLongitudeE6());
 
-		for (Joueur jo : joueurs.getListeMarqueur()) {
+		for (Joueur jo : marqueursJoueurs.getListeMarqueur()) {
 			lo.setLatitude(jo.getPoint().getLatitudeE6());
 			lo.setLongitude(jo.getPoint().getLongitudeE6());
 			if (lo.distanceTo(loc) < l.distanceTo(loc)) {

@@ -3,23 +3,24 @@
     package="com.arkwilhow.advzombierun"
     android:versionCode="1"
     android:versionName="1.0" >
-	
+
     <uses-sdk
         android:minSdkVersion="9"
         android:targetSdkVersion="17" />
 
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"> </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
+    </uses-permission>
 
     <uses-feature android:name="android.hardware.wifi" />
-    
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -36,7 +37,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.arkwilhow.advzombierun.Map" >
+        <activity
+            android:name="com.arkwilhow.advzombierun.Map"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.arkwilhow.advzombierun.PreferencesActivity"
@@ -50,7 +53,7 @@
             android:name="com.arkwilhow.advzombierun.AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
-                <activity
+        <activity
             android:name="com.arkwilhow.advzombierun.RoomStayHostActivity"
             android:label="@string/title_activity_roomstayhost" >
         </activity>
