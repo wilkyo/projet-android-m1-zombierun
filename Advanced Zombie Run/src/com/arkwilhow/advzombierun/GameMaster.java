@@ -7,9 +7,6 @@ import com.arkwilhow.metiers.MarqueursJoueurs;
 import com.arkwilhow.metiers.MarqueursZombies;
 import com.arkwilhow.metiers.Zombie;
 import com.google.android.maps.GeoPoint;
-import com.google.android.maps.ItemizedOverlay;
-import com.google.android.maps.OverlayItem;
-
 import android.content.Context;
 import android.location.Location;
 import android.os.Vibrator;
@@ -100,7 +97,7 @@ public class GameMaster {
 		return joueurs.getDestination() != null;
 	}
 
-	public ItemizedOverlay<OverlayItem> getMarqueurDest() {
+	public MarqueurDestination getMarqueurDest() {
 		if (joueurs.getMarkerDestination() == null) {
 			return null;
 		} else {
