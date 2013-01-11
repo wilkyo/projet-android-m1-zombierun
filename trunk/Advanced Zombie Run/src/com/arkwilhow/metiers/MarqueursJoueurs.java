@@ -23,7 +23,8 @@ public class MarqueursJoueurs extends ItemizedOverlay {
 
 	private ArrayList<Joueur> listeMarqueur = new ArrayList<Joueur>();
 	private Context mContext;
-	private GeoPoint destination;
+	private GeoPoint destination = null;
+	private OverlayItem MarqueurDest = null;
 
 	public MarqueursJoueurs(Drawable defaultMarker) {
 		super(boundCenterBottom(defaultMarker));
@@ -75,12 +76,17 @@ public class MarqueursJoueurs extends ItemizedOverlay {
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
 							destination = tmp;
+							MarqueurDest = new OverlayItem(destination,
+									(String) mContext
+											.getText(R.string.marquerdesttit),
+									(String) mContext
+											.getText(R.string.marqueurdestmsg));
 						}
 					});
 			dialog.setNegativeButton(R.string.diag_no,
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) { // Do
-																					// Nothing
+							// Nothing
 						}
 					});
 			dialog.show();
@@ -105,5 +111,9 @@ public class MarqueursJoueurs extends ItemizedOverlay {
 
 	public void clear() {
 		listeMarqueur.clear();
+	}
+
+	public OverlayItem getMarkerDestination() {
+		return MarqueurDest;
 	}
 }

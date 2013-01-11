@@ -84,5 +84,7 @@
         <item>100</item>
         <item>Over nine thousand</item>
     </string-array>
+    <string name="marquerdesttit">La destination</string>
+    <string name="marqueurdestmsg">Vous devez aller la-bas.</string>
 
 </resources>

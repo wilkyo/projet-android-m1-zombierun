@@ -148,6 +148,7 @@ public class Map extends MapActivity {
 			dialog.setMessage(getText(R.string.diag_gps_text));
 			dialog.setPositiveButton(getText(R.string.diag_ok),
 					new DialogInterface.OnClickListener() {
+
 						public void onClick(DialogInterface dialog, int which) {
 							enableLocationSettings();
 						}
@@ -244,7 +245,8 @@ public class Map extends MapActivity {
 						master.deplacement(getPositionsJoueurs());
 					}
 					mapOverlays.clear();
-					// mapOverlays.add(master.getDestinationLayer());
+					if(master.getMarqueurDest() != null)
+						mapOverlays.add(master.getMarqueurDest());
 					mapOverlays.add(master.getJoueurs());
 					if (master.zombisVisibles())
 						mapOverlays.add(master.getZombies());

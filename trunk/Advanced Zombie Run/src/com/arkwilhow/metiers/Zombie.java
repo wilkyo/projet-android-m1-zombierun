@@ -1,5 +1,8 @@
 package com.arkwilhow.metiers;
 
+import android.content.Context;
+
+import com.arkwilhow.advzombierun.R;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.OverlayItem;
 
@@ -46,8 +49,13 @@ public class Zombie extends OverlayItem {
 	 * @param en_alerte
 	 *            le nouvel éétat du zombie
 	 */
-	public void setEn_alerte(boolean en_alerte) {
+	public void setEn_alerte(boolean en_alerte,Context mcontext) {
 		this.en_alerte = en_alerte;
+		if(en_alerte)
+		{
+			setMarker(mcontext.getResources().getDrawable(R.drawable.marqueurzombi1));
+		}
 	}
+	
 
 }
