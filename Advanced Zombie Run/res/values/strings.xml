@@ -54,11 +54,11 @@
     <!-- String AlertDialog -->
     <string name="diag_gps_title">GPS not activated</string>
     <string name="diag_gps_text">You have to activate it</string>
-    <string name="diag_wifi_title">WIFI is not enable</string>
+    <!--  <string name="diag_wifi_title">WIFI is not enable</string> -->
     <string name="diag_wifi_text">Please launch WIFI to play in multiplayer</string>
     <string name="diag_destination_title">Destination Spotted</string>
     <string name="diag_destination_text">Do you want to choose this destination ?</string>
-    <string name="diag_main_previous">Menu</string>
+    <string name="diag_backMenu">Back to menu</string>
     <string name="diag_ok">OK</string>
     <string name="diag_quit_title">Warning</string>
     <string name="diag_quit_text">Quit Game ?</string>

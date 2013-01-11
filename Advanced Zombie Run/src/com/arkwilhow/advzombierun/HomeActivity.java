@@ -38,14 +38,12 @@ public class HomeActivity extends Activity {
 	}
 
 	public void openMulti(View v) {
-		PreferencesActivity.setMulti(true);
 		Intent i = new Intent();
 		i.setClass(this, MultiPlayerActivity.class);
 		startActivity(i);
 	}
 
 	public void openPreferences(View v) {
-		PreferencesActivity.setMulti(false);
 		Intent i = new Intent();
 		i.setClass(this, PreferencesActivity.class);
 		i.putExtra("multi", false);

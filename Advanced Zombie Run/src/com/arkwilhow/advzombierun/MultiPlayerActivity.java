@@ -1,14 +1,12 @@
 package com.arkwilhow.advzombierun;
 
 import java.util.ArrayList;
-import java.util.List;
-import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -25,14 +23,14 @@ import android.widget.TextView;
 public class MultiPlayerActivity extends Activity {
 
 	/* private int[] gamesIds; */
-	List<ScanResult> wifiList;
-	String sb;
+	BluetoothAdapter mBluetoothAdapter;
 	ArrayList<String> hostedGames = new ArrayList<String>();
 	ListView listView;
 	int nid = 0;
 	boolean firstpass = false;
 	ArrayAdapter<String> adapter;
 	private static final String PREFIXE_MULTI = "AZR-";
+	private final static int REQUEST_ENABLE_BT = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,33 +38,12 @@ public class MultiPlayerActivity extends Activity {
 		setContentView(R.layout.activity_multi_player);
 
 		listView = (ListView) findViewById(R.id.hostedGamesList);
-
+		runBluetooth();
+		
+		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				TextView text = (TextView) view
-						.findViewById(android.R.id.text1);
-				String content = text.getText().toString();
-
-				WifiConfiguration wfc = new WifiConfiguration();
-				wfc.SSID = "\"".concat(content).concat("\"");
-				wfc.status = WifiConfiguration.Status.DISABLED;
-				wfc.priority = 40;
-				wfc.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
-				wfc.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
-				wfc.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
-				wfc.allowedPairwiseCiphers
-						.set(WifiConfiguration.PairwiseCipher.CCMP);
-				wfc.allowedPairwiseCiphers
-						.set(WifiConfiguration.PairwiseCipher.TKIP);
-				wfc.allowedGroupCiphers
-						.set(WifiConfiguration.GroupCipher.WEP40);
-				wfc.allowedGroupCiphers
-						.set(WifiConfiguration.GroupCipher.WEP104);
-				wfc.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
-				wfc.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
-				wfc.preSharedKey = "\"".concat("pojnootankurdenwooc8").concat(
-						"\"");
 				testclient(view);
 			}
 		});
@@ -129,21 +106,28 @@ public class MultiPlayerActivity extends Activity {
 	}
 
 	public void previous(View v) {
+		mBluetoothAdapter.disable();
 		finish();
+	}
+
+	public void runBluetooth() {
+		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+		if (mBluetoothAdapter == null) {
+			onCreateDialog();
+		} else {
+			if (!mBluetoothAdapter.isEnabled()) {
+				Intent enableBtIntent = new Intent(
+						BluetoothAdapter.ACTION_REQUEST_ENABLE);
+				startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+			}
+		}
 	}
 
 	/* Fenetre d'alert si le wifi n'est pas activé */
 	public Dialog onCreateDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.diag_wifi_title);
 		builder.setMessage(R.string.diag_wifi_text);
-		builder.setNegativeButton(R.string.diag_ok,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-					}
-				});
-		builder.setPositiveButton(R.string.diag_main_previous,
+		builder.setNeutralButton(R.string.diag_backMenu,
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						finish();
@@ -154,6 +138,7 @@ public class MultiPlayerActivity extends Activity {
 
 	/* A conserver pour plus tard */
 	public void testhost(View v) {
+		mBluetoothAdapter.setName("AZR-Host-" + mBluetoothAdapter.getName());
 		Intent i = new Intent();
 		i.setClass(this, PreferencesActivity.class);
 		i.putExtra("multi", true);
