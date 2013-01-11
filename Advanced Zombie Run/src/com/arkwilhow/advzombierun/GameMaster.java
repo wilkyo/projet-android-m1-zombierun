@@ -9,8 +9,10 @@ import com.arkwilhow.metiers.MarqueursZombiesAware;
 import com.arkwilhow.metiers.Zombie;
 import com.google.android.maps.GeoPoint;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Vibrator;
+import android.util.Log;
 import android.widget.Toast;
 
 public class GameMaster {
@@ -27,6 +29,7 @@ public class GameMaster {
 	private Context mContext;
 	private MarqueurDestination marqueurDestination;
 	private int refresh_time;
+	private String TAG = "GameMaster";
 
 	public GameMaster(MarqueursJoueurs marqueursJoueurs,
 			MarqueursZombies marqueursZombies, int density, int speed,
@@ -185,33 +188,33 @@ public class GameMaster {
 	 */
 	// Gere les déplacements des zombis
 	public void deplacement(Location[] positions) {
+		updatePositionJoueurs(positions);
+
 		if (marqueursJoueurs.getDestination() == null)
 			return;
 
-		updatePositionJoueurs(positions);
-
-		Location joueur = new Location(""); // Les zombies cherchent le VIP
-
 		// On recupere la liste des zombis que contient un marqueur
 		Zombie[] zombisArray = marqueursZombies.getListeMarqueur().toArray(
-				new Zombie[1]);
+				new Zombie[0]);
+		Zombie[] zombiesAwareArray = marqueursZombiesAware.getListeMarqueur()
+				.toArray(new Zombie[0]);
 		marqueursZombies.clear();
+		marqueursZombiesAware.clear();
 		// MarqueursZombies new_zombis = new
 		// MarqueursZombies(mContext.getResources().getDrawable(R.drawable.marqueurzombi0),mContext);
 		Location dest = new Location("");
-		Location lo = new Location("");
+		Location locationDistante = new Location("");
 		int d = speed_array[speed] * refresh_time;
-		// Si speed est exprime en m/s et qu'on a un refresh de la carte toutes
-		// les secondes
-		// Alors la distane parcourue est égale a speed
+		// d = v * t
 		double angle, anglerad;
 		double lat2, long2;
 		double lat1, long1;
 		double radiusTerreMetres = 6371010;
 		double distRatio = d / radiusTerreMetres;
 		GeoPoint g;
-		// OverlayItem ov;
-		for (Zombie z : zombisArray) {
+
+		// Boucle des zombis alertés
+		for (Zombie z : zombiesAwareArray) {
 			if (z.isEnAlerte()) {
 				/*
 				 * Deplacement du zombi en direction du joueur en fonction de
@@ -231,9 +234,12 @@ public class GameMaster {
 				dest.setLongitude(long1);
 
 				// On récupére le joueur le plus proche du zombi en cours
-				lo.setLatitude(lat1);
-				lo.setLongitude(long1);
-				Joueur j = plusProcheJoueur(lo);
+				locationDistante.setLatitude(lat1);
+				locationDistante.setLongitude(long1);
+				Joueur j = plusProcheJoueur(locationDistante);
+
+				Location joueur = new Location(""); // Les zombies cherchent un
+													// joueur
 				joueur.setLatitude(((double) j.getPoint().getLatitudeE6()) / 1e6);
 				joueur.setLongitude(((double) j.getPoint().getLongitudeE6()) / 1e6);
 
@@ -254,50 +260,80 @@ public class GameMaster {
 				Location l = new Location("");
 				l.setLatitude(z.getPoint().getLatitudeE6() / 1E6F);
 				l.setLongitude(z.getPoint().getLongitudeE6() / 1E6F);
+
 				if (joueur.distanceTo(l) <= d)
 					joueurTouched();
-				Zombie zo = new Zombie(g, "Zombie", "Beuh");
-				zo.setEnAlerte(z.isEnAlerte(), mContext);
-				marqueursZombies.addMarqueur(zo);
+
+				// Zombie zo = new Zombie(g, "Zombie", "Beuh");
+				// zo.setEnAlerte(z.isEnAlerte(), mContext);
+				marqueursZombiesAware.addMarqueur(z);
 			} else {
-				lo.setLatitude(z.getPoint().getLatitudeE6() / 1E6F);
-				lo.setLongitude(z.getPoint().getLongitudeE6() / 1E6F);
-				for (int i = 0; i < positions.length; i++) {
-					if (positions[i].distanceTo(lo) < 100) {
-						// z.setEnAlerte(true, mContext);
-					}
-				}
-				marqueursZombies.addMarqueur(z);
+				Log.d(TAG, "aware pas en alerte");
+				Toast.makeText(mContext, "Zombie Aware non alerté",
+						Toast.LENGTH_SHORT).show();
 			}
 		}
-		// zombies = new_zombis;
+
+		// Boucle des zombis non alertés
+		for (Zombie z : zombisArray) {
+			if (z.isEnAlerte()) {
+				Log.d(TAG, "notaware, en alerte");
+				Toast.makeText(mContext, "Zombie NonAware en alerte",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				locationDistante
+						.setLatitude(z.getPoint().getLatitudeE6() / 1E6F);
+				locationDistante
+						.setLongitude(z.getPoint().getLongitudeE6() / 1E6F);
+				for (int i = 0; i < positions.length; i++) {
+					if (positions[i].distanceTo(locationDistante) < 100) {
+						z.setEnAlerte(true, mContext);
+						Zombie nouv = new Zombie(z.getPoint(), z.getTitle(),
+								z.getSnippet());
+						marqueursZombiesAware.addMarqueur(nouv);
+					} else {
+						marqueursZombies.addMarqueur(z);
+					}
+				}
+			}
+		}
 	}
 
 	private void updatePositionJoueurs(Location[] positionJoueurs) {
-		Joueur[] players = marqueursJoueurs.getListeMarqueur().toArray(
-				new Joueur[1]);
-		// MarqueursJoueurs nouv = new
-		// MarqueursJoueurs(mContext.getResources().getDrawable(R.drawable.marqueurjoueur),
-		// mContext);
-		marqueursJoueurs.clear();
-		for (int i = 0; i < players.length; i++) {
-			Joueur j = players[i];
-			GeoPoint nouveauPoint = new GeoPoint(
-					(int) (positionJoueurs[i].getLatitude() * 1e6),
-					(int) (positionJoueurs[i].getLongitude() * 1e6));
-			marqueursJoueurs.addMarqueur(new Joueur(nouveauPoint, j.getTitle(),
-					j.getSnippet()));
-		}
-		Location l = new Location("");
-		l.setLatitude(getMarqueursJoueurs().getDestination().getLatitudeE6() / 1E6F);
-		l.setLongitude(getMarqueursJoueurs().getDestination().getLongitudeE6() / 1E6F);
-		if (positionJoueurs[0].distanceTo(l) < 5)
-			gagner();
+		try {
+			Joueur[] joueurs = marqueursJoueurs.getListeMarqueur().toArray(
+					new Joueur[0]);
+			marqueursJoueurs.clear();
 
+			for (int i = 0; i < joueurs.length; i++) {
+				Joueur j = joueurs[i];
+				GeoPoint nouveauPoint = new GeoPoint(
+						(int) (positionJoueurs[i].getLatitude() * 1e6),
+						(int) (positionJoueurs[i].getLongitude() * 1e6));
+				marqueursJoueurs.addMarqueur(new Joueur(nouveauPoint, j
+						.getTitle(), j.getSnippet()));
+			}
+
+			GeoPoint destination = getMarqueursJoueurs().getDestination();
+			if (destination != null) {
+				Location l = new Location("");
+				l.setLatitude(destination.getLatitudeE6() / 1E6F);
+				l.setLongitude(destination.getLongitudeE6() / 1E6F);
+				if (positionJoueurs[0].distanceTo(l) < 5)
+					gagner();
+			}
+		} catch (Exception e) {
+			Toast.makeText(mContext, "updatePositionJoueurs: " + e.toString(),
+					Toast.LENGTH_LONG).show();
+		}
 	}
 
 	public void gagner() {
 		Toast.makeText(mContext, "Victory", Toast.LENGTH_LONG).show();
+		/*
+		 * TODO GameEnd.setVictory(true); Intent i = new Intent(mContext,
+		 * GameEndActivity.class); i.start(); mContext.finish();
+		 */
 	}
 
 	public static double DegreesToRadians(double degrees) {
@@ -344,8 +380,13 @@ public class GameMaster {
 	 * Déclenche les evenements après qu'un zombi ait rattrapé le joueur
 	 */
 	public void joueurTouched() {
-		if (life_array[life] == 1) {
+		if (life_array[life] <= 1) {
+			Toast.makeText(mContext, "Echec", Toast.LENGTH_SHORT).show();
 			// On stoppe le jeu
+			/*
+			 * TODO GameEnd.setVictory(false); Intent i = new Intent(mContext,
+			 * GameEndActivity.class); i.start(); mContext.finish();
+			 */
 		} else {
 			// On diminue la vie du joueur
 			life--;

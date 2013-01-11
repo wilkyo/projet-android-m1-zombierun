@@ -29,7 +29,7 @@ public class MultiPlayerActivity extends Activity {
 	int nid = 0;
 	boolean firstpass = false;
 	ArrayAdapter<String> adapter;
-	private static final String PREFIXE_MULTI = "AZR-";
+	//private static final String PREFIXE_MULTI = "AZR-";
 	private final static int REQUEST_ENABLE_BT = 1;
 
 	@Override
@@ -142,7 +142,6 @@ public class MultiPlayerActivity extends Activity {
 		Intent i = new Intent();
 		i.setClass(this, PreferencesActivity.class);
 		i.putExtra("multi", true);
-		i.putExtra("home", false);
 		startActivity(i);
 	}
 

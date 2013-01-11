@@ -29,8 +29,6 @@ import android.widget.Toast;
 /**
  * Activité pour l'affichage de la map
  * 
- * @author ”Jean-Baptiste Perrin”
- * 
  */
 public class Map extends MapActivity {
 	private MapView map;
