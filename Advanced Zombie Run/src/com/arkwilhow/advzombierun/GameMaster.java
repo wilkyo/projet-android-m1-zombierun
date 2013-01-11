@@ -2,10 +2,14 @@ package com.arkwilhow.advzombierun;
 
 import java.util.ArrayList;
 import com.arkwilhow.metiers.Joueur;
+import com.arkwilhow.metiers.MarqueurDestination;
 import com.arkwilhow.metiers.MarqueursJoueurs;
 import com.arkwilhow.metiers.MarqueursZombies;
 import com.arkwilhow.metiers.Zombie;
 import com.google.android.maps.GeoPoint;
+import com.google.android.maps.ItemizedOverlay;
+import com.google.android.maps.OverlayItem;
+
 import android.content.Context;
 import android.location.Location;
 import android.os.Vibrator;
@@ -19,6 +23,7 @@ public class GameMaster {
 	private int life;
 	private int alert;
 	private Context mContext;
+	private MarqueurDestination mdest;
 
 	public GameMaster(MarqueursJoueurs joueurs, MarqueursZombies zombies,
 			int density, int speed, int life, int alert, Context context) {
@@ -30,6 +35,8 @@ public class GameMaster {
 		this.life = life;
 		this.alert = alert;
 		this.mContext = context;
+		this.mdest = new MarqueurDestination(mContext.getResources()
+				.getDrawable(R.drawable.marqueur_destination));
 	}
 
 	public MarqueursJoueurs getJoueurs() {
@@ -91,6 +98,17 @@ public class GameMaster {
 	public boolean zombisVisibles() {
 		// Possibilité de rajouter des cas
 		return joueurs.getDestination() != null;
+	}
+
+	public ItemizedOverlay<OverlayItem> getMarqueurDest() {
+		if (joueurs.getMarkerDestination() == null) {
+			return null;
+		} else {
+			if (mdest.size() == 0) {
+				mdest.addMarqueur(joueurs.getMarkerDestination());
+			}
+			return mdest;
+		}
 	}
 
 	/**
@@ -221,14 +239,14 @@ public class GameMaster {
 				if (joueur.distanceTo(l) <= d)
 					joueurTouched();
 				Zombie zo = new Zombie(g, "Zombie", "Beuh");
-				zo.setEn_alerte(z.isEn_alerte());
+				zo.setEn_alerte(z.isEn_alerte(),mContext);
 				new_zombis.add(zo);
 			} else {
 				for (int i = 0; i < positions.length; i++) {
 					lo.setLatitude(z.getPoint().getLatitudeE6() / 1E6F);
 					lo.setLongitude(z.getPoint().getLongitudeE6() / 1E6F);
 					if (positions[i].distanceTo(lo) < 20)
-						z.setEn_alerte(true);
+						z.setEn_alerte(true,mContext);
 				}
 				new_zombis.add(z);
 			}
