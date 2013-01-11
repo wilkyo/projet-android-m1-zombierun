@@ -17,7 +17,7 @@ import android.os.Vibrator;
 public class GameMaster {
 	private MarqueursJoueurs joueurs;
 	private MarqueursZombies zombies;
-	private final static int[] density_array = new int[] { 2, 20, 30, 40 };
+	private final static int[] density_array = new int[] { 10, 20, 30, 40 };
 	private int density;
 	private int speed;
 	private int life;
