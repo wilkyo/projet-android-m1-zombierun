@@ -59,12 +59,7 @@ public class Map extends MapActivity {
 		 * La position a changée
 		 */
 		public void onLocationChanged(Location location) {
-			try {
-				positionsRecuperees.set(0, location);
-			} catch (Exception e) {
-				Toast.makeText(mContext, "onLocationChanged: " + e.toString(),
-						Toast.LENGTH_LONG).show();
-			}
+			positionsRecuperees.set(0, location);
 		}
 	};
 
@@ -149,11 +144,10 @@ public class Map extends MapActivity {
 		if (!gpsEnabled) {
 			AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 			dialog.setCancelable(false);
-			dialog.setTitle("GPS non activé");
-			dialog.setMessage("Veuillez activez le GPS");
-			dialog.setPositiveButton("OK",
+			dialog.setTitle(getText(R.string.diag_gps_title));
+			dialog.setMessage(getText(R.string.diag_gps_text));
+			dialog.setPositiveButton(getText(R.string.diag_ok),
 					new DialogInterface.OnClickListener() {
-
 						public void onClick(DialogInterface dialog, int which) {
 							enableLocationSettings();
 						}
@@ -252,7 +246,8 @@ public class Map extends MapActivity {
 					mapOverlays.clear();
 					// mapOverlays.add(master.getDestinationLayer());
 					mapOverlays.add(master.getJoueurs());
-					mapOverlays.add(master.getZombies());
+					if (master.zombisVisibles())
+						mapOverlays.add(master.getZombies());
 					Log.v(TAG, "la longueur de la liste de joueur :"
 							+ master.getJoueurs().size());
 					Log.v(TAG, "la longueur de la liste de zombie :"

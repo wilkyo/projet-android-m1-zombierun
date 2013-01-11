@@ -51,6 +51,8 @@
     <string name="rubagotti">Joris RUBAGOTTI</string>
 
     <!-- String AlertDialog -->
+    <string name="diag_gps_title">GPS non activé</string>
+    <string name="diag_gps_text">Veuillez activez le GPS</string>
     <string name="diag_wifi_title">WIFI n est pas activé</string>
     <string name="diag_wifi_text">Veuillez activer le WIFI pour jouer en multijoueur</string>
     <string name="diag_main_previous">Menu</string>

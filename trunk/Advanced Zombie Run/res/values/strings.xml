@@ -52,6 +52,8 @@
     <string name="run_map">Launch test map</string>
 
     <!-- String AlertDialog -->
+    <string name="diag_gps_title">GPS not activated</string>
+    <string name="diag_gps_text">You have to activate it</string>
     <string name="diag_wifi_title">WIFI is not enable</string>
     <string name="diag_wifi_text">Please launch WIFI to play in multiplayer</string>
     <string name="diag_destination_title">Destination Spotted</string>
