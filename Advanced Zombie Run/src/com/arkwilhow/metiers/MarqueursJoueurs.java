@@ -95,8 +95,20 @@ public class MarqueursJoueurs extends ItemizedOverlay {
 		return false;
 	}
 
+	public void setDestination(GeoPoint destination) {
+		this.destination = destination;
+	}
+
 	public GeoPoint getDestination() {
 		return destination;
+	}
+
+	public OverlayItem getMarkerDestination() {
+		return MarqueurDest;
+	}
+
+	public void setMarkerDestination(OverlayItem item) {
+		MarqueurDest = item;
 	}
 
 	@Override
@@ -111,9 +123,5 @@ public class MarqueursJoueurs extends ItemizedOverlay {
 
 	public void clear() {
 		listeMarqueur.clear();
-	}
-
-	public OverlayItem getMarkerDestination() {
-		return MarqueurDest;
 	}
 }

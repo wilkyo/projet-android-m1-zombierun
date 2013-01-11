@@ -138,7 +138,7 @@ public class GameMaster {
 		float v = (float) Math.random();
 		int x0 = (int) joueur.getPoint().getLatitudeE6();
 		int y0 = (int) joueur.getPoint().getLongitudeE6();
-		double r = (1*1e6 / (111300 / prer));
+		double r = (1 * 1e6 / (111300 / prer));
 		double w = r * Math.sqrt(u);
 		double t = 2 * Math.PI * v;
 		double x = w * Math.cos(t);
@@ -236,14 +236,14 @@ public class GameMaster {
 				if (joueur.distanceTo(l) <= d)
 					joueurTouched();
 				Zombie zo = new Zombie(g, "Zombie", "Beuh");
-				zo.setEn_alerte(z.isEn_alerte(),mContext);
+				zo.setEn_alerte(z.isEn_alerte(), mContext);
 				new_zombis.add(zo);
 			} else {
 				for (int i = 0; i < positions.length; i++) {
 					lo.setLatitude(z.getPoint().getLatitudeE6() / 1E6F);
 					lo.setLongitude(z.getPoint().getLongitudeE6() / 1E6F);
 					if (positions[i].distanceTo(lo) < 20)
-						z.setEn_alerte(true,mContext);
+						z.setEn_alerte(true, mContext);
 				}
 				new_zombis.add(z);
 			}
@@ -253,15 +253,18 @@ public class GameMaster {
 
 	private void updatePositionJoueurs(Location[] positionJoueurs) {
 		ArrayList<Joueur> players = joueurs.getListeMarqueur();
-		ArrayList<Joueur> nouv = new ArrayList<Joueur>();
+		MarqueursJoueurs nouv = new MarqueursJoueurs(mContext.getResources()
+				.getDrawable(R.drawable.marqueurjoueur), mContext);
 		for (int i = 0; i < players.size(); i++) {
 			Joueur j = players.get(i);
 			GeoPoint g = new GeoPoint(
-					(int) (positionJoueurs[i].getLatitude() * 1E6),
-					(int) (positionJoueurs[i].getLongitude() * 1E6));
-			nouv.add(new Joueur(g, j.getTitle(), j.getSnippet()));
+					(int) (positionJoueurs[i].getLatitude() * 1e6),
+					(int) (positionJoueurs[i].getLongitude() * 1e6));
+			nouv.addMarqueur(new Joueur(g, j.getTitle(), j.getSnippet()));
 		}
-		joueurs.setListeMarqueur(nouv);
+		nouv.setDestination(joueurs.getDestination());
+		nouv.setMarkerDestination(joueurs.getMarkerDestination());
+		joueurs = nouv;
 	}
 
 	public static double DegreesToRadians(double degrees) {
