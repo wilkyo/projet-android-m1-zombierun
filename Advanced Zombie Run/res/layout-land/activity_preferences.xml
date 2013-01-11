@@ -157,11 +157,11 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/create"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/run_game"
+                android:text="@string/make_game"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>

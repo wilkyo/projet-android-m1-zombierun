@@ -1,8 +1,5 @@
 package com.arkwilhow.advzombierun;
 
-import com.arkwilhow.serveur.Host;
-
-import android.net.wifi.WifiConfiguration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.Activity;
@@ -23,7 +20,6 @@ public class PreferencesActivity extends Activity {
 
 	private static boolean multi;
 	private boolean home;
-	Host test;
 	private static int nbJoueurs = 1;
 	private Context mContext = this;
 
@@ -31,20 +27,20 @@ public class PreferencesActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_preferences);
-		Bundle extra = getIntent().getExtras();
+		Bundle extra = this.getIntent().getExtras();
 		multi = extra.getBoolean("multi");
 		home = extra.getBoolean("home");
 		loadPreferences();
 		setListeners();
-
 		if (home) {
 			TextView textView = (TextView) findViewById(R.id.create);
 			textView.setText(R.string.run_game);
 		}
 	}
-
+	
 	private void loadPreferences() {
-		SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences s = PreferenceManager
+				.getDefaultSharedPreferences(this);
 		((EditText) findViewById(R.id.pseudonyme)).setText(s.getString(
 				"pseudo", ""));
 		((Spinner) findViewById(R.id.spinner_density)).setSelection(s.getInt(
@@ -63,7 +59,8 @@ public class PreferencesActivity extends Activity {
 
 					public void onItemSelected(AdapterView<?> parent,
 							View view, int pos, long id) {
-						SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
+						SharedPreferences.Editor editor = PreferenceManager
+								.getDefaultSharedPreferences(mContext).edit();
 						editor.putInt("density", pos);
 						editor.commit();
 					}
@@ -77,7 +74,8 @@ public class PreferencesActivity extends Activity {
 
 					public void onItemSelected(AdapterView<?> parent,
 							View view, int pos, long id) {
-						SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
+						SharedPreferences.Editor editor = PreferenceManager
+								.getDefaultSharedPreferences(mContext).edit();
 						editor.putInt("speed", pos);
 						editor.commit();
 					}
@@ -91,7 +89,8 @@ public class PreferencesActivity extends Activity {
 
 					public void onItemSelected(AdapterView<?> parent,
 							View view, int pos, long id) {
-						SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
+						SharedPreferences.Editor editor = PreferenceManager
+								.getDefaultSharedPreferences(mContext).edit();
 						editor.putInt("life", pos);
 						editor.commit();
 					}
@@ -106,7 +105,8 @@ public class PreferencesActivity extends Activity {
 
 					public void onCheckedChanged(RadioGroup rg, int checkedId) {
 						System.out.println(checkedId);
-						SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
+						SharedPreferences.Editor editor = PreferenceManager
+								.getDefaultSharedPreferences(mContext).edit();
 						editor.putInt("alert", checkedId);
 						editor.commit();
 					}
@@ -121,7 +121,8 @@ public class PreferencesActivity extends Activity {
 	}
 
 	public void onPause() {
-		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+		SharedPreferences.Editor editor = PreferenceManager
+				.getDefaultSharedPreferences(this).edit();
 		final String name = ((EditText) findViewById(R.id.pseudonyme))
 				.getText().toString();
 		editor.putString("pseudo",
@@ -130,30 +131,14 @@ public class PreferencesActivity extends Activity {
 		super.onPause();
 	}
 
-	public void run(View v) {
+	public void goRoom(View v) {
 		final String name = ((EditText) findViewById(R.id.pseudonyme))
 				.getText().toString();
-		if (PreferencesActivity.multi) {
-			test = new Host(this);
-			WifiConfiguration conf = new WifiConfiguration();
-			conf.SSID = "AZR-test";
-			conf.preSharedKey = "pojnootankurdenwooc8";
-			conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
-			test.setWifiApEnabled(conf, true);
-			Intent i = new Intent();
-			i.setClass(this, RoomStayHostActivity.class);
-			i.putExtra("pseudo", name);
-			i.putExtra("host", true);
-			startActivity(i);
-			/*
-			 * Toast.makeText(this, "Fonction non encore implémentée",
-			 * Toast.LENGTH_LONG).show();
-			 */
-		} else {
-			Intent i = new Intent();
-			i.setClass(this, Map.class);
-			startActivity(i);
-		}
+		Intent i = new Intent();
+		i.setClass(this, RoomStayHostActivity.class);
+		i.putExtra("pseudo", name);
+		i.putExtra("host", true);
+		startActivity(i);
 	}
 
 	public void previous(View v) {
