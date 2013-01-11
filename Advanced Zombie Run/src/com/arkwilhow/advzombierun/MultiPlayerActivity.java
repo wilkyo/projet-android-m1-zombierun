@@ -211,6 +211,7 @@ public class MultiPlayerActivity extends Activity {
 		Intent i = new Intent();
 		i.setClass(this, RoomStayHostActivity.class);
 		i.putExtra("pseudo", "test");
+		i.putExtra("host", false);
 		startActivity(i);
 	}
 

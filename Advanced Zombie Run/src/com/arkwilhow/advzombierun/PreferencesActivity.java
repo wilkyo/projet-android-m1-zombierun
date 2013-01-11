@@ -33,8 +33,8 @@ public class PreferencesActivity extends Activity {
 		home = extra.getBoolean("home");
 		loadPreferences();
 		setListeners();
-		
-		if (home){
+
+		if (home) {
 			TextView textView = (TextView) findViewById(R.id.create);
 			textView.setText(R.string.run_game);
 		}
@@ -144,9 +144,12 @@ public class PreferencesActivity extends Activity {
 			Intent i = new Intent();
 			i.setClass(this, RoomStayHostActivity.class);
 			i.putExtra("pseudo", name);
+			i.putExtra("host", true);
 			startActivity(i);
-			/*Toast.makeText(this, "Fonction non encore implémentée",
-					Toast.LENGTH_LONG).show();*/
+			/*
+			 * Toast.makeText(this, "Fonction non encore implémentée",
+			 * Toast.LENGTH_LONG).show();
+			 */
 		} else {
 			Intent i = new Intent();
 			i.setClass(this, Map.class);
