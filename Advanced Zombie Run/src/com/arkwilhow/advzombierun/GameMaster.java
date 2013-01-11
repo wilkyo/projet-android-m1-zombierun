@@ -176,6 +176,7 @@ public class GameMaster {
 			return;
 
 		updatePositionJoueurs(positions);
+		
 		Location joueur = new Location(""); // Les zombies cherchent le VIP
 
 		// On recupere la liste des zombis que contient un marqueur
@@ -245,10 +246,9 @@ public class GameMaster {
 				zo.setEn_alerte(z.isEn_alerte(), mContext);
 				new_zombis.addMarqueur(zo);
 			} else {
-				Toast.makeText(mContext, "Je te vois...", Toast.LENGTH_SHORT).show();
+				lo.setLatitude(z.getPoint().getLatitudeE6() / 1E6F);
+				lo.setLongitude(z.getPoint().getLongitudeE6() / 1E6F);
 				for (int i = 0; i < positions.length; i++) {
-					lo.setLatitude(z.getPoint().getLatitudeE6() / 1E6F);
-					lo.setLongitude(z.getPoint().getLongitudeE6() / 1E6F);
 					if (positions[i].distanceTo(lo) < 20)
 						z.setEn_alerte(true, mContext);
 				}
@@ -272,6 +272,16 @@ public class GameMaster {
 			joueurs.addMarqueur(new Joueur(nouveauPoint, j.getTitle(), j
 					.getSnippet()));
 		}
+		Location l = new Location("");
+		l.setLatitude(getJoueurs().getDestination().getLatitudeE6()/1E6F);
+		l.setLongitude(getJoueurs().getDestination().getLongitudeE6()/1E6F);
+		if(positionJoueurs[0].distanceTo(l) < 5)
+			gagner();
+			
+	}
+	
+	public void gagner(){
+		Toast.makeText(mContext, "Victory", Toast.LENGTH_LONG).show();
 	}
 
 	public static double DegreesToRadians(double degrees) {
