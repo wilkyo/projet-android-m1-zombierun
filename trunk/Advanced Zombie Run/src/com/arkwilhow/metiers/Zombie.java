@@ -50,10 +50,10 @@ public class Zombie extends OverlayItem {
 	 */
 	public void setEnAlerte(boolean enAlerte, Context mContext) {
 		this.enAlerte = enAlerte;
-		if (enAlerte) {
+		/*if (enAlerte) {
 			setMarker(mContext.getResources().getDrawable(
 					R.drawable.marqueurzombi1));
-		}
+		}*/
 	}
 
 }

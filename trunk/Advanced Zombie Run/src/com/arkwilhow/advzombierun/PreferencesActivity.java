@@ -19,7 +19,6 @@ import android.widget.TextView;
 public class PreferencesActivity extends Activity {
 
 	private static boolean multi;
-	private boolean home;
 	private static int nbJoueurs = 1;
 	private Context mContext = this;
 
@@ -29,15 +28,14 @@ public class PreferencesActivity extends Activity {
 		setContentView(R.layout.activity_preferences);
 		Bundle extra = this.getIntent().getExtras();
 		multi = extra.getBoolean("multi");
-		home = extra.getBoolean("home");
 		loadPreferences();
 		setListeners();
-		if (home) {
+		if (!multi) {
 			TextView textView = (TextView) findViewById(R.id.create);
 			textView.setText(R.string.run_game);
 		}
 	}
-	
+
 	private void loadPreferences() {
 		SharedPreferences s = PreferenceManager
 				.getDefaultSharedPreferences(this);
@@ -132,13 +130,19 @@ public class PreferencesActivity extends Activity {
 	}
 
 	public void goRoom(View v) {
-		final String name = ((EditText) findViewById(R.id.pseudonyme))
-				.getText().toString();
-		Intent i = new Intent();
-		i.setClass(this, RoomStayHostActivity.class);
-		i.putExtra("pseudo", name);
-		i.putExtra("host", true);
-		startActivity(i);
+		if (multi) {
+			final String name = ((EditText) findViewById(R.id.pseudonyme))
+					.getText().toString();
+			Intent i = new Intent();
+			i.setClass(this, RoomStayHostActivity.class);
+			i.putExtra("pseudo", name);
+			i.putExtra("host", true);
+			startActivity(i);
+		} else {
+			Intent i = new Intent();
+			i.setClass(this, Map.class);
+			startActivity(i);
+		}
 	}
 
 	public void previous(View v) {
