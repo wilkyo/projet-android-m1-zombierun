@@ -20,6 +20,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -210,7 +211,8 @@ public class Map extends MapActivity {
 								(int) (location.getLongitude() * 1e6));
 						mc.setCenter(point);
 
-						SharedPreferences pref = getPreferences(MODE_PRIVATE);
+						SharedPreferences pref = PreferenceManager
+								.getDefaultSharedPreferences(mContext);
 
 						MarqueursJoueurs joueurs = new MarqueursJoueurs(
 								getResources().getDrawable(
@@ -223,9 +225,10 @@ public class Map extends MapActivity {
 										R.drawable.marqueurzombi0), mContext);
 
 						master = new GameMaster(joueurs, zombies, pref.getInt(
-								"density", 0), pref.getInt("speed", 0),
-								pref.getInt("life", 0), pref.getInt("alert",
-										R.id.alertChoice1), mContext, REFRESH_TIME);
+								"density", 3), pref.getInt("speed", 3),
+								pref.getInt("life", 3), pref.getInt("alert",
+										R.id.alertChoice1), mContext,
+								REFRESH_TIME);
 						master.creerListeZombis();
 
 						Log.v("Map.onLocationChanged", "création master passée");

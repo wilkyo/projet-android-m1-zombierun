@@ -4,7 +4,9 @@ import com.arkwilhow.serveur.Host;
 
 import android.net.wifi.WifiConfiguration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
@@ -23,6 +25,7 @@ public class PreferencesActivity extends Activity {
 	private boolean home;
 	Host test;
 	private static int nbJoueurs = 1;
+	private Context mContext = this;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,7 @@ public class PreferencesActivity extends Activity {
 	}
 
 	private void loadPreferences() {
-		SharedPreferences s = getPreferences(MODE_PRIVATE);
+		SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(this);
 		((EditText) findViewById(R.id.pseudonyme)).setText(s.getString(
 				"pseudo", ""));
 		((Spinner) findViewById(R.id.spinner_density)).setSelection(s.getInt(
@@ -60,8 +63,7 @@ public class PreferencesActivity extends Activity {
 
 					public void onItemSelected(AdapterView<?> parent,
 							View view, int pos, long id) {
-						SharedPreferences.Editor editor = getPreferences(
-								MODE_PRIVATE).edit();
+						SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
 						editor.putInt("density", pos);
 						editor.commit();
 					}
@@ -75,8 +77,7 @@ public class PreferencesActivity extends Activity {
 
 					public void onItemSelected(AdapterView<?> parent,
 							View view, int pos, long id) {
-						SharedPreferences.Editor editor = getPreferences(
-								MODE_PRIVATE).edit();
+						SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
 						editor.putInt("speed", pos);
 						editor.commit();
 					}
@@ -90,8 +91,7 @@ public class PreferencesActivity extends Activity {
 
 					public void onItemSelected(AdapterView<?> parent,
 							View view, int pos, long id) {
-						SharedPreferences.Editor editor = getPreferences(
-								MODE_PRIVATE).edit();
+						SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
 						editor.putInt("life", pos);
 						editor.commit();
 					}
@@ -106,8 +106,7 @@ public class PreferencesActivity extends Activity {
 
 					public void onCheckedChanged(RadioGroup rg, int checkedId) {
 						System.out.println(checkedId);
-						SharedPreferences.Editor editor = getPreferences(
-								MODE_PRIVATE).edit();
+						SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
 						editor.putInt("alert", checkedId);
 						editor.commit();
 					}
@@ -122,7 +121,7 @@ public class PreferencesActivity extends Activity {
 	}
 
 	public void onPause() {
-		SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
 		final String name = ((EditText) findViewById(R.id.pseudonyme))
 				.getText().toString();
 		editor.putString("pseudo",
