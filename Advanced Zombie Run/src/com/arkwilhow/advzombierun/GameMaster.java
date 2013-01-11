@@ -17,17 +17,17 @@ public class GameMaster {
 	private MarqueursZombies zombies;
 	private final static int[] density_array = new int[] { 10, 20, 30, 40 };
 	private int density;
-	private final static int[] speed_array = new int[] { 3, 4, 5, 6 };
+	private final static int[] speed_array = new int[] { 1, 2, 3, 4 };
 	private int speed;
-	private final static int[] life_array = new int[] { 1, 2, 3, 4 };
+	private final static int[] life_array = new int[] { 1, 3, 10, 42, 100, 9001 };
 	private int life;
 	private int alert;
 	private Context mContext;
 	private MarqueurDestination mdest;
+	private int refresh_time;
 
 	public GameMaster(MarqueursJoueurs joueurs, MarqueursZombies zombies,
 			int density, int speed, int life, int alert, Context context, int refreshTime) {
-		super();
 		this.joueurs = joueurs;
 		this.zombies = zombies;
 		this.density = density;
@@ -37,6 +37,7 @@ public class GameMaster {
 		this.mContext = context;
 		this.mdest = new MarqueurDestination(mContext.getResources()
 				.getDrawable(R.drawable.marqueur_destination));
+		this.refresh_time=refreshTime;
 	}
 
 	public MarqueursJoueurs getJoueurs() {
@@ -184,7 +185,7 @@ public class GameMaster {
 				mContext);
 		Location dest = new Location("");
 		Location lo = new Location("");
-		int d = speed_array[speed];
+		int d = speed_array[speed]*refresh_time;
 		// Si speed est exprime en m/s et qu'on a un refresh de la carte toutes
 		// les secondes
 		// Alors la distane parcourue est égale a speed
