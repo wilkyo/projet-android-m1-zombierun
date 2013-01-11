@@ -176,7 +176,8 @@ public class GameMaster {
 
 		// On recupere la liste des zombis que contient un marqueur
 		ArrayList<Zombie> zombis = zombies.getListeMarqueur();
-		ArrayList<Zombie> new_zombis = new ArrayList<Zombie>();
+		MarqueursZombies new_zombis = new MarqueursZombies(mContext.getResources()
+				.getDrawable(R.drawable.marqueurzombi0), mContext);
 		Location dest = new Location("");
 		Location lo = new Location("");
 		int d = speed;
@@ -237,7 +238,7 @@ public class GameMaster {
 					joueurTouched();
 				Zombie zo = new Zombie(g, "Zombie", "Beuh");
 				zo.setEn_alerte(z.isEn_alerte(), mContext);
-				new_zombis.add(zo);
+				new_zombis.addMarqueur(zo);
 			} else {
 				for (int i = 0; i < positions.length; i++) {
 					lo.setLatitude(z.getPoint().getLatitudeE6() / 1E6F);
@@ -245,10 +246,10 @@ public class GameMaster {
 					if (positions[i].distanceTo(lo) < 20)
 						z.setEn_alerte(true, mContext);
 				}
-				new_zombis.add(z);
+				new_zombis.addMarqueur(z);
 			}
 		}
-		zombies.setListeMarqueur(new_zombis);
+		zombies = new_zombis;
 	}
 
 	private void updatePositionJoueurs(Location[] positionJoueurs) {
