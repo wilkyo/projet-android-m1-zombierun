@@ -1,7 +1,6 @@
 package com.arkwilhow.advzombierun;
 
 import java.util.ArrayList;
-
 import com.arkwilhow.metiers.Joueur;
 import com.arkwilhow.metiers.MarqueursJoueurs;
 import com.arkwilhow.metiers.MarqueursZombies;
@@ -10,7 +9,6 @@ import com.google.android.maps.GeoPoint;
 import android.content.Context;
 import android.location.Location;
 import android.os.Vibrator;
-import android.widget.Toast;
 
 public class GameMaster {
 	private MarqueursJoueurs joueurs;
@@ -90,6 +88,11 @@ public class GameMaster {
 		this.mContext = context;
 	}
 
+	public boolean zombisVisibles() {
+		// Possibilité de rajouter des cas
+		return joueurs.getDestination() != null;
+	}
+
 	/**
 	 * Creer un zombie (i.e. un OverlayItem) dans un cercle de prer metres
 	 * autour de la location en parametre Il faura sans doute modifier cette
@@ -102,7 +105,7 @@ public class GameMaster {
 	 *            la distance
 	 * @return le zombie ainsi crée
 	 */
-	public Zombie creer_zombi(int prer, Joueur joueur) {
+	public Zombie creerZombi(int prer, Joueur joueur) {
 		// Un degre = 111 300 metres
 		// 111 300/50 = 2226
 		// 1/2226 = 0.00044923629 degre
@@ -137,8 +140,8 @@ public class GameMaster {
 		for (int i = 0; i < density_array[density]; ++i) {
 			// On suppose que les zombies apparaissent dons une zone de
 			// 100m autour du joueur
-			zombies.addMarqueur(creer_zombi(100, joueurs.getListeMarqueur()
-					.get(0)));
+			zombies.addMarqueur(creerZombi(100,
+					joueurs.getListeMarqueur().get(0)));
 		}
 	}
 
@@ -152,12 +155,7 @@ public class GameMaster {
 	public void deplacement(Location[] positions) {
 		if (joueurs.getDestination() == null)
 			return;
-		else
-			Toast.makeText(
-					mContext,
-					"destination " + joueurs.getDestination().getLatitudeE6()
-							+ ", " + joueurs.getDestination().getLongitudeE6(),
-					Toast.LENGTH_LONG).show();
+
 		updatePositionJoueurs(positions);
 		Location joueur = positions[0]; // Les zombies cherchent le VIP
 
@@ -221,7 +219,7 @@ public class GameMaster {
 				l.setLatitude(z.getPoint().getLatitudeE6() / 1E6F);
 				l.setLongitude(z.getPoint().getLongitudeE6() / 1E6F);
 				if (joueur.distanceTo(l) <= d)
-					joueur_touche();
+					joueurTouched();
 				Zombie zo = new Zombie(g, "Zombie", "Beuh");
 				zo.setEn_alerte(z.isEn_alerte());
 				new_zombis.add(zo);
@@ -261,7 +259,7 @@ public class GameMaster {
 	 * lorsque ceux-ci sont trop loin
 	 * 
 	 */
-	public void verifie_zombis() {
+	public void verifieZombis() {
 		ArrayList<Zombie> zombis = zombies.getListeMarqueur();
 		Location l = new Location("");
 		double lat1, long1;
@@ -284,7 +282,7 @@ public class GameMaster {
 				}
 			}
 			if (trop_loin) {
-				zombies.addMarqueur(creer_zombi(100, joueurs.getListeMarqueur()
+				zombies.addMarqueur(creerZombi(100, joueurs.getListeMarqueur()
 						.get(0)));
 				// Il faut aussi supprimer le zombie
 			}
@@ -294,7 +292,7 @@ public class GameMaster {
 	/**
 	 * Déclenche les evenements après qu'un zombi ait rattrapé le joueur
 	 */
-	public void joueur_touche() {
+	public void joueurTouched() {
 		if (life == 1) {
 			// On stoppe le jeu
 		} else {
