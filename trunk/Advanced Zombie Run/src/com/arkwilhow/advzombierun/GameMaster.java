@@ -27,7 +27,8 @@ public class GameMaster {
 	private int refresh_time;
 
 	public GameMaster(MarqueursJoueurs joueurs, MarqueursZombies zombies,
-			int density, int speed, int life, int alert, Context context, int refreshTime) {
+			int density, int speed, int life, int alert, Context context,
+			int refreshTime) {
 		this.joueurs = joueurs;
 		this.zombies = zombies;
 		this.density = density;
@@ -37,7 +38,7 @@ public class GameMaster {
 		this.mContext = context;
 		this.mdest = new MarqueurDestination(mContext.getResources()
 				.getDrawable(R.drawable.marqueur_destination));
-		this.refresh_time=refreshTime;
+		this.refresh_time = refreshTime;
 	}
 
 	public MarqueursJoueurs getJoueurs() {
@@ -176,7 +177,7 @@ public class GameMaster {
 			return;
 
 		updatePositionJoueurs(positions);
-		
+
 		Location joueur = new Location(""); // Les zombies cherchent le VIP
 
 		// On recupere la liste des zombis que contient un marqueur
@@ -186,7 +187,7 @@ public class GameMaster {
 				mContext);
 		Location dest = new Location("");
 		Location lo = new Location("");
-		int d = speed_array[speed]*refresh_time;
+		int d = speed_array[speed] * refresh_time;
 		// Si speed est exprime en m/s et qu'on a un refresh de la carte toutes
 		// les secondes
 		// Alors la distane parcourue est égale a speed
@@ -198,7 +199,7 @@ public class GameMaster {
 		GeoPoint g;
 		// OverlayItem ov;
 		for (Zombie z : zombis) {
-			if (z.isEn_alerte()) {
+			if (z.isEnAlerte()) {
 				/*
 				 * Deplacement du zombi en direction du joueur en fonction de
 				 * l'attribut speed. On suppose que speed est exprimé en m/s.On
@@ -243,14 +244,20 @@ public class GameMaster {
 				if (joueur.distanceTo(l) <= d)
 					joueurTouched();
 				Zombie zo = new Zombie(g, "Zombie", "Beuh");
-				zo.setEn_alerte(z.isEn_alerte(), mContext);
+				zo.setEnAlerte(z.isEnAlerte(), mContext);
 				new_zombis.addMarqueur(zo);
 			} else {
 				lo.setLatitude(z.getPoint().getLatitudeE6() / 1E6F);
 				lo.setLongitude(z.getPoint().getLongitudeE6() / 1E6F);
 				for (int i = 0; i < positions.length; i++) {
-					if (positions[i].distanceTo(lo) < 20)
-						z.setEn_alerte(true, mContext);
+					Toast.makeText(mContext,
+							"Je te cherche " + positions[i].distanceTo(lo),
+							Toast.LENGTH_SHORT).show();
+					if (positions[i].distanceTo(lo) < 100) {
+						Toast.makeText(mContext, "Je te vois...",
+								Toast.LENGTH_SHORT).show();
+						z.setEnAlerte(true, mContext);
+					}
 				}
 				new_zombis.addMarqueur(z);
 			}
@@ -273,14 +280,14 @@ public class GameMaster {
 					.getSnippet()));
 		}
 		Location l = new Location("");
-		l.setLatitude(getJoueurs().getDestination().getLatitudeE6()/1E6F);
-		l.setLongitude(getJoueurs().getDestination().getLongitudeE6()/1E6F);
-		if(positionJoueurs[0].distanceTo(l) < 5)
+		l.setLatitude(getJoueurs().getDestination().getLatitudeE6() / 1E6F);
+		l.setLongitude(getJoueurs().getDestination().getLongitudeE6() / 1E6F);
+		if (positionJoueurs[0].distanceTo(l) < 5)
 			gagner();
-			
+
 	}
-	
-	public void gagner(){
+
+	public void gagner() {
 		Toast.makeText(mContext, "Victory", Toast.LENGTH_LONG).show();
 	}
 

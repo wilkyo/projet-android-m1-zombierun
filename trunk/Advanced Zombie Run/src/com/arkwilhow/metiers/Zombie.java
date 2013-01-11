@@ -1,6 +1,7 @@
 package com.arkwilhow.metiers;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.arkwilhow.advzombierun.R;
 import com.google.android.maps.GeoPoint;
@@ -17,21 +18,21 @@ public class Zombie extends OverlayItem {
 	/**
 	 * état du zombie, vrai en alerte, faux sinon
 	 */
-	private boolean en_alerte;
+	private boolean enAlerte;
 
 	/**
 	 * Crée un nouveau zombie
 	 * 
-	 * @param arg0
+	 * @param point
 	 *            la position du zombie
 	 * @param arg1
 	 *            le titre du marque
 	 * @param arg2
 	 *            le messagedu marqueur
 	 */
-	public Zombie(GeoPoint arg0, String arg1, String arg2) {
-		super(arg0, arg1, arg2);
-		en_alerte = false;
+	public Zombie(GeoPoint point, String arg1, String arg2) {
+		super(point, arg1, arg2);
+		enAlerte = false;
 	}
 
 	/**
@@ -39,23 +40,24 @@ public class Zombie extends OverlayItem {
 	 * 
 	 * @return l'état du zombie
 	 */
-	public boolean isEn_alerte() {
-		return en_alerte;
+	public boolean isEnAlerte() {
+		return enAlerte;
 	}
 
 	/**
 	 * permet de modifier l'état du zombie
 	 * 
-	 * @param en_alerte
+	 * @param enAlerte
 	 *            le nouvel éétat du zombie
 	 */
-	public void setEn_alerte(boolean en_alerte,Context mcontext) {
-		this.en_alerte = en_alerte;
-		if(en_alerte)
-		{
-			setMarker(mcontext.getResources().getDrawable(R.drawable.marqueurzombi1));
+	public void setEnAlerte(boolean enAlerte, Context mContext) {
+		this.enAlerte = enAlerte;
+		if (enAlerte) {
+			setMarker(mContext.getResources().getDrawable(
+					R.drawable.marqueurzombi1));
+			Toast.makeText(mContext, "Marker: " + this.getMarker(0),
+					Toast.LENGTH_SHORT).show();
 		}
 	}
-	
 
 }
