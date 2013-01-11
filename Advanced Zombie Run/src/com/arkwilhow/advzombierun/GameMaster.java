@@ -17,7 +17,7 @@ import android.os.Vibrator;
 public class GameMaster {
 	private MarqueursJoueurs joueurs;
 	private MarqueursZombies zombies;
-	private final static int[] density_array = new int[] { 10, 20, 30, 40 };
+	private final static int[] density_array = new int[] { 2, 20, 30, 40 };
 	private int density;
 	private int speed;
 	private int life;
@@ -141,7 +141,7 @@ public class GameMaster {
 		float v = (float) Math.random();
 		int x0 = (int) joueur.getPoint().getLatitudeE6();
 		int y0 = (int) joueur.getPoint().getLongitudeE6();
-		double r = (1 / (111300 / prer)) * 1e6;
+		double r = (1*1e6 / (111300 / prer));
 		double w = r * Math.sqrt(u);
 		double t = 2 * Math.PI * v;
 		double x = w * Math.cos(t);
