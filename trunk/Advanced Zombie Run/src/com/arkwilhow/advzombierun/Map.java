@@ -5,6 +5,7 @@ import java.util.List;
 import com.arkwilhow.metiers.Joueur;
 import com.arkwilhow.metiers.MarqueursJoueurs;
 import com.arkwilhow.metiers.MarqueursZombies;
+import com.arkwilhow.metiers.Zombie;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
@@ -245,7 +246,7 @@ public class Map extends MapActivity {
 						master.deplacement(getPositionsJoueurs());
 					}
 					mapOverlays.clear();
-					if(master.getMarqueurDest() != null)
+					if (master.getMarqueurDest() != null)
 						mapOverlays.add(master.getMarqueurDest());
 					mapOverlays.add(master.getJoueurs());
 					if (master.zombisVisibles())
@@ -254,6 +255,10 @@ public class Map extends MapActivity {
 							+ master.getJoueurs().size());
 					Log.v(TAG, "la longueur de la liste de zombie :"
 							+ master.getZombies().size());
+					for (Zombie z : master.getZombies().getListeMarqueur()) {
+						Toast.makeText(mContext, "run: " + z.getPoint(),
+								Toast.LENGTH_LONG).show();
+					}
 				}
 				handler.postDelayed(timedTask, 500);
 			} catch (Exception e) {
