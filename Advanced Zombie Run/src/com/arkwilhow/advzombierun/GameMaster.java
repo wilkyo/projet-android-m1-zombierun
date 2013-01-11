@@ -172,12 +172,13 @@ public class GameMaster {
 			return;
 
 		updatePositionJoueurs(positions);
-		Location joueur = positions[0]; // Les zombies cherchent le VIP
+		Location joueur = new Location(""); // Les zombies cherchent le VIP
 
 		// On recupere la liste des zombis que contient un marqueur
 		ArrayList<Zombie> zombis = zombies.getListeMarqueur();
-		MarqueursZombies new_zombis = new MarqueursZombies(mContext.getResources()
-				.getDrawable(R.drawable.marqueurzombi0), mContext);
+		MarqueursZombies new_zombis = new MarqueursZombies(mContext
+				.getResources().getDrawable(R.drawable.marqueurzombi0),
+				mContext);
 		Location dest = new Location("");
 		Location lo = new Location("");
 		int d = speed;
@@ -214,8 +215,8 @@ public class GameMaster {
 				lo.setLatitude(lat1);
 				lo.setLongitude(long1);
 				Joueur j = plusProcheJoueur(lo);
-				joueur.setLatitude(j.getPoint().getLatitudeE6());
-				joueur.setLongitude(j.getPoint().getLongitudeE6());
+				joueur.setLatitude(((double) j.getPoint().getLatitudeE6()) / 1e6);
+				joueur.setLongitude(((double) j.getPoint().getLongitudeE6()) / 1e6);
 
 				angle = joueur.bearingTo(dest);// Obtention de l'angle en
 												// degrees
@@ -253,19 +254,19 @@ public class GameMaster {
 	}
 
 	private void updatePositionJoueurs(Location[] positionJoueurs) {
-		ArrayList<Joueur> players = joueurs.getListeMarqueur();
-		MarqueursJoueurs nouv = new MarqueursJoueurs(mContext.getResources()
-				.getDrawable(R.drawable.marqueurjoueur), mContext);
-		for (int i = 0; i < players.size(); i++) {
-			Joueur j = players.get(i);
-			GeoPoint g = new GeoPoint(
+		Joueur[] players = joueurs.getListeMarqueur().toArray(new Joueur[1]);
+		// MarqueursJoueurs nouv = new
+		// MarqueursJoueurs(mContext.getResources().getDrawable(R.drawable.marqueurjoueur),
+		// mContext);
+		joueurs.clear();
+		for (int i = 0; i < players.length; i++) {
+			Joueur j = players[i];
+			GeoPoint nouveauPoint = new GeoPoint(
 					(int) (positionJoueurs[i].getLatitude() * 1e6),
 					(int) (positionJoueurs[i].getLongitude() * 1e6));
-			nouv.addMarqueur(new Joueur(g, j.getTitle(), j.getSnippet()));
+			joueurs.addMarqueur(new Joueur(nouveauPoint, j.getTitle(), j
+					.getSnippet()));
 		}
-		nouv.setDestination(joueurs.getDestination());
-		nouv.setMarkerDestination(joueurs.getMarkerDestination());
-		joueurs = nouv;
 	}
 
 	public static double DegreesToRadians(double degrees) {
