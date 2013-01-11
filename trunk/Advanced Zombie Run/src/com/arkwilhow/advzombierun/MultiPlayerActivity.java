@@ -2,20 +2,15 @@ package com.arkwilhow.advzombierun;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.arkwilhow.serveur.Host;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.Menu;
@@ -30,12 +25,9 @@ import android.widget.TextView;
 public class MultiPlayerActivity extends Activity {
 
 	/* private int[] gamesIds; */
-	WifiManager mainWifi;
-	WifiReceiver receiverWifi;
 	List<ScanResult> wifiList;
 	String sb;
 	ArrayList<String> hostedGames = new ArrayList<String>();
-	Host test;
 	ListView listView;
 	int nid = 0;
 	boolean firstpass = false;
@@ -48,11 +40,6 @@ public class MultiPlayerActivity extends Activity {
 		setContentView(R.layout.activity_multi_player);
 
 		listView = (ListView) findViewById(R.id.hostedGamesList);
-
-		mainWifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		receiverWifi = new WifiReceiver();
-		registerReceiver(receiverWifi, new IntentFilter(
-				WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -80,23 +67,13 @@ public class MultiPlayerActivity extends Activity {
 				wfc.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
 				wfc.preSharedKey = "\"".concat("pojnootankurdenwooc8").concat(
 						"\"");
-				int networkId = mainWifi.addNetwork(wfc);
-				if (networkId != -1) {
-					mainWifi.enableNetwork(networkId, true);
-				}
 				testclient(view);
 			}
 		});
-
-		mainWifi.startScan();
-
 	}
 
 	private void refreshListView(ListView listView) {
 		// Bouchon TODO
-		mainWifi.startScan();
-		/* gamesIds = new int[] { 85, 123435 }; */
-		// String[] hostedGames = new String[] { "wilkyo", "HowiePowie" }
 		if (!(hostedGames.isEmpty())) {
 			for (int i = 0; i < hostedGames.size(); i++) {
 				Log.d("refreshListView", hostedGames.get(i));
@@ -141,12 +118,7 @@ public class MultiPlayerActivity extends Activity {
 	 */
 
 	public void refresh(View v) {
-		if (!(mainWifi.isWifiEnabled())) {
-			Dialog control = onCreateDialog();
-			control.show();
-		} else {
-			refreshListView((ListView) findViewById(R.id.hostedGamesList));
-		}
+
 	}
 
 	@Override
@@ -157,7 +129,6 @@ public class MultiPlayerActivity extends Activity {
 	}
 
 	public void previous(View v) {
-		unregisterReceiver(receiverWifi);
 		finish();
 	}
 
@@ -179,23 +150,6 @@ public class MultiPlayerActivity extends Activity {
 					}
 				});
 		return builder.create();
-	}
-
-	class WifiReceiver extends BroadcastReceiver {
-
-		public void onReceive(Context c, Intent intent) {
-			wifiList = mainWifi.getScanResults();
-			if (!hostedGames.isEmpty()) {
-				hostedGames.clear();
-			}
-			for (int i = 0; i < wifiList.size(); i++) {
-				sb = wifiList.get(i).SSID.toString();
-				if (sb.substring(0, PREFIXE_MULTI.length()).equals(
-						PREFIXE_MULTI)) {
-					hostedGames.add(sb);
-				}
-			}
-		}
 	}
 
 	/* A conserver pour plus tard */

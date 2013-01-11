@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="newHostedGame"
-            android:text="@string/make_game"
+            android:text="@string/host_game"
             android:textStyle="bold" />
     </LinearLayout>
 
