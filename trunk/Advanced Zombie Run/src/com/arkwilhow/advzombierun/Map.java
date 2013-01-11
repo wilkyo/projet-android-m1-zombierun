@@ -76,9 +76,6 @@ public class Map extends MapActivity {
 
 			mapOverlays = map.getOverlays();
 
-			// Drawable drawable =
-			// this.getResources().getDrawable(R.drawable.marqueurjoueur);
-			// itemizedoverlay = new MarqueursJoueurs(drawable, this);
 			positionsRecuperees = new ArrayList<Location>();
 			for (int i = 0; i < PreferencesActivity.getNbJoueurs(); i++) {
 				positionsRecuperees.add(i, null);
@@ -147,7 +144,6 @@ public class Map extends MapActivity {
 			dialog.setMessage(getText(R.string.diag_gps_text));
 			dialog.setPositiveButton(getText(R.string.diag_ok),
 					new DialogInterface.OnClickListener() {
-
 						public void onClick(DialogInterface dialog, int which) {
 							enableLocationSettings();
 						}
@@ -155,7 +151,7 @@ public class Map extends MapActivity {
 			dialog.show();
 		} else {
 			locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-					500, 2, listener);
+					500, 5, listener);
 		}
 	}
 
@@ -203,8 +199,6 @@ public class Map extends MapActivity {
 	 */
 	private Runnable timedTask = new Runnable() {
 
-		private Location prec;
-
 		public void run() {
 			try {
 				final Location location = positionsRecuperees.get(0);
@@ -233,11 +227,6 @@ public class Map extends MapActivity {
 										R.id.alertChoice1), mContext);
 						master.creerListeZombis();
 
-						// Toast.makeText(
-						// mContext,
-						// "la longueur de la liste de joueur :"
-						// + master.getJoueurs().size(),
-						// Toast.LENGTH_LONG).show();
 						Log.v("Map.onLocationChanged", "création master passée");
 					} else {
 						master.deplacement(getPositionsJoueurs());
@@ -249,25 +238,12 @@ public class Map extends MapActivity {
 					if (master.zombisVisibles())
 						mapOverlays.add(master.getZombies());
 
-					if (location != prec) {
-						Toast.makeText(
-								mContext,
-								"Location: " + location.getLatitude() + ", "
-										+ location.getLongitude(),
-								Toast.LENGTH_LONG).show();
-						prec = location;
-					}
-					/*
-					 * for (Joueur j : master.getJoueurs().getListeMarqueur()) {
-					 * Toast.makeText(mContext, "Joueur: " + j.getPoint(),
-					 * Toast.LENGTH_LONG).show(); }
-					 */
 				}
-				handler.postDelayed(timedTask, 500);
 			} catch (Exception e) {
 				Toast.makeText(mContext, "run: " + e.toString(),
 						Toast.LENGTH_LONG).show();
 			}
+			handler.postDelayed(timedTask, 500);
 		}
 	};
 }
