@@ -119,8 +119,8 @@ public class GameMaster {
 		 * = x / cos(y0)Le point voulu est à (x'+x0, y+y0)
 		 */
 
-		float u = (float) (Math.random() * ((1 - 0) + 1));
-		float v = (float) (Math.random() * ((1 - 0) + 1));
+		float u = (float) Math.random();
+		float v = (float) Math.random();
 		int x0 = (int) joueur.getPoint().getLatitudeE6();
 		int y0 = (int) joueur.getPoint().getLongitudeE6();
 		double r = (1 / (111300 / prer)) * 1e6;
