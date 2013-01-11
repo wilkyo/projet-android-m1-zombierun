@@ -28,6 +28,7 @@ public class MarqueurDestination extends ItemizedOverlay {
 
 	public void addMarqueur(OverlayItem item) {
 		listeMarqueur.add(item);
+		populate();
 	}
 
 	protected boolean onTap(int arg0) {
