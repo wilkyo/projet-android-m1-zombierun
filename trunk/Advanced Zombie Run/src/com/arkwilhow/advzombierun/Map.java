@@ -5,7 +5,6 @@ import java.util.List;
 import com.arkwilhow.metiers.Joueur;
 import com.arkwilhow.metiers.MarqueursJoueurs;
 import com.arkwilhow.metiers.MarqueursZombies;
-import com.arkwilhow.metiers.Zombie;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
@@ -43,7 +42,6 @@ public class Map extends MapActivity {
 	private ArrayList<Location> positionsRecuperees;
 	private Handler handler = new Handler();
 
-	private final static String TAG = "Map";
 	private final LocationListener listener = new LocationListener() {
 
 		public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -205,9 +203,11 @@ public class Map extends MapActivity {
 	 */
 	private Runnable timedTask = new Runnable() {
 
+		private Location prec;
+
 		public void run() {
 			try {
-				Location location = positionsRecuperees.get(0);
+				final Location location = positionsRecuperees.get(0);
 				if (location != null) {
 					if (master == null) {
 						GeoPoint point = new GeoPoint(
@@ -216,11 +216,13 @@ public class Map extends MapActivity {
 						mc.setCenter(point);
 
 						SharedPreferences pref = getPreferences(MODE_PRIVATE);
+
 						MarqueursJoueurs joueurs = new MarqueursJoueurs(
 								getResources().getDrawable(
 										R.drawable.marqueurjoueur), mContext);
 						joueurs.addMarqueur(new Joueur(point, "joueur",
 								"Je suis le joueur"));
+
 						MarqueursZombies zombies = new MarqueursZombies(
 								getResources().getDrawable(
 										R.drawable.marqueurzombi0), mContext);
@@ -231,16 +233,11 @@ public class Map extends MapActivity {
 										R.id.alertChoice1), mContext);
 						master.creerListeZombis();
 
-						Toast.makeText(
-								mContext,
-								"la longueur de la liste de joueur :"
-										+ master.getJoueurs().size(),
-								Toast.LENGTH_LONG).show();
-						Toast.makeText(
-								mContext,
-								"la longueur de la liste de zombie :"
-										+ master.getZombies().size(),
-								Toast.LENGTH_LONG).show();
+						// Toast.makeText(
+						// mContext,
+						// "la longueur de la liste de joueur :"
+						// + master.getJoueurs().size(),
+						// Toast.LENGTH_LONG).show();
 						Log.v("Map.onLocationChanged", "création master passée");
 					} else {
 						master.deplacement(getPositionsJoueurs());
@@ -251,14 +248,20 @@ public class Map extends MapActivity {
 					mapOverlays.add(master.getJoueurs());
 					if (master.zombisVisibles())
 						mapOverlays.add(master.getZombies());
-					Log.v(TAG, "la longueur de la liste de joueur :"
-							+ master.getJoueurs().size());
-					Log.v(TAG, "la longueur de la liste de zombie :"
-							+ master.getZombies().size());
-					for (Zombie z : master.getZombies().getListeMarqueur()) {
-						Toast.makeText(mContext, "run: " + z.getPoint(),
+
+					if (location != prec) {
+						Toast.makeText(
+								mContext,
+								"Location: " + location.getLatitude() + ", "
+										+ location.getLongitude(),
 								Toast.LENGTH_LONG).show();
+						prec = location;
 					}
+					/*
+					 * for (Joueur j : master.getJoueurs().getListeMarqueur()) {
+					 * Toast.makeText(mContext, "Joueur: " + j.getPoint(),
+					 * Toast.LENGTH_LONG).show(); }
+					 */
 				}
 				handler.postDelayed(timedTask, 500);
 			} catch (Exception e) {
