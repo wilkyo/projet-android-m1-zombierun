@@ -10,13 +10,16 @@ import com.google.android.maps.GeoPoint;
 import android.content.Context;
 import android.location.Location;
 import android.os.Vibrator;
+import android.widget.Toast;
 
 public class GameMaster {
 	private MarqueursJoueurs joueurs;
 	private MarqueursZombies zombies;
 	private final static int[] density_array = new int[] { 10, 20, 30, 40 };
 	private int density;
+	private final static int[] speed_array = new int[] { 3, 4, 5, 6 };
 	private int speed;
+	private final static int[] life_array = new int[] { 1, 2, 3, 4 };
 	private int life;
 	private int alert;
 	private Context mContext;
@@ -181,7 +184,7 @@ public class GameMaster {
 				mContext);
 		Location dest = new Location("");
 		Location lo = new Location("");
-		int d = speed;
+		int d = speed_array[speed];
 		// Si speed est exprime en m/s et qu'on a un refresh de la carte toutes
 		// les secondes
 		// Alors la distane parcourue est égale a speed
@@ -313,7 +316,7 @@ public class GameMaster {
 	 * Déclenche les evenements après qu'un zombi ait rattrapé le joueur
 	 */
 	public void joueurTouched() {
-		if (life == 1) {
+		if (life_array[life] == 1) {
 			// On stoppe le jeu
 		} else {
 			// On diminue la vie du joueur
