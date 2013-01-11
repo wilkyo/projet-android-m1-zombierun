@@ -41,6 +41,7 @@ public class Map extends MapActivity {
 	private Context mContext;
 	private ArrayList<Location> positionsRecuperees;
 	private Handler handler = new Handler();
+	private final static int REFRESH_TIME = 500;
 
 	private final LocationListener listener = new LocationListener() {
 
@@ -151,7 +152,7 @@ public class Map extends MapActivity {
 			dialog.show();
 		} else {
 			locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-					500, 5, listener);
+					REFRESH_TIME, 5, listener);
 		}
 	}
 
@@ -224,7 +225,7 @@ public class Map extends MapActivity {
 						master = new GameMaster(joueurs, zombies, pref.getInt(
 								"density", 0), pref.getInt("speed", 0),
 								pref.getInt("life", 0), pref.getInt("alert",
-										R.id.alertChoice1), mContext);
+										R.id.alertChoice1), mContext, REFRESH_TIME);
 						master.creerListeZombis();
 
 						Log.v("Map.onLocationChanged", "création master passée");
@@ -243,7 +244,7 @@ public class Map extends MapActivity {
 				Toast.makeText(mContext, "run: " + e.toString(),
 						Toast.LENGTH_LONG).show();
 			}
-			handler.postDelayed(timedTask, 500);
+			handler.postDelayed(timedTask, REFRESH_TIME);
 		}
 	};
 }
