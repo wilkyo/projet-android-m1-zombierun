@@ -373,7 +373,10 @@ public class GameMaster {
 
 	public void gagner() {
 		Toast.makeText(mContext, "Victory", Toast.LENGTH_LONG).show();
-		System.exit(0);
+		Intent i = new Intent(); 
+		i.setClass(mContext, GameEndActivity.class);
+		i.putExtra("loser", false);
+		mContext.startActivity(i);
 		/*
 		 * TODO GameEnd.setVictory(true); Intent i = new Intent(mContext,
 		 * GameEndActivity.class); i.start(); mContext.finish();
@@ -427,13 +430,20 @@ public class GameMaster {
 		if (life_array[life] <= 1) {
 			Toast.makeText(mContext, "Echec", Toast.LENGTH_SHORT).show();
 			// On stoppe le jeu
-			/*
-			 * TODO GameEnd.setVictory(false); Intent i = new Intent(mContext,
-			 * GameEndActivity.class); i.start(); mContext.finish();
-			 */
+			Intent i = new Intent(); 
+			i.setClass(mContext, GameEndActivity.class);
+			i.putExtra("loser", true);
+			mContext.startActivity(i);
+			
 		} else {
 			// On diminue la vie du joueur
 			life--;
+			if (life == 0){
+				Intent i = new Intent(); 
+				i.setClass(mContext, GameEndActivity.class);
+				i.putExtra("loser", true);
+				mContext.startActivity(i);
+			}
 			// Puis on envoi un message
 			switch (alert) {
 			// Ici on envoi le message selon le choix du joueur

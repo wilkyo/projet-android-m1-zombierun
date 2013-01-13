@@ -49,6 +49,12 @@
     <string name="francois">Willy FRANCOIS</string>
     <string name="perrin">Jean-Baptiste PERRIN</string>
     <string name="rubagotti">Joris RUBAGOTTI</string>
+    
+    <!-- String activity_game_end -->
+    <string name="win_game">Vous avez gagné !</string>
+    <string name="lose_game">Vous avez perdu !</string>
+    <string name="new_game">Nouvelle partie</string>
+    <string name="end_game">Menu principal</string>
 
     <!-- String AlertDialog -->
     <string name="diag_gps_title">GPS non activé</string>
