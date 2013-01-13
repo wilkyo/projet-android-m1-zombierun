@@ -50,7 +50,13 @@
     <string name="perrin">Jean-Baptiste PERRIN</string>
     <string name="rubagotti">Joris RUBAGOTTI</string>
     <string name="run_map">Launch test map</string>
-
+    
+    <!-- String activity_game_end -->
+    <string name="win_game">Your have win !</string>
+    <string name="lose_game">Your have lose !</string>
+    <string name="new_game">New game</string>
+    <string name="end_game">Master Menu</string>
+    
     <!-- String AlertDialog -->
     <string name="diag_gps_title">GPS not activated</string>
     <string name="diag_gps_text">You have to activate it</string>
