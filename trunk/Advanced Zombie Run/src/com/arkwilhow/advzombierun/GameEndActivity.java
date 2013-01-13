@@ -36,16 +36,14 @@ public class GameEndActivity extends Activity {
 
 	public void nouvellePartie(View v) {
 		Intent i = new Intent();
-		i.setClass(this, PreferencesActivity.class);
+		i.setClass(this, HomeActivity.class);
 		i.putExtra("multi", false);
 		startActivity(i);
 		super.finish();
 	}
 
 	public void quitter(View v) {
-		Intent i = new Intent();
-		i.setClass(this, HomeActivity.class);
-		startActivity(i);
 		super.finish();
+		System.exit(0);
 	}
 }

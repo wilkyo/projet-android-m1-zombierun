@@ -37,7 +37,7 @@
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:onClick="quitter"
-            android:text="@string/end_game"
+            android:text="@string/exit"
             android:textStyle="bold" />
 
         <Button
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="nouvellePartie"
-            android:text="@string/new_game"
+            android:text="@string/end_game"
             android:textStyle="bold" />
         
     </LinearLayout>
