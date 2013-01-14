@@ -81,11 +81,7 @@ public class Map extends MapActivity {
 			for (int i = 0; i < PreferencesActivity.getNbJoueurs(); i++) {
 				positionsRecuperees.add(i, null);
 			}
-			// DEBUG TODO
-			Location l = new Location("");
-			l.setLatitude(47.8454);
-			l.setLongitude(1.9398);
-			positionsRecuperees.set(0, l);
+
 			locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 			Log.v("Map.onCreate", "onCreate vaincu");
 		} catch (Exception e) {
