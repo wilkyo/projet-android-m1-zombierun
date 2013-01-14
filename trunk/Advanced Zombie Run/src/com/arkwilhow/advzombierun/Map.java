@@ -231,9 +231,10 @@ public class Map extends MapActivity {
 							master = new GameMaster(joueurs, zombies,
 									pref.getInt("density", 0), pref.getInt(
 											"speed", 0),
-									pref.getInt("life", 0), pref.getInt(
-											"alert", R.id.alertChoice1),
-									mContext, REFRESH_TIME);
+									pref.getInt("timer", 0), pref.getInt(
+											"life", 0), pref.getInt("alert",
+											R.id.alertChoice1), mContext,
+									REFRESH_TIME);
 							master.creerListeZombis();
 
 							Log.v("Map.onLocationChanged",
@@ -244,13 +245,14 @@ public class Map extends MapActivity {
 								finished = true;
 								Intent i = new Intent();
 								i.setClass(mContext, GameEndActivity.class);
-								i.putExtra("loser", false);
+								i.putExtra("lost", false);
 								mContext.startActivity(i);
 							} else if (master.getEchec()) {
 								finished = true;
 								Intent i = new Intent();
 								i.setClass(mContext, GameEndActivity.class);
-								i.putExtra("loser", true);
+								i.putExtra("lost", true);
+								i.putExtra("etat", master.getEtat());
 								mContext.startActivity(i);
 							}
 							master.deplacement(getPositionsJoueurs());
@@ -263,7 +265,6 @@ public class Map extends MapActivity {
 							mapOverlays.add(master.getMarqueursZombies());
 							mapOverlays.add(master.getMarqueursZombiesAware());
 						}
-
 					}
 				} catch (Exception e) {
 					Toast.makeText(mContext, "run: " + e.toString(),

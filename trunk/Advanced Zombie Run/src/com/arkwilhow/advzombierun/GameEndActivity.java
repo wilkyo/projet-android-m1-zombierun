@@ -9,7 +9,8 @@ import android.widget.TextView;
 
 public class GameEndActivity extends Activity {
 
-	Boolean lose;
+	Boolean lost;
+	private int etat;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -21,9 +22,13 @@ public class GameEndActivity extends Activity {
 				"coldnightforalligators.ttf");
 		textViewTron.setTypeface(fontTron);
 		Bundle extra = getIntent().getExtras();
-		lose = extra.getBoolean("lose");
-		if (lose) {
-			textViewTron.setText(R.string.lose_game);
+		lost = extra.getBoolean("lost");
+		etat = extra.getInt("etat");
+		if (lost) {
+			if(etat == 2)
+				textViewTron.setText(R.string.lost_game);
+			else
+				textViewTron.setText(R.string.time_end);
 		}
 	}
 
