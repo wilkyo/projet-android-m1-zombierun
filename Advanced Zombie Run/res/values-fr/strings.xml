@@ -51,6 +51,7 @@
     <string name="rubagotti">Joris RUBAGOTTI</string>
     
     <!-- String activity_game_end -->
+    <string name="title_activity_gameend">Fin du Jeu</string>
     <string name="win_game">Vous avez gagné !</string>
     <string name="lose_game">Vous avez perdu !</string>
     <string name="new_game">Nouvelle partie</string>

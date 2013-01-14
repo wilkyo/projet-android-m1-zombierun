@@ -128,6 +128,14 @@ public class PreferencesActivity extends Activity {
 		editor.commit();
 		super.onPause();
 	}
+	
+	public void onResume() {
+		if(Map.getFinished()) {
+			Map.setFinished(false);
+			finish();
+		}
+		super.onResume();
+	}
 
 	public void goRoom(View v) {
 		if (multi) {

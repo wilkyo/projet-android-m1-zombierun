@@ -36,16 +36,7 @@
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:onClick="quitter"
-            android:text="@string/exit"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="nouvellePartie"
+            android:onClick="retourMenu"
             android:text="@string/end_game"
             android:textStyle="bold" />
         

@@ -1,11 +1,8 @@
 package com.arkwilhow.advzombierun;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.UUID;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -135,7 +132,7 @@ public class RoomStayHostActivity extends Activity {
 	        } catch (IOException e) { }
 	    }
 	}
-	
+	/*
 	private class ConnectedThread extends Thread {
 	    private final BluetoothSocket mmSocket;
 	    private final InputStream mmInStream;
@@ -175,19 +172,19 @@ public class RoomStayHostActivity extends Activity {
 	        }
 	    }
 	 
-	    /* Call this from the main activity to send data to the remote device */
+	    /* Call this from the main activity to send data to the remote device *
 	    public void write(byte[] bytes) {
 	        try {
 	            mmOutStream.write(bytes);
 	        } catch (IOException e) { }
 	    }
 	 
-	    /* Call this from the main activity to shutdown the connection */
+	    /* Call this from the main activity to shutdown the connection *
 	    public void cancel() {
 	        try {
 	            mmSocket.close();
 	        } catch (IOException e) { }
 	    }
-	}
+	}*/
 
 }

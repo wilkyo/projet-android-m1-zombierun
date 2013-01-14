@@ -41,6 +41,7 @@ public class Map extends MapActivity {
 	private ArrayList<Location> positionsRecuperees;
 	private Handler handler = new Handler();
 	private final static int REFRESH_TIME = 500;
+	private static boolean finished = false;
 
 	private final LocationListener listener = new LocationListener() {
 
@@ -82,8 +83,8 @@ public class Map extends MapActivity {
 			}
 			// DEBUG TODO
 			Location l = new Location("");
-			l.setLatitude(44.0);
-			l.setLongitude(2);
+			l.setLatitude(47.8454);
+			l.setLongitude(1.9398);
 			positionsRecuperees.set(0, l);
 			locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 			Log.v("Map.onCreate", "onCreate vaincu");
@@ -205,54 +206,86 @@ public class Map extends MapActivity {
 	private Runnable timedTask = new Runnable() {
 
 		public void run() {
-			try {
-				final Location location = positionsRecuperees.get(0);
-				if (location != null) {
-					if (master == null) {
-						GeoPoint point = new GeoPoint(
-								(int) (location.getLatitude() * 1e6),
-								(int) (location.getLongitude() * 1e6));
-						mc.setCenter(point);
+			if (!finished) {
+				try {
+					// Déplacement des zombis et des joueurs
+					final Location location = positionsRecuperees.get(0);
+					if (location != null) {
+						if (master == null) {
+							GeoPoint point = new GeoPoint(
+									(int) (location.getLatitude() * 1e6),
+									(int) (location.getLongitude() * 1e6));
+							mc.setCenter(point);
 
-						SharedPreferences pref = PreferenceManager
-								.getDefaultSharedPreferences(mContext);
+							SharedPreferences pref = PreferenceManager
+									.getDefaultSharedPreferences(mContext);
 
-						MarqueursJoueurs joueurs = new MarqueursJoueurs(
-								getResources().getDrawable(
-										R.drawable.marqueurjoueur), mContext);
-						joueurs.addMarqueur(new Joueur(point, "joueur",
-								"Je suis le joueur"));
+							MarqueursJoueurs joueurs = new MarqueursJoueurs(
+									getResources().getDrawable(
+											R.drawable.marqueurjoueur),
+									mContext);
+							joueurs.addMarqueur(new Joueur(point, "joueur",
+									"Je suis le joueur"));
 
-						MarqueursZombies zombies = new MarqueursZombies(
-								getResources().getDrawable(
-										R.drawable.marqueurzombi0), mContext);
+							MarqueursZombies zombies = new MarqueursZombies(
+									getResources().getDrawable(
+											R.drawable.marqueurzombi0),
+									mContext);
 
-						master = new GameMaster(joueurs, zombies, pref.getInt(
-								"density", 0), pref.getInt("speed", 0),
-								pref.getInt("life", 0), pref.getInt("alert",
-										R.id.alertChoice1), mContext,
-								REFRESH_TIME);
-						master.creerListeZombis();
+							master = new GameMaster(joueurs, zombies,
+									pref.getInt("density", 0), pref.getInt(
+											"speed", 0),
+									pref.getInt("life", 0), pref.getInt(
+											"alert", R.id.alertChoice1),
+									mContext, REFRESH_TIME);
+							master.creerListeZombis();
 
-						Log.v("Map.onLocationChanged", "création master passée");
-					} else {
-						master.deplacement(getPositionsJoueurs());
+							Log.v("Map.onLocationChanged",
+									"création master passée");
+						} else {
+							// Vérifications de victoire ou échec
+							if (master.getVictoire()) {
+								finished = true;
+								Intent i = new Intent();
+								i.setClass(mContext, GameEndActivity.class);
+								i.putExtra("loser", false);
+								mContext.startActivity(i);
+							} else if (master.getEchec()) {
+								finished = true;
+								Intent i = new Intent();
+								i.setClass(mContext, GameEndActivity.class);
+								i.putExtra("loser", true);
+								mContext.startActivity(i);
+							}
+							master.deplacement(getPositionsJoueurs());
+						}
+						mapOverlays.clear();
+						if (master.getMarqueurDestination() != null)
+							mapOverlays.add(master.getMarqueurDestination());
+						mapOverlays.add(master.getMarqueursJoueurs());
+						if (master.zombisVisibles()) {
+							mapOverlays.add(master.getMarqueursZombies());
+							mapOverlays.add(master.getMarqueursZombiesAware());
+						}
+
 					}
-					mapOverlays.clear();
-					if (master.getMarqueurDestination() != null)
-						mapOverlays.add(master.getMarqueurDestination());
-					mapOverlays.add(master.getMarqueursJoueurs());
-					if (master.zombisVisibles()) {
-						mapOverlays.add(master.getMarqueursZombies());
-						mapOverlays.add(master.getMarqueursZombiesAware());
-					}
-
+				} catch (Exception e) {
+					Toast.makeText(mContext, "run: " + e.toString(),
+							Toast.LENGTH_LONG).show();
 				}
-			} catch (Exception e) {
-				Toast.makeText(mContext, "run: " + e.toString(),
-						Toast.LENGTH_LONG).show();
+				handler.postDelayed(timedTask, REFRESH_TIME);
+			} else {
+				master.setEtat(0);
+				finish();
 			}
-			handler.postDelayed(timedTask, REFRESH_TIME);
 		}
 	};
+
+	public static boolean getFinished() {
+		return finished;
+	}
+
+	public static void setFinished(boolean b) {
+		finished = b;
+	}
 }

@@ -54,6 +54,10 @@
             android:name="com.arkwilhow.advzombierun.RoomStayHostActivity"
             android:label="@string/title_activity_roomstayhost" >
         </activity>
+        <activity
+            android:name="com.arkwilhow.advzombierun.GameEndActivity"
+            android:label="@string/title_activity_gameend" >
+        </activity>
     </application>
 
 </manifest>
