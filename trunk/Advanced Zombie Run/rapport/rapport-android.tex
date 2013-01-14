@@ -35,13 +35,49 @@ Nous vous présenterons tout au long de rapport les différentes phases du déve
 \section{Les choix de développement}
 
 
+
 \section{La structure du projet}
+
+
+\subsection{HomeActivity}
+\subsection{PreferencesActivity}
+
+
+Cette activité permet de définir les différents paramètres de la partie. On peut y choisir:
+\begin{itemize}
+\item Notre Nom pour les parties multijoueurs
+\item La densité de la population de zombies
+\item Leur vitesse de déplacement
+\item Notre nombre de points de vie
+\item Le type d'alerte en cas de contact
+\end{itemize}
+Les choix faits par l'utilisateur sont enregistrées dans les SharedPreferences du projet afin d'être récupérées plus tard dans la Map.
+
+
+\subsection{Map}
+\subsection{GameMaster}
+\subsection{GameEndActivity}
+\subsection{AboutActivity}
 
 
 \section{Les problèmes rencontrés}
 
 
+Au cours du développement de l'application, nous avons étés confrontés à plusieurs problèmes.
+Le plus gênant de ces problèmes est celui du déplacement des Zombis qui ne se faisait pas comme il faut.
+Les différents calculs afin de trouver la position future d'un Zombi en fonction de sa position actuelle,
+son angle de direction, et sa distance parcourue nous ont donnés du fil à retordre.
+
+Le Multi-Joueurs a aussi posé quelques soucis.
+Le problème étant que nous voulions utiliser le Wi-Fi pour les échanges de données avec le serveur en mode HotSpot,
+mais celui ci n'avait pas accès aux clients qui se connectaient à lui.
+Nous sommes donc partis sur le BlueTooth, en détresse, vers la fin du projet.
+
+
 \section{Les améliorations possibles dans l'avenir}
+
+
+Dans l'avenir, nous comptons rendre fonctionnel le multi-joueurs afin d'offrir une expérience inédite aux utilisateurs de l'application.
 
 
 \section{Conclusion}
