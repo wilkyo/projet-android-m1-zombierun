@@ -53,8 +53,8 @@
     <!-- String activity_game_end -->
     <string name="title_activity_gameend">Fin du Jeu</string>
     <string name="win_game">Vous avez gagné !</string>
-    <string name="lose_game">Vous avez perdu !</string>
-    <string name="new_game">Nouvelle partie</string>
+    <string name="lost_game">Vous avez perdu !</string>
+    <string name="time_end">Temps écoulé !</string>
     <string name="end_game">Menu principal</string>
 
     <!-- String AlertDialog -->
@@ -82,6 +82,15 @@
         <item>Moyen</item>
         <item>Rapide</item>
         <item>Très Rapide</item>
+    </string-array>
+    <string-array name="timers_array">
+        <item>Infini</item>
+        <item>1 minute</item>
+        <item>2 minutes</item>
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
     </string-array>
     <string-array name="lifes_array">
         <item>Juste one</item>

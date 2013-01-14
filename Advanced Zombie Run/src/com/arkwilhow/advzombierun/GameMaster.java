@@ -22,7 +22,12 @@ public class GameMaster {
 	private int density;
 	private final static int[] speed_array = new int[] { 1, 2, 3, 4 };
 	private int speed;
+	private final static int[] timer_array = new int[] { 24 * 3600 * 1000,
+			60 * 1000, 120 * 1000, 300 * 1000, 600 * 1000, 900 * 1000,
+			1800 * 1000 };
+	private int timer;
 	private final static int[] life_array = new int[] { 1, 3, 10, 42, 100, 9001 };
+	private int elapsedTime = 0;
 	private int life;
 	private int alert;
 	private Context mContext;
@@ -33,11 +38,12 @@ public class GameMaster {
 
 	public GameMaster(MarqueursJoueurs marqueursJoueurs,
 			MarqueursZombies marqueursZombies, int density, int speed,
-			int life, int alert, Context context, int refreshTime) {
+			int timer, int life, int alert, Context context, int refreshTime) {
 		this.marqueursJoueurs = marqueursJoueurs;
 		this.marqueursZombies = marqueursZombies;
 		this.density = density;
 		this.speed = speed;
+		this.timer = timer;
 		this.life = life;
 		this.alert = alert;
 		this.mContext = context;
@@ -110,13 +116,17 @@ public class GameMaster {
 	public void setMContext(Context context) {
 		this.mContext = context;
 	}
-	
+
 	public boolean getVictoire() {
 		return etat == 1;
 	}
-	
+
 	public boolean getEchec() {
-		return etat == 2;
+		return etat >= 2;
+	}
+	
+	public int getEtat() {
+		return etat;
 	}
 
 	public boolean zombisVisibles() {
@@ -200,8 +210,14 @@ public class GameMaster {
 
 		if (marqueursJoueurs.getDestination() == null)
 			return;
-		if(etat != 0)
+		if (etat != 0)
 			return;
+
+		elapsedTime += refresh_time;
+		if (timer_array[timer] - elapsedTime <= 0) {
+			etat = 3;
+			return;
+		}
 
 		// On recupere la liste des zombis que contient un marqueur
 		Zombie[] zombisArray = marqueursZombies.getListeMarqueur().toArray(

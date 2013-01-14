@@ -45,6 +45,8 @@ public class PreferencesActivity extends Activity {
 				"density", 0));
 		((Spinner) findViewById(R.id.spinner_speed)).setSelection(s.getInt(
 				"speed", 0));
+		((Spinner) findViewById(R.id.spinner_timer)).setSelection(s.getInt(
+				"timer", 0));
 		((Spinner) findViewById(R.id.spinner_life)).setSelection(s.getInt(
 				"life", 0));
 		((RadioGroup) findViewById(R.id.alertChoices)).check(s.getInt("alert",
@@ -75,6 +77,21 @@ public class PreferencesActivity extends Activity {
 						SharedPreferences.Editor editor = PreferenceManager
 								.getDefaultSharedPreferences(mContext).edit();
 						editor.putInt("speed", pos);
+						editor.commit();
+					}
+
+					public void onNothingSelected(AdapterView<?> arg0) {
+					}
+
+				});
+		((Spinner) findViewById(R.id.spinner_timer))
+				.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+					public void onItemSelected(AdapterView<?> parent,
+							View view, int pos, long id) {
+						SharedPreferences.Editor editor = PreferenceManager
+								.getDefaultSharedPreferences(mContext).edit();
+						editor.putInt("timer", pos);
 						editor.commit();
 					}
 
@@ -128,9 +145,9 @@ public class PreferencesActivity extends Activity {
 		editor.commit();
 		super.onPause();
 	}
-	
+
 	public void onResume() {
-		if(Map.getFinished()) {
+		if (Map.getFinished()) {
 			Map.setFinished(false);
 			finish();
 		}
