@@ -49,8 +49,8 @@ public class PreferencesActivity extends Activity {
 				"timer", 0));
 		((Spinner) findViewById(R.id.spinner_life)).setSelection(s.getInt(
 				"life", 0));
-		((RadioGroup) findViewById(R.id.alertChoices)).check(s.getInt("alert",
-				R.id.alertChoice1));
+		RadioGroup rg = (RadioGroup) findViewById(R.id.alertChoices);
+		rg.check(rg.getChildAt(s.getInt("alert", 0)).getId());
 	}
 
 	private void setListeners() {
@@ -119,10 +119,10 @@ public class PreferencesActivity extends Activity {
 				.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 					public void onCheckedChanged(RadioGroup rg, int checkedId) {
-						System.out.println(checkedId);
 						SharedPreferences.Editor editor = PreferenceManager
 								.getDefaultSharedPreferences(mContext).edit();
-						editor.putInt("alert", checkedId);
+						View radioButton = rg.findViewById(checkedId);
+						editor.putInt("alert", rg.indexOfChild(radioButton));
 						editor.commit();
 					}
 

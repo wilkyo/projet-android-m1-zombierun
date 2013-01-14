@@ -34,7 +34,6 @@ public class Map extends MapActivity {
 	private MapView map;
 	private MapController mc;
 	private LocationManager locManager;
-	// private MarqueursJoueurs itemizedoverlay;
 	private List<Overlay> mapOverlays;
 	private GameMaster master = null;
 	private Context mContext;
@@ -269,6 +268,7 @@ public class Map extends MapActivity {
 							mapOverlays.add(master.getMarqueursZombies());
 							mapOverlays.add(master.getMarqueursZombiesAware());
 						}
+						map.invalidate();
 					}
 				} catch (Exception e) {
 					Toast.makeText(mContext, "run: " + e.toString(),
