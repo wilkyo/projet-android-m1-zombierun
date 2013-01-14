@@ -200,11 +200,8 @@ public class GameMaster {
 				.toArray(new Zombie[0]);
 		marqueursZombies.clear();
 		marqueursZombiesAware.clear();
-		// MarqueursZombies new_zombis = new
-		// MarqueursZombies(mContext.getResources().getDrawable(R.drawable.marqueurzombi0),mContext);
-		Location positionPrecedente = new Location("");
-		Location locationDistante = new Location("");
-		int d = speed_array[speed] * refresh_time;
+
+		double d = (((double) speed_array[speed]) * ((double) refresh_time) / 1000);
 		// d = v * t
 		double angle, anglerad;
 		double lat2, long2;
@@ -221,60 +218,67 @@ public class GameMaster {
 				 * l'attribut speed. On suppose que speed est exprimé en m/s.On
 				 * commence par creer un autre objet Location afin d'obtenir
 				 * l'angle entre les deux points.Puis on applique la formule
-				 * suivante :φ2 = asin( sin(φ1)*cos(d/R) +
-				 * cos(φ1)*sin(d/R)*cos(θ) )λ2 = λ1 + atan2(
-				 * sin(θ)*sin(d/R)*cos(φ1), cos(d/R)−sin(φ1)*sin(φ2) )avec φ la
-				 * latitude, λ la longitude,θ l'angle (en radians, dans le sens
-				 * des aiguilles depuis le nord),d la distance parcourue, R le
-				 * radius de la Terre (d/R la distance angulaire, en radians)
+				 * suivante :
 				 */
+				// φ2 = asin(sin(φ1)*cos(d/R) + cos(φ1)*sin(d/R)*cos(θ))
+				// λ2 = λ1 + atan2(sin(θ)*sin(d/R)*cos(φ1),
+				// cos(d/R)−sin(φ1)*sin(φ2))
+				// avec φ la latitude, λ la longitude,θ l'angle (en radians,
+				// dans le sens des aiguilles depuis le nord),d la distance
+				// parcourue, R le radius de la Terre (d/R la distance
+				// angulaire, en radians)
 				lat1 = z.getPoint().getLatitudeE6() / 1e6;
 				long1 = z.getPoint().getLongitudeE6() / 1e6;
+				Location positionPrecedente = new Location("");
 				positionPrecedente.setLatitude(lat1);
 				positionPrecedente.setLongitude(long1);
 
 				// On récupére le joueur le plus proche du zombi en cours
-				locationDistante.setLatitude(lat1);
-				locationDistante.setLongitude(long1);
-				Joueur j = plusProcheJoueur(locationDistante);
+				Joueur j = plusProcheJoueur(positionPrecedente);
+				// Les zombies cherchent un joueur
+				Location positionJoueur = new Location("");
+				positionJoueur.setLatitude(((double) j.getPoint()
+						.getLatitudeE6()) / 1e6);
+				positionJoueur.setLongitude(((double) j.getPoint()
+						.getLongitudeE6()) / 1e6);
 
-				Location joueur = new Location(""); // Les zombies cherchent un
-													// joueur
-				joueur.setLatitude(((double) j.getPoint().getLatitudeE6()) / 1e6);
-				joueur.setLongitude(((double) j.getPoint().getLongitudeE6()) / 1e6);
-
-				angle = joueur.bearingTo(positionPrecedente);
+				angle = positionJoueur.bearingTo(positionPrecedente);
 				// Obtention de l'angle en degrees
 				// entre les deux points
 				anglerad = DegreesToRadians(angle);
 				distRatio = d / radiusTerreMetres;
-				lat2 = Math.asin(Math.sin(lat1) * Math.cos(distRatio)
-						+ Math.cos(lat1) * Math.sin(distRatio)
-						* Math.cos(anglerad));
+				// φ2 = asin(sin(φ1)*cos(d/R) + cos(φ1)*sin(d/R)*cos(θ))
+				lat2 = lat1
+						+ Math.asin(Math.sin(lat1) * Math.cos(distRatio)
+								+ Math.cos(lat1) * Math.sin(distRatio)
+								* Math.cos(anglerad));
+
+				// λ2 = λ1 + atan2(sin(θ)*sin(d/R)*cos(φ1),
+				// cos(d/R)−sin(φ1)*sin(φ2))
 				long2 = long1
 						+ Math.atan2(
 								Math.sin(anglerad) * Math.sin(distRatio)
 										* Math.cos(lat1),
 								Math.cos(distRatio) - Math.sin(lat1)
 										* Math.sin(lat2));
+
 				GeoPoint g = new GeoPoint((int) (lat2 * 1e6),
 						(int) (long2 * 1e6));
 
-				Location positionZombi = new Location("");
-				positionZombi.setLatitude(z.getPoint().getLatitudeE6() / 1E6F);
-				positionZombi
-						.setLongitude(z.getPoint().getLongitudeE6() / 1E6F);
-
-				if (joueur.distanceTo(positionZombi) <= speed_array[speed]) {
+				Toast.makeText(mContext, "Déplacé " + lat2 + ", " + long2,
+						Toast.LENGTH_SHORT).show();
+				if (positionJoueur.distanceTo(positionPrecedente) <= speed_array[speed]) {
 					Toast.makeText(
 							mContext,
-							"Touched " + joueur.distanceTo(positionZombi)
+							"Touched "
+									+ positionJoueur
+											.distanceTo(positionPrecedente)
 									+ ", D = " + d, Toast.LENGTH_SHORT).show();
 					joueurTouched();
 				} else {
-					Zombie zo = new Zombie(g, z.getTitle(), z.getSnippet());
-					zo.setEnAlerte(z.isEnAlerte(), mContext);
-					marqueursZombiesAware.addMarqueur(zo);
+					Zombie nouv = new Zombie(g, z.getTitle(), z.getSnippet());
+					nouv.setEnAlerte(z.isEnAlerte(), mContext);
+					marqueursZombiesAware.addMarqueur(nouv);
 				}
 			} else {
 				Log.d(TAG, "aware pas en alerte");
@@ -290,52 +294,53 @@ public class GameMaster {
 				Toast.makeText(mContext, "Zombie NonAware en alerte",
 						Toast.LENGTH_SHORT).show();
 			} else {
+				Location positionZombi = new Location("");
+				positionZombi.setLatitude(z.getPoint().getLatitudeE6() / 1e6);
+				positionZombi.setLongitude(z.getPoint().getLongitudeE6() / 1e6);
 				for (int i = 0; i < positions.length; i++) {
-					if (positions[i].distanceTo(locationDistante) < 40) {
-						Toast.makeText(
-								mContext,
-								"detected: "
-										+ positions[i]
-												.distanceTo(locationDistante),
-								Toast.LENGTH_SHORT).show();
+					if (positions[i].distanceTo(positionZombi) < 40) {
+						/*
+						 * Toast.makeText( mContext, "Detected: " +
+						 * positionZombi.getLatitude() + ", " +
+						 * positionZombi.getLongitude(),
+						 * Toast.LENGTH_SHORT).show();
+						 */
 						z.setEnAlerte(true, mContext);
 						Zombie nouv = new Zombie(z.getPoint(), z.getTitle(),
 								z.getSnippet());
 						nouv.setEnAlerte(true, mContext);
 						marqueursZombiesAware.addMarqueur(nouv);
 					} else {
-						// Déplacement aléatoire
-						lat1 = z.getPoint().getLatitudeE6() / 1e6F;
-						long1 = z.getPoint().getLongitudeE6() / 1e6F;
-						positionPrecedente.setLatitude(lat1);
-						positionPrecedente.setLongitude(long1);
-
-						// On récupére un point autour aléatoirement
-						locationDistante.setLatitude(lat1
-								+ (int) ((Math.random() * 2 - 1)));
-						locationDistante.setLongitude(long1
-								+ (int) ((Math.random() * 2 - 1)));
-
-						angle = locationDistante.bearingTo(positionPrecedente);
-						// Obtention de l'angle en degrees
-						// entre les deux points
-						anglerad = DegreesToRadians(angle);
-						distRatio = (d / 2) / radiusTerreMetres;
-						lat2 = Math.asin(Math.sin(lat1) * Math.cos(distRatio)
-								+ Math.cos(lat1) * Math.sin(distRatio)
-								* Math.cos(anglerad));
-						long2 = long1
-								+ Math.atan2(
-										Math.sin(anglerad)
-												* Math.sin(distRatio)
-												* Math.cos(lat1),
-										Math.cos(distRatio) - Math.sin(lat1)
-												* Math.sin(lat2));
-						GeoPoint g = new GeoPoint((int) (lat2 * 1e6),
-								(int) (long2 * 1e6));
-
-						marqueursZombies.addMarqueur(new Zombie(g,
-								z.getTitle(), z.getSnippet()));
+						/*
+						 * // Déplacement aléatoire lat1 =
+						 * z.getPoint().getLatitudeE6() / 1e6F; long1 =
+						 * z.getPoint().getLongitudeE6() / 1e6F;
+						 * positionPrecedente.setLatitude(lat1);
+						 * positionPrecedente.setLongitude(long1);
+						 * 
+						 * // On récupére un point autour aléatoirement
+						 * locationDistante.setLatitude(lat1 + (int)
+						 * ((Math.random() * 2 - 1)));
+						 * locationDistante.setLongitude(long1 + (int)
+						 * ((Math.random() * 2 - 1)));
+						 * 
+						 * angle =
+						 * locationDistante.bearingTo(positionPrecedente); //
+						 * Obtention de l'angle en degrees // entre les deux
+						 * points anglerad = DegreesToRadians(angle); distRatio
+						 * = (d / 2) / radiusTerreMetres; lat2 =
+						 * Math.asin(Math.sin(lat1) * Math.cos(distRatio) +
+						 * Math.cos(lat1) * Math.sin(distRatio)
+						 * Math.cos(anglerad)); long2 = long1 + Math.atan2(
+						 * Math.sin(anglerad) Math.sin(distRatio)
+						 * Math.cos(lat1), Math.cos(distRatio) - Math.sin(lat1)
+						 * Math.sin(lat2));
+						 * 
+						 * GeoPoint g = new GeoPoint((int) (lat2 * 1e6), (int)
+						 * (long2 * 1e6));
+						 */
+						marqueursZombies.addMarqueur(new Zombie(z.getPoint(), z
+								.getTitle(), z.getSnippet()));
 					}
 				}
 			}
@@ -373,14 +378,10 @@ public class GameMaster {
 
 	public void gagner() {
 		Toast.makeText(mContext, "Victory", Toast.LENGTH_LONG).show();
-		Intent i = new Intent(); 
+		Intent i = new Intent();
 		i.setClass(mContext, GameEndActivity.class);
 		i.putExtra("loser", false);
 		mContext.startActivity(i);
-		/*
-		 * TODO GameEnd.setVictory(true); Intent i = new Intent(mContext,
-		 * GameEndActivity.class); i.start(); mContext.finish();
-		 */
 	}
 
 	public static double DegreesToRadians(double degrees) {
@@ -427,19 +428,19 @@ public class GameMaster {
 	 * Déclenche les evenements après qu'un zombi ait rattrapé le joueur
 	 */
 	public void joueurTouched() {
-		if (life_array[life] <= 1) {
+		if (life_array[life] == 1) {
 			Toast.makeText(mContext, "Echec", Toast.LENGTH_SHORT).show();
 			// On stoppe le jeu
-			Intent i = new Intent(); 
+			Intent i = new Intent();
 			i.setClass(mContext, GameEndActivity.class);
 			i.putExtra("loser", true);
 			mContext.startActivity(i);
-			
+
 		} else {
 			// On diminue la vie du joueur
 			life--;
-			if (life == 0){
-				Intent i = new Intent(); 
+			if (life == 0) {
+				Intent i = new Intent();
 				i.setClass(mContext, GameEndActivity.class);
 				i.putExtra("loser", true);
 				mContext.startActivity(i);
