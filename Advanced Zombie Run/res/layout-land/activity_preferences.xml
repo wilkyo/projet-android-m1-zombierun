@@ -75,16 +75,6 @@
                 android:prompt="@string/speed" />
 
             <TextView
-                android:id="@+id/timer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/timer"
-                android:textColor="#8A0808"
-                android:textSize="18sp"
-                tools:context=".PreferencesActivity" />
-
-            <TextView
                 android:id="@+id/life"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
