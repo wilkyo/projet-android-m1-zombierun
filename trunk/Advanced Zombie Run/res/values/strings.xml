@@ -52,6 +52,7 @@
     <string name="run_map">Launch test map</string>
     
     <!-- String activity_game_end -->
+    <string name="title_activity_gameend">Game End activity</string>
     <string name="win_game">Your have win !</string>
     <string name="lose_game">Your have lose !</string>
     <string name="new_game">New game</string>

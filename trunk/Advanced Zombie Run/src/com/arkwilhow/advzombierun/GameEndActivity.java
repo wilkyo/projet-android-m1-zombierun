@@ -2,7 +2,6 @@ package com.arkwilhow.advzombierun;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.Menu;
 import android.view.View;
@@ -34,16 +33,7 @@ public class GameEndActivity extends Activity {
 		return true;
 	}
 
-	public void nouvellePartie(View v) {
-		Intent i = new Intent();
-		i.setClass(this, HomeActivity.class);
-		i.putExtra("multi", false);
-		startActivity(i);
-		super.finish();
-	}
-
-	public void quitter(View v) {
-		super.finish();
-		System.exit(0);
+	public void retourMenu(View v) {
+		finish();
 	}
 }

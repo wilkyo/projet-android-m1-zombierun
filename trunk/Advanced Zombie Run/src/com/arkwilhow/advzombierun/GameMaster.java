@@ -12,7 +12,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Vibrator;
-import android.util.Log;
 import android.widget.Toast;
 
 public class GameMaster {
@@ -29,7 +28,8 @@ public class GameMaster {
 	private Context mContext;
 	private MarqueurDestination marqueurDestination;
 	private int refresh_time;
-	private String TAG = "GameMaster";
+	// 1 == Victoire 2 == Echec
+	private int etat = 0;
 
 	public GameMaster(MarqueursJoueurs marqueursJoueurs,
 			MarqueursZombies marqueursZombies, int density, int speed,
@@ -109,6 +109,14 @@ public class GameMaster {
 
 	public void setMContext(Context context) {
 		this.mContext = context;
+	}
+	
+	public boolean getVictoire() {
+		return etat == 1;
+	}
+	
+	public boolean getEchec() {
+		return etat == 2;
 	}
 
 	public boolean zombisVisibles() {
@@ -192,6 +200,8 @@ public class GameMaster {
 
 		if (marqueursJoueurs.getDestination() == null)
 			return;
+		if(etat != 0)
+			return;
 
 		// On recupere la liste des zombis que contient un marqueur
 		Zombie[] zombisArray = marqueursZombies.getListeMarqueur().toArray(
@@ -265,46 +275,24 @@ public class GameMaster {
 				GeoPoint g = new GeoPoint((int) (lat2 * 1e6),
 						(int) (long2 * 1e6));
 
-				Toast.makeText(mContext, "Déplacé " + lat2 + ", " + long2,
-						Toast.LENGTH_SHORT).show();
-				if (positionJoueur.distanceTo(positionPrecedente) <= speed_array[speed]) {
-					Toast.makeText(
-							mContext,
-							"Touched "
-									+ positionJoueur
-											.distanceTo(positionPrecedente)
-									+ ", D = " + d, Toast.LENGTH_SHORT).show();
+				if (positionJoueur.distanceTo(positionPrecedente) <= d) {
 					joueurTouched();
 				} else {
 					Zombie nouv = new Zombie(g, z.getTitle(), z.getSnippet());
 					nouv.setEnAlerte(z.isEnAlerte(), mContext);
 					marqueursZombiesAware.addMarqueur(nouv);
 				}
-			} else {
-				Log.d(TAG, "aware pas en alerte");
-				Toast.makeText(mContext, "Zombie Aware non alerté",
-						Toast.LENGTH_SHORT).show();
 			}
 		}
 
 		// Boucle des zombis non alertés
 		for (Zombie z : zombisArray) {
-			if (z.isEnAlerte()) {
-				Log.d(TAG, "notaware, en alerte");
-				Toast.makeText(mContext, "Zombie NonAware en alerte",
-						Toast.LENGTH_SHORT).show();
-			} else {
+			if (!z.isEnAlerte()) {
 				Location positionZombi = new Location("");
 				positionZombi.setLatitude(z.getPoint().getLatitudeE6() / 1e6);
 				positionZombi.setLongitude(z.getPoint().getLongitudeE6() / 1e6);
 				for (int i = 0; i < positions.length; i++) {
 					if (positions[i].distanceTo(positionZombi) < 40) {
-						/*
-						 * Toast.makeText( mContext, "Detected: " +
-						 * positionZombi.getLatitude() + ", " +
-						 * positionZombi.getLongitude(),
-						 * Toast.LENGTH_SHORT).show();
-						 */
 						z.setEnAlerte(true, mContext);
 						Zombie nouv = new Zombie(z.getPoint(), z.getTitle(),
 								z.getSnippet());
@@ -377,11 +365,7 @@ public class GameMaster {
 	}
 
 	public void gagner() {
-		Toast.makeText(mContext, "Victory", Toast.LENGTH_LONG).show();
-		Intent i = new Intent();
-		i.setClass(mContext, GameEndActivity.class);
-		i.putExtra("loser", false);
-		mContext.startActivity(i);
+		etat = 1;
 	}
 
 	public static double DegreesToRadians(double degrees) {
@@ -429,13 +413,7 @@ public class GameMaster {
 	 */
 	public void joueurTouched() {
 		if (life_array[life] == 1) {
-			Toast.makeText(mContext, "Echec", Toast.LENGTH_SHORT).show();
-			// On stoppe le jeu
-			Intent i = new Intent();
-			i.setClass(mContext, GameEndActivity.class);
-			i.putExtra("loser", true);
-			mContext.startActivity(i);
-
+			etat = 2;
 		} else {
 			// On diminue la vie du joueur
 			life--;
@@ -474,5 +452,9 @@ public class GameMaster {
 		}
 
 		return j;
+	}
+
+	public void setEtat(int i) {
+		etat = i;
 	}
 }

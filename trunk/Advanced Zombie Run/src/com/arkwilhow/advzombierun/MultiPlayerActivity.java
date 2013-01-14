@@ -193,13 +193,13 @@ public class MultiPlayerActivity extends Activity {
 		private final UUID MY_UUID = UUID
 				.fromString("00001101-0000-1000-8000-00805F9B34FB");;
 		private final BluetoothSocket mmSocket;
-		private final BluetoothDevice mmDevice;
+		//private final BluetoothDevice mmDevice;
 
 		public ConnectThread(BluetoothDevice device) {
 			// Use a temporary object that is later assigned to mmSocket,
 			// because mmSocket is final
 			BluetoothSocket tmp = null;
-			mmDevice = device;
+			//mmDevice = device;
 
 			// Get a BluetoothSocket to connect with the given BluetoothDevice
 			try {
@@ -230,6 +230,7 @@ public class MultiPlayerActivity extends Activity {
 		}
 
 		/** Will cancel an in-progress connection, and close the socket */
+		@SuppressWarnings("unused")
 		public void cancel() {
 			try {
 				mmSocket.close();
