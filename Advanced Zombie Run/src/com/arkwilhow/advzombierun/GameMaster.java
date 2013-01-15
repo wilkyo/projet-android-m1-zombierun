@@ -253,12 +253,6 @@ public class GameMaster {
 			// On récupére le joueur le plus proche du zombi en cours
 			Location positionJoueur = plusProcheJoueur(positionPrecedente,
 					positionJoueurs);
-			// Les zombies cherchent un joueur
-			// Location positionJoueur = new Location("");
-			// positionJoueur.setLatitude(((double)
-			// j.getPoint().getLatitudeE6()) / 1e6);
-			// positionJoueur.setLongitude(((double)
-			// j.getPoint().getLongitudeE6()) / 1e6);
 
 			float distance = positionJoueur.distanceTo(positionPrecedente);
 			lat2 = lat1 + d * (positionJoueur.getLatitude() - lat1) / distance;
@@ -270,9 +264,11 @@ public class GameMaster {
 			if (distance <= d) {
 				contactJoueur();
 			} else {
-				Zombie nouv = new Zombie(g, z.getTitle(), z.getSnippet());
-				nouv.setEnAlerte(z.isEnAlerte(), mContext);
-				marqueursZombiesAware.addMarqueur(nouv);
+				if (!zombiTropLoin(g, positionJoueurs)) {
+					Zombie nouv = new Zombie(g, z.getTitle(), z.getSnippet());
+					nouv.setEnAlerte(z.isEnAlerte(), mContext);
+					marqueursZombiesAware.addMarqueur(nouv);
+				}
 			}
 		}
 
@@ -315,13 +311,18 @@ public class GameMaster {
 					GeoPoint g = new GeoPoint((int) (lat2 * 1e6),
 							(int) (long2 * 1e6));
 
-					marqueursZombies.addMarqueur(new Zombie(g, z.getTitle(), z
-							.getSnippet()));
+					if (!zombiTropLoin(g, positionJoueurs))
+						marqueursZombies.addMarqueur(new Zombie(g,
+								z.getTitle(), z.getSnippet()));
 				}
 			}
 		}
 
-		verifieZombis(positionJoueurs);
+		// Recréation des zombis manquants
+		while (marqueursZombies.size() + marqueursZombiesAware.size() < density_array[density]) {
+			marqueursZombies.addMarqueur(creerZombi(RAYON_CREATION,
+					marqueursJoueurs.getListeMarqueur().get(0)));
+		}
 	}
 
 	/**
@@ -360,60 +361,36 @@ public class GameMaster {
 	}
 
 	/**
-	 * Modifie la liste en parametre en recreant des zombis près du joueur
-	 * lorsque ceux-ci sont trop loin
+	 * Retourne vrai si le zombie est trop loin de l'un des joueurs.
 	 * 
+	 * @param zombie
+	 *            Position GPS du Zombie
 	 * @param positionJoueurs
-	 *            Tableau des positions des Joueurs
+	 *            Tableau des positions des joueurs
+	 * @return L'état trop loin
 	 */
-	public void verifieZombis(Location[] positionJoueurs) {
-		Zombie[] zombis = marqueursZombies.getListeMarqueur().toArray(
-				new Zombie[0]);
-		Zombie[] zombisAware = marqueursZombiesAware.getListeMarqueur()
-				.toArray(new Zombie[0]);
-		marqueursZombies.clear();
-		marqueursZombiesAware.clear();
-
+	public boolean zombiTropLoin(GeoPoint zombie, Location[] positionJoueurs) {
 		Location positionZombi = new Location("");
-
-		// Pour l'instant codée en "dur" il faudra sans doute la calculer en
-		// fonction de la difficulté
-		for (Zombie z : zombis) {
-			boolean trop_loin = false;
-			positionZombi.setLatitude(z.getPoint().getLatitudeE6() / 1e6F);
-			positionZombi.setLongitude(z.getPoint().getLongitudeE6() / 1e6F);
-			for (Location positionJoueur : positionJoueurs) {
-				if (positionJoueur.distanceTo(positionZombi) > RAYON_DANGER) {
-					trop_loin = true;
-					break;
-				}
-			}
-			if (!trop_loin) {
-				marqueursZombies.addMarqueur(z);
+		positionZombi.setLatitude(zombie.getLatitudeE6() / 1e6F);
+		positionZombi.setLongitude(zombie.getLongitudeE6() / 1e6F);
+		for (Location positionJoueur : positionJoueurs) {
+			if (positionJoueur.distanceTo(positionZombi) > RAYON_DANGER) {
+				return true;
 			}
 		}
-		for (Zombie z : zombisAware) {
-			boolean trop_loin = false;
-			positionZombi.setLatitude(z.getPoint().getLatitudeE6() / 1e6F);
-			positionZombi.setLongitude(z.getPoint().getLongitudeE6() / 1e6F);
-			for (Location positionJoueur : positionJoueurs) {
-				if (positionJoueur.distanceTo(positionZombi) > RAYON_DANGER) {
-					trop_loin = true;
-					break;
-				}
-			}
-			if (!trop_loin) {
-				marqueursZombiesAware.addMarqueur(z);
-			}
-		}
-		// Recréation des zombis manquants
-		while (marqueursZombies.size() + marqueursZombiesAware.size() < density_array[density]) {
-			marqueursZombies.addMarqueur(creerZombi(RAYON_CREATION,
-					marqueursJoueurs.getListeMarqueur().get(0)));
-		}
+		return false;
 	}
 
-	// Renvoi le joueur le plus proche de la Location en paramètres
+	/**
+	 * Renvoi le joueur le plus proche de la Location en paramètres
+	 * 
+	 * @param positionEntite
+	 *            Position de l'entité dont on veut le plus proche joueur
+	 * @param Tableau
+	 *            des positions des joueurs
+	 * @param Position
+	 *            du plus proche joueur de l'entité
+	 */
 	public Location plusProcheJoueur(Location positionEntite,
 			Location[] positionJoueurs) {
 		Location positionPlusProcheJoueur = new Location("");

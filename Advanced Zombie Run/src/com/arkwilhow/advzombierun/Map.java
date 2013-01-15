@@ -80,10 +80,6 @@ public class Map extends MapActivity {
 			for (int i = 0; i < PreferencesActivity.getNbJoueurs(); i++) {
 				positionsRecuperees.add(i, null);
 			}
-			Location l = new Location("");
-			l.setLatitude(47.9295);
-			l.setLongitude(2.0060);
-			positionsRecuperees.set(0, l);
 
 			locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 			Log.v("Map.onCreate", "onCreate vaincu");
@@ -190,12 +186,13 @@ public class Map extends MapActivity {
 			return super.onKeyDown(keyCode, event);
 	}
 
+	/**
+	 * Range la liste des positions dans un tableau
+	 * 
+	 * @return
+	 */
 	private Location[] getPositionsJoueurs() {
-		Location[] positions = new Location[PreferencesActivity.getNbJoueurs()];
-		for (int i = 0; i < positions.length; i++) {
-			positions[i] = positionsRecuperees.get(i);
-		}
-		return positions;
+		return positionsRecuperees.toArray(new Location[0]);
 	}
 
 	/**
