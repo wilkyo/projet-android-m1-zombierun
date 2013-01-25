@@ -18,7 +18,7 @@ public class AboutActivity extends Activity {
 
 	public void run(View v) {
 		Intent i = new Intent();
-		i.setClass(this, Map.class);
+		i.setClass(this, GameMapActivity.class);
 		startActivity(i);
 	}
 

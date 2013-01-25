@@ -147,8 +147,8 @@ public class PreferencesActivity extends Activity {
 	}
 
 	public void onResume() {
-		if (Map.getFinished()) {
-			Map.setFinished(false);
+		if (GameMapActivity.getFinished()) {
+			GameMapActivity.setFinished(false);
 			finish();
 		}
 		super.onResume();
@@ -165,7 +165,7 @@ public class PreferencesActivity extends Activity {
 			startActivity(i);
 		} else {
 			Intent i = new Intent();
-			i.setClass(this, Map.class);
+			i.setClass(this, GameMapActivity.class);
 			startActivity(i);
 		}
 	}
