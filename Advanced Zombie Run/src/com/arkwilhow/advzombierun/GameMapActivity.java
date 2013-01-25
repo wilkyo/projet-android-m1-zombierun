@@ -24,13 +24,14 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.widget.Toast;
 
 /**
  * Activité pour l'affichage de la map
  * 
  */
-public class Map extends MapActivity {
+public class GameMapActivity extends MapActivity {
 	private MapView map;
 	private MapController mc;
 	private LocationManager locManager;
@@ -67,7 +68,7 @@ public class Map extends MapActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		try {
 			super.onCreate(savedInstanceState);
-			setContentView(R.layout.map_layout);
+			setContentView(R.layout.activity_game_map);
 			mContext = this;
 			map = (MapView) findViewById(R.id.mapView);
 			map.setBuiltInZoomControls(true);
@@ -285,5 +286,11 @@ public class Map extends MapActivity {
 
 	public static void setFinished(boolean b) {
 		finished = b;
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_game_map, menu);
+		return true;
 	}
 }

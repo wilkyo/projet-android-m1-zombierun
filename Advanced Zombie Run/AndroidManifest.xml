@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.arkwilhow.advzombierun.Map"
+            android:name="com.arkwilhow.advzombierun.GameMapActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
