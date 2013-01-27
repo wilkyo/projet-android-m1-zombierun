@@ -2,9 +2,11 @@
 
     <!-- String other -->
     <string name="app_name">Advanced Zombie Run</string>
-    <string name="hello_world">Salut tout le monde</string>
-    <string name="menu_settings">Paramètres</string>
-    <string name="title_activity_roomstayhost">Salle d attente</string>
+    <string name="title_activity_roomstayhost">Salle d\'attente</string>
+
+    <!-- String Menus -->
+    <string name="menu_settings">Settings</string>
+    <string name="menu_centerMap">Center the Map</string>
 
     <!-- String activity_multi_player -->
     <string name="title_activity_multi_player">Multi-Joueurs</string>

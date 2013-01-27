@@ -3,11 +3,13 @@
 
     <!-- String other -->
     <string name="app_name">Advanced Zombie Run</string>
-    <string name="hello_world">Hello World !</string>
-    <string name="menu_settings">Settings</string>
     <string name="title_activity_roomstayhost">RoomStayActivity</string>
     <string name="marquerdesttit">Destination</string>
     <string name="marqueurdestmsg">You have to go there.</string>
+
+    <!-- String Menus -->
+    <string name="menu_settings">Settings</string>
+    <string name="menu_centerMap">Center the Map</string>
 
     <!-- String activity_multi_player -->
     <string name="title_activity_multi_player">MultiPlayerActivity</string>
