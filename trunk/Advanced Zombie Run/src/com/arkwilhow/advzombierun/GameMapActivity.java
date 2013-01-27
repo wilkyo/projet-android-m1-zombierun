@@ -25,6 +25,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 /**
@@ -289,8 +290,32 @@ public class GameMapActivity extends MapActivity {
 	}
 
 	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.menu_centerMap:
+			centerMap();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	private void centerMap() {
+		final Location location = positionsRecuperees.get(0);
+		if (location == null)
+			return;
+		else {
+			GeoPoint point = new GeoPoint((int) (location.getLatitude() * 1e6),
+					(int) (location.getLongitude() * 1e6));
+			mc.setCenter(point);
+		}
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_game_map, menu);
 		return true;
 	}
+
 }
